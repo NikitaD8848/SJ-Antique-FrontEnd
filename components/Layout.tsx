@@ -1,13 +1,14 @@
 import React from 'react'
 import Header from './Header/Header'
-import Navbar from './Navbar/NavBar'
+import Navbar from './Navbar/Navbar'
 
 const Layout = ({children}: any) => {
   return (
     <>
         <Navbar/>
-        {children}
         <Header/>
+        {children}
+        
     </>
   )
 }
