@@ -2,6 +2,15 @@
     text-align: end;
 }
 .addRow{
+    padding: 6px 12px;
+    margin-left: 15px;
+    background-color: #178150;;
+    color: #FFF;
+    border-color:#198754;
+    border-radius: 9px;
     text-align: center;
     justify-content: center;
+}
+.addRow:hover{
+    background-color: #157347;
 }

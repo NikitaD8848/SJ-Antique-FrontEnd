@@ -2,67 +2,88 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../styles/readyReceipts.module.css";
-import { FiDelete } from "react-icons/fi";
-import { GrAddCircle } from "react-icons/gr";
+import { ImCross } from "react-icons/im";
+import { SiAddthis } from "react-icons/si";
+import { Modal, Button } from "react-bootstrap";
 
 const readyReceiptKundanKarigar = () => {
-    const [tableData, setTableData] = useState<any>([
-        {
-          id: 1,
-          NetWt:'',
-          FewWt:'',
-          CslWt: '',
-          KunWt: '',
-          CsoWt: '',
-          MotiWt:'',
-          Gross: '',
-          AddPhoto: "",
-        },
-      ]);
-      
-      const handleFieldChange = (id: number, field: string, newValue: any) => {
-        const updatedData = tableData.map((item: any) => {
-          if (item.id === id) {
-            return { ...item, [field]: newValue };
-          }
-          return item;
-        });
-        setTableData(updatedData);
-      };
-      console.log("check 1", tableData);
-      const calculateGrossWt = (item: any) => {
-        const { NetWt,FewWt,CslWt,KunWt,CsoWt,MotiWt } = item;
-        const grossWt = parseFloat(NetWt) + parseFloat(FewWt) + parseFloat(CslWt) + parseFloat(KunWt) + parseFloat(CsoWt) + parseFloat(MotiWt)
-        return grossWt;
-      };
-    
-      const handleAddRow = () => {
-        const newRow = {
-          id: tableData.length + 1,
-          NetWt:'',
-          FewWt:'',
-          CslWt: '',
-          KunWt: '',
-          CsoWt: '',
-          MotiWt:'',
-          Gross: '',
-          AddPhoto: "",
-        };
-        setTableData([...tableData, newRow]);
-        };
-        const handleTabPress = (event: any, id: any) => {
-            if (event.key === 'Tab' && id === tableData[tableData.length - 1].id) {
-              handleAddRow();
-            } 
-        };
-      const handleDeleteRow = (id: any) => {
-        const updatedData = tableData.filter((item: any) => item.id !== id);
-        setTableData(updatedData);
-    
-        console.log("Handle delete clicked");
-      };
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [tableData, setTableData] = useState<any>([
+    {
+      id: 1,
+      NetWt: "",
+      FewWt: "",
+      CslWt: "",
+      KunWt: "",
+      CsoWt: "",
+      MotiWt:"",
+      Gross: 0,
+      AddPhoto: "",
+    },
+  ]);
+
+  const handleFieldChange = (id: number, field: string, newValue: any) => {
+    const updatedData = tableData.map((item: any) => {
+      if (item.id === id) {
+        let updatedItem = { ...item, [field]: newValue };
+        updatedItem.Gross = calculateGrossWt(updatedItem);
+        return updatedItem;
+      }
+      return item;
+    });
+    setTableData(updatedData);
+    console.log("field change called",tableData)
+  };
+  console.log("check 1", tableData);
+  const calculateGrossWt = (item: any) => {
+    const { NetWt, FewWt, CslWt, KunWt, CsoWt, MotiWt } = item;
+    const grossWt =
+      parseFloat(NetWt) +
+      parseFloat(FewWt) +
+      parseFloat(CslWt) +
+      parseFloat(KunWt) +
+      parseFloat(CsoWt) +
+      parseFloat(MotiWt);
+    return grossWt;
+  };
+
+  const handleAddRow = () => {
+    const newRow = {
+      id: tableData.length + 1,
+      NetWt: "",
+      FewWt: "",
+      CslWt: "",
+      KunWt: "",
+      CsoWt: "",
+      MotiWt: "",
+      Gross: "",
+      AddPhoto: "",
+    };
+    setTableData([...tableData, newRow]);
+  };
+
+  const handleTabPress = (event: any, id: any) => {
+    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
+      handleAddRow();
+    }
+  };
+  const handleDeleteRow = (id: any) => {
+    const updatedData = tableData.filter((item: any) => item.id !== id);
+    setTableData(updatedData);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const handleModal = (event: any, id: any) => {
+    if (event.key === "F12") {
+      setShowModal(true);
+    }
+  };
+
   return (
-    <div className="mx-5">
+    <div className="mx-5 bg-light">
       <div className="container-fluid ">
         <div className="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <div className="nav-item" role="presentation">
@@ -114,7 +135,7 @@ const readyReceiptKundanKarigar = () => {
               <div>
                 <div className={`${styles.button}`}>
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Create
                   </button>
                 </div>
                 <div className="container-fluid table-responsive">
@@ -130,16 +151,16 @@ const readyReceiptKundanKarigar = () => {
                     <tbody>
                       <tr>
                         <td scope="row">
-                          <input className="w-100"type="number" />
+                          <input className="w-100" type="number" />
                         </td>
                         <td>
                           <input className="w-100" type="number" />
                         </td>
                         <td>
-                          <input className="w-100"type="text" />
+                          <input className="w-100" type="text" />
                         </td>
                         <td>
-                          <input className="w-100"type="text" />
+                          <input className="w-100" type="text" />
                         </td>
                       </tr>
                     </tbody>
@@ -147,10 +168,10 @@ const readyReceiptKundanKarigar = () => {
                 </div>
               </div>
               <button className={`${styles.addRow}`} onClick={handleAddRow}>
-                <GrAddCircle />
+                <SiAddthis />
                 Add row
               </button>
-              <div className="container-fluid table-responsive">
+              <div className="container-fluid table-responsive p-3">
                 <table className="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -193,14 +214,18 @@ const readyReceiptKundanKarigar = () => {
                                 e.target.value
                               )
                             }
-                            />
+                          />
                         </td>
                         <td>
                           <input
                             type="number"
                             value={item.CslWt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "CslWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                "CslWt",
+                                e.target.value
+                              )
                             }
                           />
                         </td>
@@ -209,8 +234,13 @@ const readyReceiptKundanKarigar = () => {
                             type="number"
                             value={item.KunWt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "KunWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                "KunWt",
+                                e.target.value
+                              )
                             }
+                            onKeyDown={(e) => handleModal(e, item.id)}
                           />
                         </td>
                         <td>
@@ -218,11 +248,7 @@ const readyReceiptKundanKarigar = () => {
                             type="number"
                             value={item.CsoWt}
                             onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                "CsoWt",
-                                e.target.value
-                              )
+                              handleFieldChange(item.id, "CsoWt", e.target.value)
                             }
                           />
                         </td>
@@ -239,18 +265,19 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>{calculateGrossWt(item)}</td>
+                        <td>{item.Gross}</td>
                         <td>
-                          <input 
-                          type="file" 
-                          onKeyDown={(e)=>handleTabPress(e,item.id)} />
+                          <input
+                            type="file"
+                          />
                         </td>
                         <td>
                           <button
-                            className="d-flex align-items-center delete-link"
+                            className="d-flex align-items-center delete-link p-1"
                             onClick={() => handleDeleteRow(item.id)}
+                            onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <FiDelete />
+                            <ImCross />
                           </button>
                         </td>
                       </tr>
@@ -261,6 +288,21 @@ const readyReceiptKundanKarigar = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <Modal show={showModal} onHide={closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Triggered by Key Press</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            This modal was triggered by pressing the 'F12' key.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </div>
   );
