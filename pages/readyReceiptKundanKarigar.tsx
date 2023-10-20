@@ -40,7 +40,7 @@ const readyReceiptKundanKarigar = () => {
   const handleFieldChange = (id: number, field: string, newValue: any) => {
     const updatedData = tableData.map((item: any) => {
       if (item.id === id) {
-        return { ...item, [field]: newValue };
+        return {  ...item, [field]: 0 || newValue };
       }
       return item;
     });
@@ -52,14 +52,14 @@ const readyReceiptKundanKarigar = () => {
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
-      product_code: "ACH",
-      custom_kun_karigar: "Karigar1",
-      custom_net_wt: 10,
-      custom_few_wt: 5,
-      custom_gross_wt: 15,
-      custom_mat_wt: 5,
-      custom_other: 0,
-      custom_total : 20,
+      product_code: "",
+      custom_kun_karigar: "",
+      custom_net_wt: "",
+      custom_few_wt: "",
+      custom_gross_wt: "",
+      custom_mat_wt: "",
+      custom_other: "",
+      custom_total : "",
       custom_add_photo: "",
     };
     setTableData([...tableData, newRow]);
@@ -167,10 +167,10 @@ const readyReceiptKundanKarigar = () => {
                           </select>
                         </td>
                         <td>
-                          <input className="w-100" type="text" />
+                          <input className="w-100" type="text"  />
                         </td>
                         <td>
-                          <input className="w-100" type="text" />
+                          <input className="w-100" type="text" readOnly value={"kundanKarigar"} disabled/>
                         </td>
                       </tr>
                     </tbody>
@@ -198,7 +198,7 @@ const readyReceiptKundanKarigar = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item: any) => (
+                    {tableData.map((item: any,i:any) => (
                       <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>
@@ -228,7 +228,7 @@ const readyReceiptKundanKarigar = () => {
                               handleFieldChange(
                                 item.id,
                                 "custom_net_wt",
-                                e.target.value
+                                +e.target.value
                               )
                             }
                           />
@@ -241,18 +241,23 @@ const readyReceiptKundanKarigar = () => {
                               handleFieldChange(
                                 item.id,
                                 "custom_few_wt",
-                                e.target.value
+                                +e.target.value
                               )
                             }
                           />
                         </td>
-                        <td>{item.custom_gross_wt}</td>
+                        <td><input
+                            type="text"
+                            readOnly
+                            name={`sum-${i + 1}`}
+                            value={tableData[i].custom_net_wt + tableData[i].custom_few_wt }
+                          /></td>
                         <td>
                           <input
                             type="number"
                             value={item.custom_mat_wt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "custom_mat_wt", e.target.value)
+                              handleFieldChange(item.id, "custom_mat_wt", +e.target.value)
                             }
                             onKeyDown={(e) => handleModal(e, item.id)}
                           />
@@ -265,12 +270,17 @@ const readyReceiptKundanKarigar = () => {
                               handleFieldChange(
                                 item.id,
                                 "custom_other",
-                                e.target.value
+                                +e.target.value
                               )
                             }
                           />
                         </td>
-                        <td>{item.custom_total}</td>
+                        <td> <input
+                            type="text"
+                            readOnly
+                            name={`sum-${i + 1}`}
+                            value={tableData[i].custom_other }
+                          /></td>
                         <td>
                           <input
                             type="file"
