@@ -51,6 +51,22 @@ const readyReceiptKundanKarigar = () => {
   
   const handleAddRow = () => {
     const newRow = {
+      id: tableData?.table?.length + 1,
+      material_abbr: "",
+      material_name: "",
+      pcs: "",
+      piece_: "",
+      carat: "",
+      carat_: "",
+      weight: "",
+      gm_: "",
+      amount: ""
+    };
+    setTableData([...tableData?.table, newRow]);
+  };
+  
+  const handleModalAddRow = () => {
+    const newRow = {
       id: tableData.length + 1,
       product_code: "",
       custom_kun_karigar: "",
@@ -310,7 +326,7 @@ const readyReceiptKundanKarigar = () => {
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <button className={`${styles.addRow}`} onClick={handleAddRow}>
+          <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
                 <SiAddthis />
                 Add row
           </button>
@@ -422,8 +438,8 @@ const readyReceiptKundanKarigar = () => {
                         <td>
                           <button
                             className="d-flex align-items-center delete-link p-1"
-                            // onClick={() => handleDeleteRow(item.id)}
-                            // onKeyDown={(e) => handleTabPress(e, item.id)}
+                            onClick={() => handleDeleteRow(element.id)}
+                            onKeyDown={(e) => handleTabPress(e, element.id)}
                           >
                             <ImCross />
                           </button>
