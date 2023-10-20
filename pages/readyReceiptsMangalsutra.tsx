@@ -159,7 +159,7 @@ const readyReceiptsMangalsutra = () => {
                           <input className="w-100" type="text" />
                         </td>
                         <td>
-                          <input className="w-100" type="text" />
+                          <input className="w-100" type="text" readOnly disabled value={"Mangalsutra"} />
                         </td>
                       </tr>
                     </tbody>
