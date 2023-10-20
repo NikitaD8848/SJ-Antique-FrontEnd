@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/readyReceipts.module.css";
 import { ImCross } from "react-icons/im";
 import { SiAddthis } from "react-icons/si";

@@ -17,7 +17,7 @@ const readyReceiptKundanKarigar = () => {
       KunWt: "",
       CsoWt: "",
       MotiWt:"",
-      Gross: 0,
+      Gross: "",
       AddPhoto: "",
     },
   ]);
@@ -25,16 +25,22 @@ const readyReceiptKundanKarigar = () => {
   const handleFieldChange = (id: number, field: string, newValue: any) => {
     const updatedData = tableData.map((item: any) => {
       if (item.id === id) {
-        let updatedItem = { ...item, [field]: newValue };
-        updatedItem.Gross = calculateGrossWt(updatedItem);
-        return updatedItem;
+        const net_wt = field === 'NetWt' ? parseFloat(newValue): item.NetWt;
+        const few_wt = field === 'FewWt' ? parseFloat(newValue): item.FewWt;
+        const csl_wt = field === 'CslWt' ? parseFloat(newValue) : item.CslWt;
+        const kun_wt = field === 'KunWt' ? parseFloat(newValue) : item.KunWt;
+        const cso_wt = field === 'CsoWt' ? parseFloat(newValue) : item.CsoWt;
+        const moti_wt = field === 'MotiWt' ? parseFloat(newValue) : item.MotiWt;
+        const gross_wt = net_wt + few_wt + csl_wt + kun_wt + cso_wt + moti_wt;
+        const gross = parseFloat(gross_wt)
+        return {...item, [field]:newValue, gross};
       }
       return item;
     });
     setTableData(updatedData);
     console.log("field change called",tableData)
   };
-  console.log("check 1", tableData);
+  //console.log("check 1", tableData);
   const calculateGrossWt = (item: any) => {
     const { NetWt, FewWt, CslWt, KunWt, CsoWt, MotiWt } = item;
     const grossWt =
@@ -171,7 +177,7 @@ const readyReceiptKundanKarigar = () => {
                 <SiAddthis />
                 Add row
               </button>
-              <div className="container-fluid table-responsive p-3">
+              <div className="container-fluid table-responsive">
                 <table className="table table-bordered table-hover">
                   <thead>
                     <tr>
@@ -265,7 +271,7 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>{item.Gross}</td>
+                        <td>{tableData.Gross}</td>
                         <td>
                           <input
                             type="file"
