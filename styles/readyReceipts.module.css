@@ -8,10 +8,13 @@
     background-color: #178150;;
     color: #FFF;
     border-color:#198754;
-    border-radius: 9px;
+    border-radius: 9 px;
     text-align: center;
     justify-content: center;
 }
 .addRow:hover{
     background-color: #157347;
+}
+.row_input{
+    width:50px;
 }

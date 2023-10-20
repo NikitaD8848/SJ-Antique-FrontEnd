@@ -45,21 +45,27 @@ const readyReceiptKundanKarigar = () => {
       return item;
     });
     setTableData(updatedData);
+  
   };
-  //console.log("check 1", tableData);
-  // const calculateGrossWt = (item: any) => {
-  //   const { NetWt, FewWt, CslWt, KunWt, CsoWt, MotiWt } = item;
-  //   const grossWt =
-  //     parseFloat(NetWt) +
-  //     parseFloat(FewWt) +
-  //     parseFloat(CslWt) +
-  //     parseFloat(KunWt) +
-  //     parseFloat(CsoWt) +
-  //     parseFloat(MotiWt);
-  //   return grossWt;
-  // };
-
+  console.log(tableData[0].table)
+  
   const handleAddRow = () => {
+    const newRow = {
+      id: tableData?.table?.length + 1,
+      material_abbr: "",
+      material_name: "",
+      pcs: "",
+      piece_: "",
+      carat: "",
+      carat_: "",
+      weight: "",
+      gm_: "",
+      amount: ""
+    };
+    setTableData([...tableData?.table, newRow]);
+  };
+  
+  const handleModalAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
       product_code: "",
@@ -225,7 +231,7 @@ const readyReceiptKundanKarigar = () => {
                           />
                         </td>
                         <td>
-                        <select className="w-100" name="Karigar" id="karigar">
+                        <select className="w-100"name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
@@ -314,13 +320,13 @@ const readyReceiptKundanKarigar = () => {
           </div>
         </div>
       </div>
-      {/* <div>
-        <Modal show={showModal} onHide={closeModal}>
+      <div>
+        <Modal className="container-fluid"show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <button className={`${styles.addRow}`} onClick={handleAddRow}>
+          <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
                 <SiAddthis />
                 Add row
           </button>
@@ -340,7 +346,7 @@ const readyReceiptKundanKarigar = () => {
                       </tr>
                   </thead>
                   <tbody>
-                    {tableData.table.map((element:any) => (
+                    {tableData[0]?.table?.map((element:any) => (
                       <tr key={element.id}>
                         <td>{element.id}</td>
                         <td>
@@ -432,8 +438,8 @@ const readyReceiptKundanKarigar = () => {
                         <td>
                           <button
                             className="d-flex align-items-center delete-link p-1"
-                            // onClick={() => handleDeleteRow(item.id)}
-                            // onKeyDown={(e) => handleTabPress(e, item.id)}
+                            onClick={() => handleDeleteRow(element.id)}
+                            onKeyDown={(e) => handleTabPress(e, element.id)}
                           >
                             <ImCross />
                           </button>
@@ -450,7 +456,7 @@ const readyReceiptKundanKarigar = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div> */}
+      </div>
     </div>
   );
 };
