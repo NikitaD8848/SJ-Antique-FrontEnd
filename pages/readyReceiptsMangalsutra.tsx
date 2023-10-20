@@ -9,14 +9,30 @@ const readyReceiptsMangalsutra = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      NetWt: "",
-      FewWt: "",
-      BBWt: "",
-      CsWt: "",
-      KunWt: "",
-      Gross:"",
-      AddPhoto: "",
-    },
+      product_code: "",
+      custom_kun_karigar: "",
+      custom_net_wt: "",
+      custom_few_wt: "",
+      custom_gross_wt: "",
+      custom_mat_wt: "",
+      custom_other: "",
+      custom_total : "",
+      custom_add_photo: "",
+      table: [
+        {
+            id : 1,
+            material_abbr: "",
+            material_name: "",
+            pcs: "",
+            piece_: "",
+            carat: "",
+            carat_: "",
+            weight: "",
+            gm_: "",
+            amount: ""
+        }
+      ]
+    }
   ]);
 
   const handleFieldChange = (id: number, field: string, newValue: any) => {
@@ -29,28 +45,18 @@ const readyReceiptsMangalsutra = () => {
     setTableData(updatedData);
   };
 
-  // useEffect(() => {
-  //   // Calculate gross weight whenever relevant fields change
-  //   tableData.forEach((item:any) => {
-  //     const { id,netWt, fewWt, bbWt, csWt, kunWt } = item;
-  //     const grossWeight = parseFloat(netWt)+parseFloat(fewWt)+parseFloat(bbWt)+parseFloat(csWt)+parseFloat(kunWt);
-  //     if (item.grossWeight !== grossWeight) {
-  //       handleFieldChange(id, 'Gross  ', grossWeight);
-  //     }
-  //     console.log(grossWeight)
-  //   });
-  // }, [tableData]);
-
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
-      NetWt: "",
-      FewWt: "",
-      BBWt: "",
-      CsWt: "",
-      KunWt: "",
-      Gross: "",
-      AddPhoto: "",
+      product_code: "",
+      custom_kun_karigar: "",
+      custom_net_wt: "",
+      custom_few_wt: "",
+      custom_gross_wt: "",
+      custom_mat_wt: "",
+      custom_other: "",
+      custom_total : "",
+      custom_add_photo: "",
     };
     setTableData([...tableData, newRow]);
   };
@@ -63,7 +69,7 @@ const readyReceiptsMangalsutra = () => {
     setShowModal(false);
   };
   const handleModal = (event: any, id: any) => {
-    if (event.key === "F12") {
+    if (event.key === "F2") {
       setShowModal(true);
     }
   };
@@ -172,17 +178,19 @@ const readyReceiptsMangalsutra = () => {
                 Add row
               </button>
               <div className="container-fluid table-responsive">
-                <table className="table table-bordered table-hover ">
+                <table className="table table-bordered table-hover">
                   <thead>
                     <tr>
                       <th scope="col">Sr. no</th>
+                      <th scope="col">Product Code (Item)</th>
+                      <th scope="col">Kun Karigar</th>
                       <th scope="col">Net Wt</th>
                       <th scope="col">Few Wt</th>
-                      <th scope="col">BB Wt</th>
-                      <th scope="col">Cs Wt</th>
-                      <th scope="col">Kun Wt</th>
                       <th scope="col">Gross Wt</th>
-                      <th scope="col">Add photo</th>
+                      <th scope="col">Mat Wt</th>
+                      <th scope="col">Other</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Add Photo</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -191,61 +199,84 @@ const readyReceiptsMangalsutra = () => {
                         <td>{item.id}</td>
                         <td>
                           <input
-                            type="number"
-                            value={item.NetWt}
+                            type="text"
+                            value={item.product_code}
                             onChange={(e) =>
-                              handleFieldChange( item.id, "NetWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                "product_code",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                        <select className="w-100"name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td className={styles.row_input}>
+                          <input
+                            type="number"
+                            value={item.custom_net_wt}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                "custom_net_wt",
+                                e.target.value
+                              )
                             }
                           />
                         </td>
                         <td>
                           <input
                             type="number"
-                            value={item.FewWt}
+                            value={item.custom_few_wt}
                             onChange={(e) =>
-                              handleFieldChange(item.id,"FewWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                "custom_few_wt",
+                                e.target.value
+                              )
                             }
+                          />
+                        </td>
+                        <td>{item.custom_gross_wt}</td>
+                        <td>
+                          <input
+                            type="number"
+                            value={item.custom_mat_wt}
+                            onChange={(e) =>
+                              handleFieldChange(item.id, "custom_mat_wt", e.target.value)
+                            }
+                            onKeyDown={(e) => handleModal(e, item.id)}
                           />
                         </td>
                         <td>
                           <input
                             type="number"
-                            value={item.BBWt}
+                            value={item.custom_other}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "BBWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                "custom_other",
+                                e.target.value
+                              )
                             }
                           />
                         </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={item.CsWt}
-                            onChange={(e) =>
-                              handleFieldChange(item.id, "CsWt", e.target.value)
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={item.KunWt}
-                            onChange={(e) =>
-                              handleFieldChange(item.id,"KunWt",e.target.value)
-                            }
-                            onKeyDown={(e)=>handleModal(e,item.id)}
-                          />
-                        </td>
-                        <td>{item.Gross}</td>
+                        <td>{item.custom_total}</td>
                         <td>
                           <input
                             type="file"
-                            />
+                          />
                         </td>
                         <td>
                           <button
-                            onKeyDown={(e) => handleTabPress(e, item.id)}
                             className="d-flex align-items-center delete-link p-1"
                             onClick={() => handleDeleteRow(item.id)}
+                            onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
                             <ImCross />
                           </button>
@@ -260,12 +291,134 @@ const readyReceiptsMangalsutra = () => {
         </div>
       </div>
       <div>
-        <Modal show={showModal} onHide={closeModal}>
+        <Modal className="w-100" show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            This modal was triggered by pressing the 'F12' key.
+          <button className={`${styles.addRow}`} onClick={handleAddRow}>
+                <SiAddthis />
+                Add row
+          </button>
+          <div className="container-fluid table-responsive">
+                <table className="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sr. no</th>
+                      <th scope="col">Material Abbr (Master)</th>
+                      <th scope="col">Material (Master)</th>
+                      <th scope="col">Pcs</th>
+                      <th scope="col">Piece @</th>
+                      <th scope="col">Carat</th>
+                      <th scope="col">Carat @</th>
+                      <th scope="col">Weight</th>
+                      <th scope="col">Gm @</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {tableData[0]?.table?.map((element:any) => (
+                      <tr key={element.id}>
+                        <td>{element.id}</td>
+                        <td>
+                        <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                        <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.pcs}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "pcs",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.piece_}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "piece_",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.carat}
+                            onChange={(e) =>
+                              handleFieldChange(element.id, "carat", e.target.value)
+                            }
+                            />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.carat_}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "carat_",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.weight}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "weight",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.gm_}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "gm_",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="d-flex align-items-center delete-link p-1"
+                            // onClick={() => handleDeleteRow(item.id)}
+                            // onKeyDown={(e) => handleTabPress(e, item.id)}
+                          >
+                            <ImCross />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={closeModal}>

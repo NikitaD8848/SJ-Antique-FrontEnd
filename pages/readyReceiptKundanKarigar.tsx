@@ -11,27 +11,27 @@ const readyReceiptKundanKarigar = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      product_code: "ACH",
-      custom_kun_karigar: "Karigar1",
-      custom_net_wt: 10,
-      custom_few_wt: 5,
-      custom_gross_wt: 15,
-      custom_mat_wt: 5,
-      custom_other: 0,
-      custom_total : 20,
+      product_code: "",
+      custom_kun_karigar: "",
+      custom_net_wt: "",
+      custom_few_wt: "",
+      custom_gross_wt: "",
+      custom_mat_wt: "",
+      custom_other: "",
+      custom_total : "",
       custom_add_photo: "",
       table: [
         {
             id : 1,
-            material_abbr: "BB",
-            material_name: "Bol Bam",
-            pcs: 1,
-            piece_: 1,
-            carat: 22,
-            carat_: 22,
-            weight: 10,
-            gm_: 10,
-            amount: 50000
+            material_abbr: "",
+            material_name: "",
+            pcs: "",
+            piece_: "",
+            carat: "",
+            carat_: "",
+            weight: "",
+            gm_: "",
+            amount: ""
         }
       ]
     }
@@ -45,20 +45,10 @@ const readyReceiptKundanKarigar = () => {
       return item;
     });
     setTableData(updatedData);
+  
   };
-  //console.log("check 1", tableData);
-  // const calculateGrossWt = (item: any) => {
-  //   const { NetWt, FewWt, CslWt, KunWt, CsoWt, MotiWt } = item;
-  //   const grossWt =
-  //     parseFloat(NetWt) +
-  //     parseFloat(FewWt) +
-  //     parseFloat(CslWt) +
-  //     parseFloat(KunWt) +
-  //     parseFloat(CsoWt) +
-  //     parseFloat(MotiWt);
-  //   return grossWt;
-  // };
-
+  console.log(tableData[0].table)
+  
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
@@ -225,7 +215,7 @@ const readyReceiptKundanKarigar = () => {
                           />
                         </td>
                         <td>
-                        <select className="w-100" name="Karigar" id="karigar">
+                        <select className="w-100"name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
@@ -304,8 +294,8 @@ const readyReceiptKundanKarigar = () => {
           </div>
         </div>
       </div>
-      {/* <div>
-        <Modal show={showModal} onHide={closeModal}>
+      <div>
+        <Modal className="container-fluid"show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
@@ -330,7 +320,7 @@ const readyReceiptKundanKarigar = () => {
                       </tr>
                   </thead>
                   <tbody>
-                    {tableData.table.map((element:any) => (
+                    {tableData[0]?.table?.map((element:any) => (
                       <tr key={element.id}>
                         <td>{element.id}</td>
                         <td>
@@ -440,7 +430,7 @@ const readyReceiptKundanKarigar = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div> */}
+      </div>
     </div>
   );
 };
