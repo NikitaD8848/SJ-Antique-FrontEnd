@@ -134,19 +134,26 @@ const readyReceiptsMangalsutra = () => {
                   <table className="table">
                     <thead>
                       <tr>
-                        <th scope="col">Transaction Date</th>
-                        <th scope="col">Receipt no</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Detail</th>
+                      <th scope="col">Date</th>
+                        <th scope="col">Receipt Number</th>
+                        <th scope="col">Karigar(Supplier)</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Ready Raceipt Type</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td scope="row">
-                          <input autoFocus className="w-100" type="text" />
+                          <input className="w-100" type="text" />
                         </td>
                         <td>
                           <input className="w-100" type="number" />
+                        </td>
+                        <td>
+                          <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
                         </td>
                         <td>
                           <input className="w-100" type="text" />

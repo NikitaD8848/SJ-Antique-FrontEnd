@@ -11,59 +11,66 @@ const readyReceiptKundanKarigar = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      NetWt: "",
-      FewWt: "",
-      CslWt: "",
-      KunWt: "",
-      CsoWt: "",
-      MotiWt:"",
-      Gross: "",
-      AddPhoto: "",
-    },
+      product_code: "ACH",
+      custom_kun_karigar: "Karigar1",
+      custom_net_wt: 10,
+      custom_few_wt: 5,
+      custom_gross_wt: 15,
+      custom_mat_wt: 5,
+      custom_other: 0,
+      custom_total : 20,
+      custom_add_photo: "",
+      table: [
+        {
+            id : 1,
+            material_abbr: "BB",
+            material_name: "Bol Bam",
+            pcs: 1,
+            piece_: 1,
+            carat: 22,
+            carat_: 22,
+            weight: 10,
+            gm_: 10,
+            amount: 50000
+        }
+      ]
+    }
   ]);
 
   const handleFieldChange = (id: number, field: string, newValue: any) => {
     const updatedData = tableData.map((item: any) => {
       if (item.id === id) {
-        const net_wt = field === 'NetWt' ? parseFloat(newValue): item.NetWt;
-        const few_wt = field === 'FewWt' ? parseFloat(newValue): item.FewWt;
-        const csl_wt = field === 'CslWt' ? parseFloat(newValue) : item.CslWt;
-        const kun_wt = field === 'KunWt' ? parseFloat(newValue) : item.KunWt;
-        const cso_wt = field === 'CsoWt' ? parseFloat(newValue) : item.CsoWt;
-        const moti_wt = field === 'MotiWt' ? parseFloat(newValue) : item.MotiWt;
-        const gross_wt = net_wt + few_wt + csl_wt + kun_wt + cso_wt + moti_wt;
-        const gross = parseFloat(gross_wt)
-        return {...item, [field]:newValue, gross};
+        return { ...item, [field]: newValue };
       }
       return item;
     });
     setTableData(updatedData);
-    console.log("field change called",tableData)
   };
   //console.log("check 1", tableData);
-  const calculateGrossWt = (item: any) => {
-    const { NetWt, FewWt, CslWt, KunWt, CsoWt, MotiWt } = item;
-    const grossWt =
-      parseFloat(NetWt) +
-      parseFloat(FewWt) +
-      parseFloat(CslWt) +
-      parseFloat(KunWt) +
-      parseFloat(CsoWt) +
-      parseFloat(MotiWt);
-    return grossWt;
-  };
+  // const calculateGrossWt = (item: any) => {
+  //   const { NetWt, FewWt, CslWt, KunWt, CsoWt, MotiWt } = item;
+  //   const grossWt =
+  //     parseFloat(NetWt) +
+  //     parseFloat(FewWt) +
+  //     parseFloat(CslWt) +
+  //     parseFloat(KunWt) +
+  //     parseFloat(CsoWt) +
+  //     parseFloat(MotiWt);
+  //   return grossWt;
+  // };
 
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
-      NetWt: "",
-      FewWt: "",
-      CslWt: "",
-      KunWt: "",
-      CsoWt: "",
-      MotiWt: "",
-      Gross: "",
-      AddPhoto: "",
+      product_code: "ACH",
+      custom_kun_karigar: "Karigar1",
+      custom_net_wt: 10,
+      custom_few_wt: 5,
+      custom_gross_wt: 15,
+      custom_mat_wt: 5,
+      custom_other: 0,
+      custom_total : 20,
+      custom_add_photo: "",
     };
     setTableData([...tableData, newRow]);
   };
@@ -83,7 +90,7 @@ const readyReceiptKundanKarigar = () => {
   };
 
   const handleModal = (event: any, id: any) => {
-    if (event.key === "F12") {
+    if (event.key === "F2") {
       setShowModal(true);
     }
   };
@@ -148,19 +155,26 @@ const readyReceiptKundanKarigar = () => {
                   <table className="table">
                     <thead>
                       <tr>
-                        <th scope="col">Transaction Date</th>
-                        <th scope="col">Receipt no</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Detail</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Receipt Number</th>
+                        <th scope="col">Karigar(Supplier)</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Ready Raceipt Type</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
+                    <tr>
                         <td scope="row">
-                          <input className="w-100" type="number" />
+                          <input className="w-100" type="text" />
                         </td>
                         <td>
                           <input className="w-100" type="number" />
+                        </td>
+                        <td>
+                          <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
                         </td>
                         <td>
                           <input className="w-100" type="text" />
@@ -182,13 +196,14 @@ const readyReceiptKundanKarigar = () => {
                   <thead>
                     <tr>
                       <th scope="col">Sr. no</th>
+                      <th scope="col">Product Code (Item)</th>
+                      <th scope="col">Kun Karigar</th>
                       <th scope="col">Net Wt</th>
                       <th scope="col">Few Wt</th>
-                      <th scope="col">Csl Wt</th>
-                      <th scope="col">Kun Wt</th>
-                      <th scope="col">CsO Wt</th>
-                      <th scope="col">Moti Wt</th>
                       <th scope="col">Gross Wt</th>
+                      <th scope="col">Mat Wt</th>
+                      <th scope="col">Other</th>
+                      <th scope="col">Total</th>
                       <th scope="col">Add Photo</th>
                     </tr>
                   </thead>
@@ -198,12 +213,31 @@ const readyReceiptKundanKarigar = () => {
                         <td>{item.id}</td>
                         <td>
                           <input
-                            type="number"
-                            value={item.NetWt}
+                            type="text"
+                            value={item.product_code}
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "NetWt",
+                                "product_code",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                        <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={item.custom_net_wt}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                "custom_net_wt",
                                 e.target.value
                               )
                             }
@@ -212,39 +246,23 @@ const readyReceiptKundanKarigar = () => {
                         <td>
                           <input
                             type="number"
-                            value={item.FewWt}
+                            value={item.custom_few_wt}
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "FewWt",
+                                "custom_few_wt",
                                 e.target.value
                               )
                             }
                           />
                         </td>
+                        <td>{item.custom_gross_wt}</td>
                         <td>
                           <input
                             type="number"
-                            value={item.CslWt}
+                            value={item.custom_mat_wt}
                             onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                "CslWt",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={item.KunWt}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                "KunWt",
-                                e.target.value
-                              )
+                              handleFieldChange(item.id, "custom_mat_wt", e.target.value)
                             }
                             onKeyDown={(e) => handleModal(e, item.id)}
                           />
@@ -252,26 +270,17 @@ const readyReceiptKundanKarigar = () => {
                         <td>
                           <input
                             type="number"
-                            value={item.CsoWt}
-                            onChange={(e) =>
-                              handleFieldChange(item.id, "CsoWt", e.target.value)
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={item.MotiWt}
+                            value={item.custom_other}
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "MotiWt",
+                                "custom_other",
                                 e.target.value
                               )
                             }
                           />
                         </td>
-                        <td>{tableData.Gross}</td>
+                        <td>{item.custom_total}</td>
                         <td>
                           <input
                             type="file"
@@ -295,13 +304,135 @@ const readyReceiptKundanKarigar = () => {
           </div>
         </div>
       </div>
-      <div>
+      {/* <div>
         <Modal show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            This modal was triggered by pressing the 'F12' key.
+          <button className={`${styles.addRow}`} onClick={handleAddRow}>
+                <SiAddthis />
+                Add row
+          </button>
+          <div className="container-fluid table-responsive">
+                <table className="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sr. no</th>
+                      <th scope="col">Material Abbr (Master)</th>
+                      <th scope="col">Material (Master)</th>
+                      <th scope="col">Pcs</th>
+                      <th scope="col">Piece @</th>
+                      <th scope="col">Carat</th>
+                      <th scope="col">Carat @</th>
+                      <th scope="col">Weight</th>
+                      <th scope="col">Gm @</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {tableData.table.map((element:any) => (
+                      <tr key={element.id}>
+                        <td>{element.id}</td>
+                        <td>
+                        <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                        <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.pcs}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "pcs",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.piece_}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "piece_",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.carat}
+                            onChange={(e) =>
+                              handleFieldChange(element.id, "carat", e.target.value)
+                            }
+                            />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.carat_}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "carat_",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.weight}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "weight",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.gm_}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                element.id,
+                                "gm_",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="d-flex align-items-center delete-link p-1"
+                            // onClick={() => handleDeleteRow(item.id)}
+                            // onKeyDown={(e) => handleTabPress(e, item.id)}
+                          >
+                            <ImCross />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={closeModal}>
@@ -309,7 +440,7 @@ const readyReceiptKundanKarigar = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </div> */}
     </div>
   );
 };
