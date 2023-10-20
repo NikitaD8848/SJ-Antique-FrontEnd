@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styles from "../styles/readyReceipts.module.css";
 import { ImCross } from "react-icons/im";
 import { SiAddthis } from "react-icons/si";
-import { Modal, Button} from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 
 const readyReceiptsMangalsutra = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [materialWeight, setMaterialWeight] = useState<any>();
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
@@ -16,36 +17,47 @@ const readyReceiptsMangalsutra = () => {
       custom_gross_wt: "",
       custom_mat_wt: "",
       custom_other: "",
-      custom_total : "",
+      custom_total: "",
       custom_add_photo: "",
       table: [
         {
-            id : 1,
-            material_abbr: "",
-            material_name: "",
-            pcs: "",
-            piece_: "",
-            carat: "",
-            carat_: "",
-            weight: "",
-            gm_: "",
-            amount: ""
-        }
-      ]
-    }
+          id: 1,
+          material_abbr: "",
+          material_name: "",
+          pcs: "",
+          piece_: "",
+          carat: "",
+          carat_: "",
+          weight: "",
+          gm_: "",
+          amount: "",
+        },
+      ],
+    },
   ]);
 
-  const handleFieldChange = (id: number, field: string, newValue: any) => {
-    const updatedData = tableData.map((item: any) => {
+  const handleFieldChange = (id: number, val:any, field: string, newValue: any) => {
+    if(val === "tableRow") {
+      const updatedData = tableData.map((item: any) => {
+        if (item.id === id) {
+          return { ...item, [field]: 0 || newValue };
+        }
+        return item;
+      });
+      setTableData(updatedData);
+    }
+
+    if(val === "modalRow") {
+    const updatedModalData = materialWeight.length>0 && materialWeight.map((item: any) => {
       if (item.id === id) {
-        return { ...item, [field]: newValue };
+        return { ...item, [field]: 0 || newValue };
       }
       return item;
     });
-    setTableData(updatedData);
+    setMaterialWeight(updatedModalData)
   };
-
-  const handleAddRow = () => {
+  }
+  const handleAddRow = (value:any) => {
     const newRow = {
       id: tableData.length + 1,
       product_code: "",
@@ -55,30 +67,57 @@ const readyReceiptsMangalsutra = () => {
       custom_gross_wt: "",
       custom_mat_wt: "",
       custom_other: "",
-      custom_total : "",
+      custom_total: "",
       custom_add_photo: "",
+      table: [
+        {
+          id: materialWeight.length + 1,
+          material_abbr: "",
+          material_name: "",
+          pcs: "",
+          piece_: "",
+          carat: "",
+          carat_: "",
+          weight: "",
+          gm_: "",
+          amount: "",
+        },
+      ],
     };
+    if(value === "tableRow") {
     setTableData([...tableData, newRow]);
+    }
+    if(value === "modalRow") {
+    if(materialWeight?.length>0){
+      setMaterialWeight([...materialWeight,newRow?.table]);
+    }
+  }
   };
   const handleTabPress = (event: any, id: any) => {
     if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
-      handleAddRow();
+      handleAddRow("tableRow");
     }
   };
   const closeModal = () => {
     setShowModal(false);
   };
-  const handleModal = (event: any, id: any) => {
+  const handleModal = (event: any, id: any, data: any) => {
+    setMaterialWeight(data.table);
     if (event.key === "F2") {
       setShowModal(true);
     }
   };
 
+ 
   const handleDeleteRow = (id: any) => {
     const updatedData = tableData.filter((item: any) => item.id !== id);
     setTableData(updatedData);
   };
 
+  const handleDeleteChildTableRow = (id: any) => {
+    const updatedData = materialWeight?.filter((item: any) => item.id !== id);
+    setMaterialWeight(updatedData);
+  };
   return (
     <div className="mx-5 bg-light">
       <div className="container-fluid ">
@@ -140,7 +179,7 @@ const readyReceiptsMangalsutra = () => {
                   <table className="table">
                     <thead>
                       <tr>
-                      <th scope="col">Date</th>
+                        <th scope="col">Date</th>
                         <th scope="col">Receipt Number</th>
                         <th scope="col">Karigar(Supplier)</th>
                         <th scope="col">Remarks</th>
@@ -165,7 +204,13 @@ const readyReceiptsMangalsutra = () => {
                           <input className="w-100" type="text" />
                         </td>
                         <td>
-                          <input className="w-100" type="text" readOnly disabled value={"Mangalsutra"} />
+                          <input
+                            className="w-100"
+                            type="text"
+                            readOnly
+                            disabled
+                            value={"Mangalsutra"}
+                          />
                         </td>
                       </tr>
                     </tbody>
@@ -173,7 +218,7 @@ const readyReceiptsMangalsutra = () => {
                 </div>
               </div>
 
-              <button className={`${styles.addRow}`} onClick={handleAddRow}>
+              <button className={`${styles.addRow}`} onClick={()=>handleAddRow("tableRow")}>
                 <SiAddthis />
                 Add row
               </button>
@@ -194,7 +239,7 @@ const readyReceiptsMangalsutra = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item: any) => (
+                    {tableData.map((item: any, i: any) => (
                       <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>
@@ -204,14 +249,15 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "product_code",
-                                e.target.value
+                                +e.target.value
                               )
                             }
                           />
                         </td>
                         <td>
-                        <select className="w-100"name="Karigar" id="karigar">
+                          <select className="w-100" name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
@@ -223,8 +269,9 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_net_wt",
-                                e.target.value
+                                +e.target.value
                               )
                             }
                           />
@@ -236,21 +283,37 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_few_wt",
-                                e.target.value
+                                +e.target.value
                               )
                             }
                           />
                         </td>
-                        <td>{item.custom_gross_wt}</td>
+                        <td>
+                          <input
+                            type="text"
+                            readOnly
+                            name={`sum-${i + 1}`}
+                            value={
+                              tableData[i].custom_net_wt +
+                              tableData[i].custom_few_wt
+                            }
+                          />
+                        </td>
                         <td>
                           <input
                             type="number"
                             value={item.custom_mat_wt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "custom_mat_wt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                "tableRow",
+                                "custom_mat_wt",
+                                +e.target.value
+                              )
                             }
-                            onKeyDown={(e) => handleModal(e, item.id)}
+                            onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
                         <td>
@@ -260,17 +323,25 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_other",
-                                e.target.value
+                               
+                                +e.target.value
                               )
                             }
                           />
                         </td>
-                        <td>{item.custom_total}</td>
                         <td>
+                          {" "}
                           <input
-                            type="file"
+                            type="text"
+                            readOnly
+                            name={`sum-${i + 1}`}
+                            value={tableData[i].custom_other}
                           />
+                        </td>
+                        <td>
+                          <input type="file" />
                         </td>
                         <td>
                           <button
@@ -296,129 +367,140 @@ const readyReceiptsMangalsutra = () => {
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <button className={`${styles.addRow}`} onClick={handleAddRow}>
-                <SiAddthis />
-                Add row
-          </button>
-          <div className="container-fluid table-responsive">
-                <table className="table table-bordered table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">Sr. no</th>
-                      <th scope="col">Material Abbr (Master)</th>
-                      <th scope="col">Material (Master)</th>
-                      <th scope="col">Pcs</th>
-                      <th scope="col">Piece @</th>
-                      <th scope="col">Carat</th>
-                      <th scope="col">Carat @</th>
-                      <th scope="col">Weight</th>
-                      <th scope="col">Gm @</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {tableData[0]?.table?.map((element:any) => (
-                      <tr key={element.id}>
-                        <td>{element.id}</td>
-                        <td>
+            <button className={`${styles.addRow}`} onClick={()=>handleAddRow("modalRow")}>
+              <SiAddthis />
+              Add row
+            </button>
+            <div className="container-fluid table-responsive">
+              <table className="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Sr. no</th>
+                    <th scope="col">Material Abbr (Master)</th>
+                    <th scope="col">Material (Master)</th>
+                    <th scope="col">Pcs</th>
+                    <th scope="col">Piece @</th>
+                    <th scope="col">Carat</th>
+                    <th scope="col">Carat @</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">Gm @</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {materialWeight?.length>0 && materialWeight?.map((element: any,i:any) => (
+                    <tr key={element.id}>
+                      <td>{element.id}</td>
+                      <td>
                         <select className="w-100" name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
-                          </select>
-                        </td>
-                        <td>
+                          <option value="karigar1">Karigar 1</option>
+                          <option value="karigar2">Karigar 2</option>
+                        </select>
+                      </td>
+                      <td>
                         <select className="w-100" name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={element.pcs}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                element.id,
-                                "pcs",
-                                e.target.value
-                              )
+                          <option value="karigar1">Karigar 1</option>
+                          <option value="karigar2">Karigar 2</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={element.pcs}
+                          onChange={(e) =>
+                            handleFieldChange(element.id, "modalRow", "pcs", +e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={element.piece_}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              element.id,
+                              "modalRow",
+                              "piece_",
+                              +e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={element.carat}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              element.id,
+                              "modalRow",
+                              "carat",
+                              +e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={element.carat_}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              element.id,
+                              "modalRow",
+                              "carat_",
+                              +e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={element.weight}
+                          onChange={(e) =>
+                            handleFieldChange(
+                              element.id,
+                              "modalRow",
+                              "weight",
+                              +e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={element.gm_}
+                          onChange={(e) =>
+                            handleFieldChange(element.id, "modalRow", "gm_", e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                      <input
+                            type="text"
+                            readOnly
+                            name={`valSum-${i + 1}`}
+                            value={
+                              (materialWeight[i].pcs * materialWeight[i].piece_)+
+                              (materialWeight[i].carat * materialWeight[i].carat_)+(materialWeight[i].weight* materialWeight[i].gm_)
                             }
                           />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={element.piece_}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                element.id,
-                                "piece_",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={element.carat}
-                            onChange={(e) =>
-                              handleFieldChange(element.id, "carat", e.target.value)
-                            }
-                            />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={element.carat_}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                element.id,
-                                "carat_",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={element.weight}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                element.id,
-                                "weight",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={element.gm_}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                element.id,
-                                "gm_",
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <button
-                            className="d-flex align-items-center delete-link p-1"
-                            // onClick={() => handleDeleteRow(item.id)}
-                            // onKeyDown={(e) => handleTabPress(e, item.id)}
-                          >
-                            <ImCross />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                      </td>
+                      <td>
+                        <button
+                          className="d-flex align-items-center delete-link p-1"
+                          onClick={() => handleDeleteChildTableRow(element.id)}
+                          // onKeyDown={(e) => handleTabPress(e, item.id)}
+                        >
+                          <ImCross />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={closeModal}>
