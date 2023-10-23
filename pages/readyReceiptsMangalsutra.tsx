@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "../styles/readyReceipts.module.css";
 import { ImCross } from "react-icons/im";
 import { SiAddthis } from "react-icons/si";
 import { Modal, Button } from "react-bootstrap";
 
 const readyReceiptsMangalsutra = () => {
+  const inputRef = useRef<any>();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [materialWeight, setMaterialWeight] = useState<any>();
+  const [rowValues, setRowValues] = useState<any>([]);
+  const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
+  const [totalModalAmount, setTotalModalAmount] = useState<any>();
+  const [materialWeight, setMaterialWeight] = useState<any>([
+    {
+      id: 1,
+      material_abbr: "",
+      material_name: "",
+      pcs: "",
+      piece_: "",
+      carat: "",
+      carat_: "",
+      weight: "",
+      gm_: "",
+      amount: "",
+    },
+  ]);
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
@@ -19,45 +36,93 @@ const readyReceiptsMangalsutra = () => {
       custom_other: "",
       custom_total: "",
       custom_add_photo: "",
-      table: [
-        {
-          id: 1,
-          material_abbr: "",
-          material_name: "",
-          pcs: "",
-          piece_: "",
-          carat: "",
-          carat_: "",
-          weight: "",
-          gm_: "",
-          amount: "",
-        },
-      ],
     },
   ]);
 
-  const handleFieldChange = (id: number, val:any, field: string, newValue: any) => {
-    if(val === "tableRow") {
-      const updatedData = tableData.map((item: any) => {
-        if (item.id === id) {
-          return { ...item, [field]: 0 || newValue };
-        }
-        return item;
-      });
-      setTableData(updatedData);
-    }
+  const calculateRowValue = (i: any) => {
+    return (
+      materialWeight[i]?.pcs * materialWeight[i]?.piece_ +
+      materialWeight[i]?.carat * materialWeight[i]?.carat_ +
+      materialWeight[i]?.weight * materialWeight[i]?.gm_
+    );
+  };
+  const handleSaveModal = (i: any) => {
+    const modalValue = materialWeight.map(
+      ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
+        ...rest,
+      })
+    );
+    const totalAmmount = materialWeight.map(
+      ({
+        pcs,
+        piece_,
+        carat,
+        carat_,
+        gm_,
+        id,
+        material_abbr,
+        material_name,
+        weight,
+        ...rest
+      }: any) => ({ ...rest })
+    );
+    console.log(totalAmmount, "bfggh");
+    const weightAddition = materialWeight.reduce((accu: any, val: any) => {
+      console.log(accu, "accu23");
+      return accu + val.weight;
+    }, 0);
 
-    if(val === "modalRow") {
-    const updatedModalData = materialWeight.length>0 && materialWeight.map((item: any) => {
+    const totalvalues = materialWeight.map(
+      (row: any) =>
+        row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
+    );
+    // setTotalModalAmount(totalvalues);
+
+    const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
+      console.log(accu, "accu23");
+      return accu + val;
+    }, 0);
+    setTotalModalAmount(totalAmmountValues);
+    setTotalModalWeight(weightAddition);
+    setShowModal(false);
+  };
+  console.log(totalModalAmount, "rowValues");
+  console.log(totalModalWeight, "totalModalWeight");
+
+  const handleFieldChange = (
+    id: number,
+    val: any,
+    field: string,
+    newValue: any
+  ) => {
+    const updatedData = tableData.map((item: any) => {
       if (item.id === id) {
         return { ...item, [field]: 0 || newValue };
       }
       return item;
     });
-    setMaterialWeight(updatedModalData)
+    setTableData(updatedData);
   };
-  }
-  const handleAddRow = (value:any) => {
+  const handleModalFieldChange = (
+    id: number,
+    val: any,
+    field: string,
+    newValue: any
+  ) => {
+    const value = inputRef.current;
+
+    console.log(value, "value");
+    const updatedModalData =
+      materialWeight.length > 0 &&
+      materialWeight.map((item: any) => {
+        if (item.id === id) {
+          return { ...item, [field]: 0 || newValue };
+        }
+        return item;
+      });
+    setMaterialWeight(updatedModalData);
+  };
+  const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
       product_code: "",
@@ -69,29 +134,24 @@ const readyReceiptsMangalsutra = () => {
       custom_other: "",
       custom_total: "",
       custom_add_photo: "",
-      table: [
-        {
-          id: materialWeight.length + 1,
-          material_abbr: "",
-          material_name: "",
-          pcs: "",
-          piece_: "",
-          carat: "",
-          carat_: "",
-          weight: "",
-          gm_: "",
-          amount: "",
-        },
-      ],
     };
-    if(value === "tableRow") {
     setTableData([...tableData, newRow]);
-    }
-    if(value === "modalRow") {
-    if(materialWeight?.length>0){
-      setMaterialWeight([...materialWeight,newRow?.table]);
-    }
-  }
+  };
+
+  const handleModalAddRow = () => {
+    const newModalRow = {
+      id: materialWeight?.length + 1,
+      material_abbr: "",
+      material_name: "",
+      pcs: "",
+      piece_: "",
+      carat: "",
+      carat_: "",
+      weight: "",
+      gm_: "",
+      amount: "",
+    };
+    setMaterialWeight([...materialWeight, newModalRow]);
   };
   const handleTabPress = (event: any, id: any) => {
     if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
@@ -102,13 +162,11 @@ const readyReceiptsMangalsutra = () => {
     setShowModal(false);
   };
   const handleModal = (event: any, id: any, data: any) => {
-    setMaterialWeight(data.table);
     if (event.key === "F2") {
       setShowModal(true);
     }
   };
 
- 
   const handleDeleteRow = (id: any) => {
     const updatedData = tableData.filter((item: any) => item.id !== id);
     setTableData(updatedData);
@@ -218,7 +276,10 @@ const readyReceiptsMangalsutra = () => {
                 </div>
               </div>
 
-              <button className={`${styles.addRow}`} onClick={()=>handleAddRow("tableRow")}>
+              <button
+                className={`${styles.addRow}`}
+                onClick={() => handleAddRow("tableRow")}
+              >
                 <SiAddthis />
                 Add row
               </button>
@@ -297,7 +358,8 @@ const readyReceiptsMangalsutra = () => {
                             name={`sum-${i + 1}`}
                             value={
                               tableData[i].custom_net_wt +
-                              tableData[i].custom_few_wt
+                              tableData[i].custom_few_wt +
+                              totalModalWeight
                             }
                           />
                         </td>
@@ -325,7 +387,7 @@ const readyReceiptsMangalsutra = () => {
                                 item.id,
                                 "tableRow",
                                 "custom_other",
-                               
+
                                 +e.target.value
                               )
                             }
@@ -337,7 +399,7 @@ const readyReceiptsMangalsutra = () => {
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
-                            value={tableData[i].custom_other}
+                            value={tableData[i].custom_other+totalModalAmount}
                           />
                         </td>
                         <td>
@@ -367,7 +429,7 @@ const readyReceiptsMangalsutra = () => {
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <button className={`${styles.addRow}`} onClick={()=>handleAddRow("modalRow")}>
+            <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
               <SiAddthis />
               Add row
             </button>
@@ -387,117 +449,135 @@ const readyReceiptsMangalsutra = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {materialWeight?.length>0 && materialWeight?.map((element: any,i:any) => (
-                    <tr key={element.id}>
-                      <td>{element.id}</td>
-                      <td>
-                        <select className="w-100" name="Karigar" id="karigar">
-                          <option value="karigar1">Karigar 1</option>
-                          <option value="karigar2">Karigar 2</option>
-                        </select>
-                      </td>
-                      <td>
-                        <select className="w-100" name="Karigar" id="karigar">
-                          <option value="karigar1">Karigar 1</option>
-                          <option value="karigar2">Karigar 2</option>
-                        </select>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={element.pcs}
-                          onChange={(e) =>
-                            handleFieldChange(element.id, "modalRow", "pcs", +e.target.value)
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={element.piece_}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              element.id,
-                              "modalRow",
-                              "piece_",
-                              +e.target.value
-                            )
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={element.carat}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              element.id,
-                              "modalRow",
-                              "carat",
-                              +e.target.value
-                            )
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={element.carat_}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              element.id,
-                              "modalRow",
-                              "carat_",
-                              +e.target.value
-                            )
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={element.weight}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              element.id,
-                              "modalRow",
-                              "weight",
-                              +e.target.value
-                            )
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={element.gm_}
-                          onChange={(e) =>
-                            handleFieldChange(element.id, "modalRow", "gm_", e.target.value)
-                          }
-                        />
-                      </td>
-                      <td>
-                      <input
-                            type="text"
-                            readOnly
-                            name={`valSum-${i + 1}`}
-                            value={
-                              (materialWeight[i].pcs * materialWeight[i].piece_)+
-                              (materialWeight[i].carat * materialWeight[i].carat_)+(materialWeight[i].weight* materialWeight[i].gm_)
+                  {materialWeight?.length > 0 &&
+                    materialWeight?.map((element: any, i: any) => (
+                      <tr key={element.id}>
+                        <td>{element.id}</td>
+                        <td>
+                          <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select className="w-100" name="Karigar" id="karigar">
+                            <option value="karigar1">Karigar 1</option>
+                            <option value="karigar2">Karigar 2</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.pcs}
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "pcs",
+                                +e.target.value
+                              )
                             }
                           />
-                      </td>
-                      <td>
-                        <button
-                          className="d-flex align-items-center delete-link p-1"
-                          onClick={() => handleDeleteChildTableRow(element.id)}
-                          // onKeyDown={(e) => handleTabPress(e, item.id)}
-                        >
-                          <ImCross />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.piece_}
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "piece_",
+                                +e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.carat}
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "carat",
+                                +e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.carat_}
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "carat_",
+                                +e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.weight}
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "weight",
+                                +e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={element.gm_}
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "gm_",
+                                +e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            readOnly
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "modalRow",
+                                "amount",
+                                +e.target.value
+                              )
+                            }
+                            ref={inputRef}
+                            value={calculateRowValue(i)}
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className="d-flex align-items-center delete-link p-1"
+                            onClick={() =>
+                              handleDeleteChildTableRow(element.id)
+                            }
+                            // onKeyDown={(e) => handleTabPress(e, item.id)}
+                          >
+                            <ImCross />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -505,6 +585,9 @@ const readyReceiptsMangalsutra = () => {
           <Modal.Footer>
             <Button variant="secondary" onClick={closeModal}>
               Close
+            </Button>
+            <Button variant="secondary" onClick={handleSaveModal}>
+              Save
             </Button>
           </Modal.Footer>
         </Modal>
