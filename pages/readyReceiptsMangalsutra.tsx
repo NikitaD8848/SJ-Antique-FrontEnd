@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styles from "../styles/readyReceipts.module.css";
-import { ImCross } from "react-icons/im";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { SiAddthis } from "react-icons/si";
 import { Modal, Button } from "react-bootstrap";
 
@@ -161,6 +161,11 @@ const readyReceiptsMangalsutra = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+
+  const openModal = ()=> {
+    setShowModal(true);
+  };
+
   const handleModal = (event: any, id: any, data: any) => {
     if (event.key === "F2") {
       setShowModal(true);
@@ -178,11 +183,11 @@ const readyReceiptsMangalsutra = () => {
   };
   return (
     <div className="mx-5 bg-light">
-      <div className="container-fluid ">
-        <div className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <div className="container-lg ">
+        <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
           <div className="nav-item" role="presentation">
             <button
-              className="nav-link active"
+              className={`${styles.tab_button}`}
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -196,7 +201,7 @@ const readyReceiptsMangalsutra = () => {
           </div>
           <div className="nav-item" role="presentation">
             <button
-              className="nav-link"
+              className={`${styles.tab_button}`}
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"
@@ -211,7 +216,7 @@ const readyReceiptsMangalsutra = () => {
         </div>
         <div className="tab-content" id="pills-tabContent">
           <div
-            className="tab-pane fade show active"
+            className="tab-pane fade show "
             id="pills-home"
             role="tabpanel"
             aria-labelledby="pills-home-tab"
@@ -224,46 +229,46 @@ const readyReceiptsMangalsutra = () => {
             role="tabpanel"
             aria-labelledby="pills-profile-tab"
           >
-            Create new ready receipt
+            <h4>Create new ready receipt</h4>
             <div>
               <div>
-                <div className={`${styles.button}`}>
-                  <button type="submit" className="btn btn-primary">
+                <div className={`${styles.button_field}`}>
+                  <button type="submit" className={`${styles.create_button}`}>
                     Create
                   </button>
                 </div>
 
-                <div className=" table-responsive">
-                  <table className="table">
-                    <thead>
+                <div className=" container-lg  table-responsive">
+                  <table className={` ${styles.table} `} >
+                    <thead className={`${styles.table_header}`}>
                       <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Receipt Number</th>
-                        <th scope="col">Karigar(Supplier)</th>
-                        <th scope="col">Remarks</th>
-                        <th scope="col">Ready Raceipt Type</th>
+                        <th className={`${styles.header_item}`} scope="col">Date</th>
+                        <th className={`${styles.header_item}`} scope="col">Receipt Number</th>
+                        <th className={`${styles.header_item}`} scope="col">Karigar(Supplier)</th>
+                        <th className={`${styles.header_item}`} scope="col">Remarks</th>
+                        <th className={`${styles.header_item}`} scope="col">Ready Raceipt Type</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td scope="row">
-                          <input className="w-100" type="text" />
+                          <input className="form-control input-lg" type="text" />
                         </td>
                         <td>
-                          <input className="w-100" type="number" />
+                          <input className="form-control input-lg" type="number" />
                         </td>
                         <td>
-                          <select className="w-100" name="Karigar" id="karigar">
+                          <select className="form-control" name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td>
-                          <input className="w-100" type="text" />
+                          <input className="form-control input-lg" type="text" />
                         </td>
                         <td>
                           <input
-                            className="w-100"
+                            className="form-control input-lg"
                             type="text"
                             readOnly
                             disabled
@@ -284,27 +289,29 @@ const readyReceiptsMangalsutra = () => {
                 Add row
               </button>
               <div className="container-fluid table-responsive">
-                <table className="table table-bordered table-hover">
-                  <thead>
+                <table className={` ${styles.table} `} >
+                  <thead className={`${styles.table_header}`}>
                     <tr>
-                      <th scope="col">Sr. no</th>
-                      <th scope="col">Product Code (Item)</th>
-                      <th scope="col">Kun Karigar</th>
-                      <th scope="col">Net Wt</th>
-                      <th scope="col">Few Wt</th>
-                      <th scope="col">Gross Wt</th>
-                      <th scope="col">Mat Wt</th>
-                      <th scope="col">Other</th>
-                      <th scope="col">Total</th>
-                      <th scope="col">Add Photo</th>
+                      <th className={`${styles.header_item}`} scope="col">Sr. no</th>
+                      <th className={`${styles.header_item}`} scope="col">Product Code (Item)</th>
+                      <th className={`${styles.header_item}`} scope="col">Kun Karigar</th>
+                      <th className={`${styles.header_item}`} scope="col">Net Wt</th>
+                      <th className={`${styles.header_item}`} scope="col">Few Wt</th>
+                      <th className={`${styles.header_item}`} scope="col">Gross Wt</th>
+                      <th className={`${styles.header_item}`} scope="col">Mat Wt</th>
+                      <th className={`${styles.header_item}`} scope="col">Other</th>
+                      <th className={`${styles.header_item}`} scope="col">Total</th>
+                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
+                      <th className={`${styles.header_item}`} scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {tableData.map((item: any, i: any) => (
-                      <tr key={item.id}>
+                      <tr key={item.id} className={`${styles.table_row}`}>
                         <td>{item.id}</td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="text"
                             value={item.product_code}
                             onChange={(e) =>
@@ -318,13 +325,14 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td>
-                          <select className="w-100" name="Karigar" id="karigar">
+                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td className={styles.row_input}>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_net_wt}
                             onChange={(e) =>
@@ -339,6 +347,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_few_wt}
                             onChange={(e) =>
@@ -353,6 +362,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
@@ -364,22 +374,17 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td>
-                          <input
-                            type="number"
-                            value={item.custom_mat_wt}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                "tableRow",
-                                "custom_mat_wt",
-                                +e.target.value
-                              )
-                            }
-                            onKeyDown={(e) => handleModal(e, item.id, item)}
-                          />
+                        <button
+                          className={`${styles.handle_modal_button}`} 
+                          onClick={openModal}
+                          onKeyDown={(e)=>{handleModal(e, item, item.id)}}
+                          >
+                          clickHere
+                          </button>
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_other}
                             onChange={(e) =>
@@ -396,6 +401,7 @@ const readyReceiptsMangalsutra = () => {
                         <td>
                           {" "}
                           <input
+                            className={` ${styles.input_field}`}
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
@@ -403,7 +409,9 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td>
-                          <input type="file" />
+                          <input 
+                          className={` ${styles.input_field}`}
+                          type="file" />
                         </td>
                         <td>
                           <button
@@ -411,7 +419,7 @@ const readyReceiptsMangalsutra = () => {
                             onClick={() => handleDeleteRow(item.id)}
                             onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <ImCross />
+                            <RiDeleteBin6Line />
                           </button>
                         </td>
                       </tr>
@@ -424,7 +432,7 @@ const readyReceiptsMangalsutra = () => {
         </div>
       </div>
       <div>
-        <Modal className="w-100" show={showModal} onHide={closeModal}>
+        <Modal size='xl' show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>Triggered by Key Press</Modal.Title>
           </Modal.Header>
@@ -434,39 +442,40 @@ const readyReceiptsMangalsutra = () => {
               Add row
             </button>
             <div className="container-fluid table-responsive">
-              <table className="table table-bordered table-hover">
-                <thead>
+              <table className={` ${styles.table} `} >
+                <thead className={`${styles.table_header}`}>
                   <tr>
-                    <th scope="col">Sr. no</th>
-                    <th scope="col">Material Abbr (Master)</th>
-                    <th scope="col">Material (Master)</th>
-                    <th scope="col">Pcs</th>
-                    <th scope="col">Piece @</th>
-                    <th scope="col">Carat</th>
-                    <th scope="col">Carat @</th>
-                    <th scope="col">Weight</th>
-                    <th scope="col">Gm @</th>
+                    <th className={`${styles.header_item}`} scope="col">Sr. no</th>
+                    <th className={`${styles.header_item}`} scope="col">Material Abbr (Master)</th>
+                    <th className={`${styles.header_item}`} scope="col">Material (Master)</th>
+                    <th className={`${styles.header_item}`} scope="col">Pcs</th>
+                    <th className={`${styles.header_item}`} scope="col">Piece @</th>
+                    <th className={`${styles.header_item}`} scope="col">Carat</th>
+                    <th className={`${styles.header_item}`} scope="col">Carat @</th>
+                    <th className={`${styles.header_item}`} scope="col">Weight</th>
+                    <th className={`${styles.header_item}`} scope="col">Gm @</th>
                   </tr>
                 </thead>
                 <tbody>
                   {materialWeight?.length > 0 &&
                     materialWeight?.map((element: any, i: any) => (
-                      <tr key={element.id}>
+                      <tr key={element.id} className={`${styles.table_row}`}>
                         <td>{element.id}</td>
                         <td>
-                          <select className="w-100" name="Karigar" id="karigar">
+                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td>
-                          <select className="w-100" name="Karigar" id="karigar">
+                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td>
-                          <input
+                          <input 
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={element.pcs}
                             onChange={(e) =>
@@ -481,6 +490,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={element.piece_}
                             onChange={(e) =>
@@ -495,6 +505,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={element.carat}
                             onChange={(e) =>
@@ -509,6 +520,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={element.carat_}
                             onChange={(e) =>
@@ -523,6 +535,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={element.weight}
                             onChange={(e) =>
@@ -537,6 +550,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={element.gm_}
                             onChange={(e) =>
@@ -551,6 +565,7 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
+                            className={` ${styles.input_field}`}
                             type="number"
                             readOnly
                             onChange={(e) =>
@@ -573,7 +588,7 @@ const readyReceiptsMangalsutra = () => {
                             }
                             // onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <ImCross />
+                            <RiDeleteBin6Line />
                           </button>
                         </td>
                       </tr>

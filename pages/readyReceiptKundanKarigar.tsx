@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../styles/readyReceipts.module.css";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { SiAddthis } from "react-icons/si";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Modal, Button } from "react-bootstrap";
+import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
+
 
 const readyReceiptKundanKarigar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -50,7 +52,7 @@ const readyReceiptKundanKarigar = () => {
   };
   console.log(tableData[0].table)
   
-  const handleAddRow = () => {
+  const handleModalAddRow = () => {
     const newRow = {
       id: tableData?.table?.length + 1,
       material_abbr: "",
@@ -66,7 +68,7 @@ const readyReceiptKundanKarigar = () => {
     setTableData([...tableData?.table, newRow]);
   };
   
-  const handleModalAddRow = () => {
+  const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
       product_code: "",
@@ -115,7 +117,7 @@ const readyReceiptKundanKarigar = () => {
         <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
           <div className="nav-item" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link active "
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -129,7 +131,7 @@ const readyReceiptKundanKarigar = () => {
           </div>
           <div className="nav-item" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link"
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"
@@ -166,18 +168,18 @@ const readyReceiptKundanKarigar = () => {
                   </button>
                 </div>
                 <div className="container-lg table-responsive">
-                  <table className={` ${styles.table} `} >
-                    <thead className={`${styles.table_header}`}>
+                  <table className="table table-borderd " >
+                    <thead>
                       <tr>
-                        <th className={`${styles.header_item}`} scope="col">Date</th>
-                        <th className={`${styles.header_item}`} scope="col">Receipt Number</th>
-                        <th className={`${styles.header_item}`} scope="col">Karigar(Supplier)</th>
-                        <th className={`${styles.header_item}`} scope="col">Remarks</th>
-                        <th className={`${styles.header_item}`} scope="col">Ready Raceipt Type</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Receipt Number</th>
+                        <th scope="col">Karigar(Supplier)</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Ready Raceipt Type</th>
                       </tr>
                     </thead>
                     <tbody>
-                    <tr className={`${styles.table_row}`}>
+                    <tr>
                         <td scope="row">
                           <input className="form-control input-lg" type="text" />
                         </td>
@@ -202,24 +204,28 @@ const readyReceiptKundanKarigar = () => {
                 </div>
               </div>
               <button className={`${styles.addRow}`} onClick={handleAddRow}>
-                <SiAddthis />
-                Add row
+              <FontAwesomeIcon
+                icon={faPlus}
+                className="fas fa-check"
+                style={{ color: "red", fontSize: 20 }}
+                />
+                <span className="p-2">Add row</span>
               </button>
               <div className="container-lg table-responsive">
-                <table className={`${styles.table}`}>
+                <table className="table table-borderd table-striped table-hover">
                   <thead >
-                    <tr className={`${styles.table_header}`}>
-                      <th className={`${styles.header_item}`} scope="col">Sr.no</th>
-                      <th className={`${styles.header_item}`} scope="col">Product Code (Item)</th>
-                      <th className={`${styles.header_item}`} scope="col">Kun Karigar</th>
-                      <th className={`${styles.header_item}`} scope="col">Net Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Few Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Gross Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Mat_Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Other</th>
-                      <th className={`${styles.header_item}`} scope="col">Total</th>
-                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
-                      <th className={`${styles.header_item}`} scope="col"></th>
+                    <tr>
+                      <th scope="col">Sr.no</th>
+                      <th scope="col">Product Code (Item)</th>
+                      <th scope="col">Kun Karigar</th>
+                      <th scope="col">Net Wt</th>
+                      <th scope="col">Few Wt</th>
+                      <th scope="col">Gross Wt</th>
+                      <th scope="col">Mat_Wt</th>
+                      <th scope="col">Other</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Add Photo</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -228,7 +234,7 @@ const readyReceiptKundanKarigar = () => {
                         <td>{item.id}</td>
                         <td>
                           <input
-                            className={` ${styles.input_field}`}
+                            className="border-0"
                             type="text"
                             value={item.product_code}
                             onChange={(e) =>
@@ -319,11 +325,14 @@ const readyReceiptKundanKarigar = () => {
                         </td>
                         <td>
                           <button
-                            className="d-flex align-items-center delete-link p-1 m-1"
+                            className="d-flex align-items-center delete-link border-0"
                             onClick={() => handleDeleteRow(item.id)}
                             onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <RiDeleteBin6Line />
+                            <FontAwesomeIcon
+                            icon={faTrash}
+                            style={{ color: "red", fontSize: 20 }}
+                            />
                           </button>
                         </td>
                       </tr>
@@ -343,11 +352,11 @@ const readyReceiptKundanKarigar = () => {
           </Modal.Header>
           <Modal.Body>
           <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
-                <SiAddthis />
+          <i className="fa fa-plus" aria-hidden="true"></i>
                 Add row
           </button>
           <div className="container-fluid table-responsive">
-                <table className={`${styles.table}`}>
+                <table className="table table-borderd table-striped table-hover">
                   <thead>
                     <tr className={`${styles.table_header}`}>
                       <th className={`${styles.header_item}`} scope="col">Sr. no</th>
@@ -359,6 +368,7 @@ const readyReceiptKundanKarigar = () => {
                       <th className={`${styles.header_item}`} scope="col">Carat @</th>
                       <th className={`${styles.header_item}`} scope="col">Weight</th>
                       <th className={`${styles.header_item}`} scope="col">Gm @</th>
+                      <th className={`${styles.header_item}`} scope="col"></th>
                       </tr>
                   </thead>
                   <tbody>
@@ -366,13 +376,13 @@ const readyReceiptKundanKarigar = () => {
                       <tr key={element.id} className={`${styles.table_row}`}>
                         <td>{element.id}</td>
                         <td>
-                        <select className="w-100" name="Karigar" id="karigar">
+                        <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td>
-                        <select className="w-100" name="Karigar" id="karigar">
+                        <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
@@ -459,15 +469,18 @@ const readyReceiptKundanKarigar = () => {
                         </td>
                         <td>
                           <button
-                            className="d-flex align-items-center delete-link p-1"
+                            className="d-flex align-items-center delete-link border-0"
                             onClick={() => handleDeleteRow(element.id)}
                             onKeyDown={(e) => handleTabPress(e, element.id)}
                           >
-                            <RiDeleteBin6Line />
+                            <FontAwesomeIcon
+                            icon={faTrash}
+                            style={{ color: "red", fontSize: 20 }}
+                            />
                           </button>
                         </td>
                       </tr>
-                    ))}
+                    ))} 
                   </tbody>
                 </table>
               </div>
