@@ -564,6 +564,9 @@ const readyReceiptKundanKarigar = () => {
             <Button variant="secondary" onClick={closeModal}>
               Close
             </Button>
+            <Button variant="secondary" onClick={handleSaveModal}>
+              Save
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
