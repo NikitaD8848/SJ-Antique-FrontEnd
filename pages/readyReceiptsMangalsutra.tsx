@@ -9,7 +9,7 @@ const readyReceiptsMangalsutra = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [rowValues, setRowValues] = useState<any>([]);
   const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
-  const [totalModalAmount, setTotalModalAmount] = useState<any>();
+  const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
   const [materialWeight, setMaterialWeight] = useState<any>([
     {
       id: 1,
