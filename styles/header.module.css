@@ -1,6 +1,16 @@
 
 .nav{
     display: flex;
-    justify-content: space-between;
+    justify-content:center;
     width: 100%;
+}
+.button{
+    background-color: #403c89;
+    color: #FFF;
+    margin: 10px;
+    padding: 10px 15px;
+    border: none    ;
+}
+.button:hover{
+    background-color: #57329c;
 }

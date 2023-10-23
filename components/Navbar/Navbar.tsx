@@ -8,12 +8,12 @@ import Image from 'next/image'
 
 const Navbar = () => (  
     <nav className="navbar navbar-light bg-light mx-5 ">
-        <div className='container-fluid'>
+        <div className='container-lg'>
             <Link className="navbar-brand" href="/master">
                 <Image src={logo} alt="logo" height={70}  />
             </Link>
             <Dropdown>
-                <Dropdown.Toggle className="dropdown " variant="success" id="dropdown-basic">
+                <Dropdown.Toggle className="dropdown" variant="success" id="dropdown-basic">
                     Dropdown
                 </Dropdown.Toggle>
 
