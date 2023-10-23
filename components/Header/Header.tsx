@@ -6,25 +6,25 @@ const Header = () => {
 
     return (
         <div className='navbar navbar-light bg-light mx-5'>
-            <div className='container-fluid py-3'>
+            <div className='container-lg py-3'>
                 <div className={`${styles.nav}`} >
                     <Link href='/readyReceiptKundanKarigar'>
-                        <button className="btn btn-primary">
+                        <button className={`${styles.button}`}>
                             Ready Receipts(Kundan Karigar)
                         </button>
                     </Link>
                     <Link href='/readyReceiptsMangalsutra'>
-                        <button className="btn btn-primary">
+                        <button className={`${styles.button}`}>
                             Ready Receipts(Mangalsutra Karigar)
                         </button>
                     </Link>
                     <Link href='/saleReturns'>
-                        <button className="btn btn-primary">
+                        <button className={`${styles.button}`}>
                             Sale -Returns(costomer)
                         </button>
                     </Link>
-                    <Link href='customerSale'>
-                        <button className="btn btn-primary">
+                    <Link href='/customerSale'>
+                        <button className={`${styles.button}`}>
                             Customer-Sale(customer)
                         </button>
                     </Link>

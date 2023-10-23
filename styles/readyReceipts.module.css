@@ -1,20 +1,70 @@
-.button{
+.button_field{
     text-align: end;
 }
+.create_button{
+    margin: 5px;
+    padding: 5px 15px;
+    background-color: #d5aa66;
+    color: #000;
+    border: none;
+}
 .addRow{
-    padding: 8px 15px;
+    padding: 5px 15px;
     margin-left: 15px;
-    margin-bottom: 15px;
-    background-color: #178150;;
-    color: #FFF;
-    border-color:#198754;
-    border-radius: 9 px;
+    margin-bottom: 10px;
+    background-color:#d5aa66;
+    color: #000;
+    border: none;
     text-align: center;
     justify-content: center;
 }
 .addRow:hover{
-    background-color: #157347;
+    background-color: #d19f48;
 }
-.row_input{
-    width:50px;
+.tab_button{
+    margin: 5px;
+    padding: 8px 15px;
+    background-color: #403c89   ;
+    color: #FFF;
+    border: none;
+}
+.table {
+	width:100%;
+	border:1px solid ;
+    margin-bottom: 8px;
+   border-collapse: collapse;
+}
+.table_header{
+    background-color: #403c89 ;
+    color: #FFF;
+    padding: 20px ;
+    
+}
+.header_item{
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    
+}
+.table_row{
+    width: 100%;
+}
+.table_row:nth-child(odd){
+    background-color: #d2c6e7;
+}
+.input_field{
+    justify-content: center;
+    border: none;
+    max-width: 120px;
+}
+.table_select{
+    width: 150px;
+    border: none;
+}
+.handle_modal_button{
+    padding: 3px;
+    margin-left: 5px;
+    border: none;
+    background-color: #d5aa66;;
+    color: #000;
 }
