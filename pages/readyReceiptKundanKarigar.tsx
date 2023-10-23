@@ -166,9 +166,6 @@ const readyReceiptKundanKarigar = () => {
        if (event.key === "F2") {
       setShowModal(true);
     }
-      
-  
-   
    
   };
 
@@ -432,6 +429,8 @@ const readyReceiptKundanKarigar = () => {
                       <th className={`${styles.header_item}`} scope="col">Carat @</th>
                       <th className={`${styles.header_item}`} scope="col">Weight</th>
                       <th className={`${styles.header_item}`} scope="col">Gm @</th>
+                      <th className={`${styles.header_item}`} scope="col">Total</th>
+                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -485,7 +484,7 @@ const readyReceiptKundanKarigar = () => {
                             type="number"
                             value={element.carat}
                             onChange={(e) =>
-                              handleFieldChange(element.id, "carat", +e.target.value)
+                              handleModalFieldChange(element.id, "carat", +e.target.value)
                             }
                             />
                         </td>
@@ -532,9 +531,24 @@ const readyReceiptKundanKarigar = () => {
                           />
                         </td>
                         <td>
+                          <input
+                            type="number"
+                            readOnly
+                            onChange={(e) =>
+                              handleModalFieldChange(
+                                element.id,
+                                "amount",
+                                +e.target.value
+                              )
+                            }
+        
+                            value={calculateRowValue(i)}
+                          />
+                        </td>
+                        <td>
                           <button
                             className="d-flex align-items-center delete-link p-1"
-                            onClick={() => handleDeleteRow(element.id)}
+                            onClick={() => handleDeleteChildTableRow(element.id)}
                             onKeyDown={(e) => handleTabPress(e, element.id)}
                           >
                             <RiDeleteBin6Line />
