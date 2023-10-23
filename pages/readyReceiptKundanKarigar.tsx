@@ -8,6 +8,7 @@ import { Modal, Button } from "react-bootstrap";
 
 const readyReceiptKundanKarigar = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [arrayObj, setArrayObj] = useState<any>([])
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
@@ -35,8 +36,8 @@ const readyReceiptKundanKarigar = () => {
         }
       ]
     }
-  ]);
-
+  ])
+  
   const handleFieldChange = (id: number, field: string, newValue: any) => {
     const updatedData = tableData.map((item: any) => {
       if (item.id === id) {
@@ -95,11 +96,14 @@ const readyReceiptKundanKarigar = () => {
     setShowModal(false);
   };
 
-  const handleModal = (event: any, id: any) => {
+  const handleModal = (event: any, id: any, item:any) => {
     if (event.key === "F2") {
       setShowModal(true);
+      setArrayObj(item)
     }
+    console.log("check1",item)
   };
+  console.log("check",arrayObj)
 
   return (
     <div className="mx-5 bg-light">
@@ -219,6 +223,7 @@ const readyReceiptKundanKarigar = () => {
                         <td>{item.id}</td>
                         <td>
                           <input
+                            className="form-control input-lg"
                             type="text"
                             value={item.product_code}
                             onChange={(e) =>
@@ -231,13 +236,14 @@ const readyReceiptKundanKarigar = () => {
                           />
                         </td>
                         <td>
-                        <select className="w-100"name="Karigar" id="karigar">
+                        <select className="form-control w-100"name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td>
                           <input
+                            className="form-control input-sm"
                             type="number"
                             value={item.custom_net_wt}
                             onChange={(e) =>
@@ -251,6 +257,7 @@ const readyReceiptKundanKarigar = () => {
                         </td>
                         <td>
                           <input
+                            className="form-control input-sm"
                             type="number"
                             value={item.custom_few_wt}
                             onChange={(e) =>
@@ -263,6 +270,7 @@ const readyReceiptKundanKarigar = () => {
                           />
                         </td>
                         <td><input
+                            className="form-control input-sm"
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
@@ -270,16 +278,18 @@ const readyReceiptKundanKarigar = () => {
                           /></td>
                         <td>
                           <input
+                            className="form-control input-sm"
                             type="number"
                             value={item.custom_mat_wt}
                             onChange={(e) =>
                               handleFieldChange(item.id, "custom_mat_wt", +e.target.value)
                             }
-                            onKeyDown={(e) => handleModal(e, item.id)}
+                            onKeyDown={(e) => handleModal(e, item, item.id)}
                           />
                         </td>
                         <td>
                           <input
+                            className="form-control input-sm"
                             type="number"
                             value={item.custom_other}
                             onChange={(e) =>
@@ -292,6 +302,7 @@ const readyReceiptKundanKarigar = () => {
                           />
                         </td>
                         <td> <input
+                            className="form-control input-sm"
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
@@ -321,9 +332,10 @@ const readyReceiptKundanKarigar = () => {
         </div>
       </div>
       <div>
-        <Modal className="container-fluid"show={showModal} onHide={closeModal}>
+        <Modal size="xl" show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Triggered by Key Press</Modal.Title>
+            <Modal.Title id="example-modal-sizes-title-lg"
+            >Triggered by Key Press</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
@@ -346,7 +358,7 @@ const readyReceiptKundanKarigar = () => {
                       </tr>
                   </thead>
                   <tbody>
-                    {tableData[0]?.table?.map((element:any) => (
+                    {tableData[0]?.table.map((element:any) => (
                       <tr key={element.id}>
                         <td>{element.id}</td>
                         <td>
