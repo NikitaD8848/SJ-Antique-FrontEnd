@@ -162,14 +162,13 @@ const readyReceiptKundanKarigar = () => {
     setShowModal(false);
   };
   const handleModal = (event: any, id: any, data: any) => {
-    const dataVal = tableData?.filter((item: any) => {
-      if (item.id === id) {
+  
        if (event.key === "F2") {
       setShowModal(true);
     }
-      }
-    });
-    console.log(dataVal, "dataVal");
+      
+  
+   
    
   };
 
