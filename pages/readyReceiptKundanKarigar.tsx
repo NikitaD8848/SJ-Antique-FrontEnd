@@ -349,7 +349,11 @@ const readyReceiptKundanKarigar = () => {
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
-                            value={tableData[i].custom_net_wt + tableData[i].custom_few_wt }
+                            value={
+                              tableData[i].custom_net_wt +
+                              tableData[i].custom_few_wt +
+                              totalModalWeight
+                            }
                           /></td>
                         <td>
                           <button
@@ -379,7 +383,7 @@ const readyReceiptKundanKarigar = () => {
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
-                            value={tableData[i].custom_other }
+                            value={tableData[i].custom_other + totalModalAmount}
                           /></td>
                         <td>
                           <input
