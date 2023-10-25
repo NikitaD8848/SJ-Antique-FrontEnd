@@ -7,23 +7,27 @@ import { Modal, Button } from "react-bootstrap";
 const readyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [rowValues, setRowValues] = useState<any>([]);
-  const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
-  const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
-  const [materialWeight, setMaterialWeight] = useState<any>([
-    {
-      id: 1,
-      material_abbr: "",
-      material_name: "",
-      pcs: "",
-      piece_: "",
-      carat: "",
-      carat_: "",
-      weight: "",
-      gm_: "",
-      amount: "",
-    },
-  ]);
+  const [clickBtn, setClickBtn] = useState<boolean>(false);
+  const [dublicateData, setDublicateData] = useState<any>();
+  const [indexVal, setIndexVal] = useState<any>();
+  const [activeModalId, setActiveModalId] = useState<any>(null);
+  // const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
+  // const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
+  // const [materialWeight, setMaterialWeight] = useState<any>([
+  //   {
+  //     id: 1,
+  //     material_abbr: "",
+  //     material_name: "",
+  //     pcs: "",
+  //     piece_: "",
+  //     carat: "",
+  //     carat_: "",
+  //     weight: "",
+  //     gm_: "",
+  //     amount: "",
+  //   },
+  // ]);
+  const [materialWeight, setMaterialWeight] = useState<any>();
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
@@ -36,17 +40,132 @@ const readyReceiptsMangalsutra = () => {
       custom_other: "",
       custom_total: "",
       custom_add_photo: "",
+      totalModalWeight: 0,
+      totalAmount: 0,
+      table: [
+        {
+          id: materialWeight?.length + 1,
+          material_abbr: "",
+          material_name: "",
+          pcs: "",
+          piece_: "",
+          carat: "",
+          carat_: "",
+          weight: "",
+          gm_: "",
+          amount: "",
+        },
+      ],
     },
   ]);
 
   const calculateRowValue = (i: any) => {
+    console.log(i, "i");
     return (
       materialWeight[i]?.pcs * materialWeight[i]?.piece_ +
       materialWeight[i]?.carat * materialWeight[i]?.carat_ +
       materialWeight[i]?.weight * materialWeight[i]?.gm_
     );
   };
-  const handleSaveModal = (i: any) => {
+
+  const handleFieldChange = (
+    id: number,
+    val: any,
+    field: string,
+    newValue: any
+  ) => {
+    const updatedData = tableData.map((item: any, i: any) => {
+      if (item.id === id) {
+        return { ...item, [field]: 0 || newValue };
+      }
+      return item;
+    });
+    setTableData(updatedData);
+  };
+  const handleModalFieldChange = (
+    id: number,
+    val: any,
+    field: string,
+    newValue: any
+  ) => {
+    const updatedModalData =
+      materialWeight?.length > 0 &&
+      materialWeight?.map((item: any, i: any) => {
+        if (i === id) {
+          return { ...item, [field]: 0 || newValue };
+        }
+        return item;
+      });
+
+    // const updatedMaterialWeight = materialWeight?.map((row:any,i:any) => {
+    //   console.log(i,"ij")
+    //   console.log(id,"ij")
+    //   if (i === id) {
+    //     return { ...row, totalModalWeight: weightAddition, amount: totalAmmountValues };
+    //   }
+    //   return row;
+    // });
+
+    setMaterialWeight(updatedModalData);
+  };
+  const handleAddRow = (value: any) => {
+    const newRow = {
+      id: tableData.length + 1,
+      product_code: "",
+      custom_kun_karigar: "",
+      custom_net_wt: "",
+      custom_few_wt: "",
+      custom_gross_wt: "",
+      custom_mat_wt: "",
+      custom_other: "",
+      custom_total: "",
+      custom_add_photo: "",
+      table: [
+        {
+          id: +materialWeight?.length + 1,
+          material_abbr: "",
+          material_name: "",
+          pcs: "",
+          piece_: "",
+          carat: "",
+          carat_: "",
+          weight: "",
+          gm_: "",
+          amount: "",
+        },
+      ],
+    };
+    if (value === "tableRow") {
+      setTableData([...tableData, newRow]);
+    } else {
+      setMaterialWeight([...materialWeight, ...newRow?.table]);
+    }
+  };
+
+  const handleModalAddRow = () => {
+    const newModalRow = {
+      id: materialWeight?.length + 1,
+      material_abbr: "",
+      material_name: "",
+      pcs: "",
+      piece_: "",
+      carat: "",
+      carat_: "",
+      weight: "",
+      gm_: "",
+      amount: "",
+    };
+    setMaterialWeight([...materialWeight, newModalRow]);
+  };
+  const handleTabPress = (event: any, id: any) => {
+    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
+      handleAddRow("tableRow");
+    }
+  };
+
+  const handleSaveModal = (id: any) => {
+    setIndexVal(id)
+    setDublicateData([...materialWeight]);
     const modalValue = materialWeight.map(
       ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
         ...rest,
@@ -77,113 +196,66 @@ const readyReceiptsMangalsutra = () => {
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
     // setTotalModalAmount(totalvalues);
-
+    console.log(totalvalues, "totalvalues ");
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
-      console.log(accu, "accu23");
       return accu + val;
     }, 0);
-    setTotalModalAmount(totalAmmountValues);
-    setTotalModalWeight(weightAddition);
+    console.log();
+    const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
+      console.log(i, "ij");
+      console.log(id, "ij");
+      if (row.id === id) {
+        return {
+          ...row,
+          totalModalWeight: weightAddition,
+          totalAmount: totalAmmountValues,
+        };
+      }
+      return row;
+    });
+    setTableData(updatedMaterialWeight);
+    if (totalvalues.length > 0) {
+      setClickBtn(true);
+    } else {
+      setClickBtn(false);
+    }
+    // setTotalModalAmount(totalAmmountValues);
+    // setTotalModalWeight(weightAddition);
     setShowModal(false);
   };
-  console.log(totalModalAmount, "rowValues");
-  console.log(totalModalWeight, "totalModalWeight");
-
-  const handleFieldChange = (
-    id: number,
-    val: any,
-    field: string,
-    newValue: any
-  ) => {
-    const updatedData = tableData.map((item: any) => {
-      if (item.id === id) {
-        return { ...item, [field]: 0 || newValue };
-      }
-      return item;
-    });
-    setTableData(updatedData);
-  };
-  const handleModalFieldChange = (
-    id: number,
-    val: any,
-    field: string,
-    newValue: any
-  ) => {
-    const updatedModalData =
-      materialWeight.length > 0 &&
-      materialWeight.map((item: any) => {
-        if (item.id === id) {
-          return { ...item, [field]: 0 || newValue };
-        }
-        return item;
-      });
-    setMaterialWeight(updatedModalData);
-  };
-  const handleAddRow = (value: any) => {
-    const newRow = {
-      id: tableData.length + 1,
-      product_code: "",
-      custom_kun_karigar: "",
-      custom_net_wt: "",
-      custom_few_wt: "",
-      custom_gross_wt: "",
-      custom_mat_wt: "",
-      custom_other: "",
-      custom_total: "",
-      custom_add_photo: "",
-    };
-    setTableData([...tableData, newRow]);
-  };
-
-  const handleModalAddRow = () => {
-    const newModalRow = {
-      id: materialWeight?.length + 1,
-      material_abbr: "",
-      material_name: "",
-      pcs: "",
-      piece_: "",
-      carat: "",
-      carat_: "",
-      weight: "",
-      gm_: "",
-      amount: "",
-    };
-    setMaterialWeight([...materialWeight, newModalRow]);
-  };
-  const handleTabPress = (event: any, id: any) => {
-    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
-      handleAddRow("tableRow");
-    }
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  const openModal = ()=> {
-    setShowModal(true);
-  };
-
-  const handleModal = (event: any, id: any, data: any) => {
-    const dataVal = tableData?.filter((item: any) => {
-      if (item.id === id) {
-       if (event.key === "F2") {
-      setShowModal(true);
-    }
-      }
-    });
-    console.log(dataVal, "dataVal");
-   
-  };
-
   const handleDeleteRow = (id: any) => {
     const updatedData = tableData.filter((item: any) => item.id !== id);
     setTableData(updatedData);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setActiveModalId(null);
+  };
+  const handleModal = (event: any, id: any, data: any) => {
+    console.log(dublicateData, "materialWeight");
+    console.log(materialWeight, "materialWeight");
+
+    const dataVal = tableData?.filter((item: any) => {
+      if (item.id === id) {
+        if (event.key === "F2") {
+          if (clickBtn === true && indexVal === id) {
+            setMaterialWeight(dublicateData);      
+          } else {
+            setMaterialWeight(data.table); 
+          }
+          setShowModal(true);
+        }
+      }
+    });
+  };
+
+
   const handleDeleteChildTableRow = (id: any) => {
-    const updatedData = materialWeight?.filter((item: any) => item.id !== id);
+    const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
+  console.log(tableData, "accu23");
   return (
     <div className="mx-5 bg-light">
       <div className="container-lg ">
@@ -309,8 +381,8 @@ const readyReceiptsMangalsutra = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item: any, i: any) => (
-                      <tr key={item.id} className={`${styles.table_row}`}>
+                    {tableData?.map((item: any, i: any) => (
+                      <tr key={item.id}>
                         <td>{item.id}</td>
                         <td>
                           <input
@@ -370,20 +442,30 @@ const readyReceiptsMangalsutra = () => {
                             readOnly
                             name={`sum-${i + 1}`}
                             value={
-                              tableData[i].custom_net_wt +
-                              tableData[i].custom_few_wt +
-                              totalModalWeight
+                              tableData[i]?.totalModalWeight > 0
+                                ? tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt +
+                                  tableData[i]?.totalModalWeight
+                                : tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt
                             }
                           />
                         </td>
                         <td>
-                        <button
-                          className={`${styles.handle_modal_button}`} 
-                          onClick={openModal}
-                          onKeyDown={(e)=>{handleModal(e, item, item.id)}}
-                          >
-                          clickHere
-                          </button>
+                          <input
+                            type="number"
+                            value={tableData[i]?.totalModalWeight}
+                            readOnly
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                "tableRow",
+                                "custom_mat_wt",
+                                +e.target.value
+                              )
+                            }
+                            onKeyDown={(e) => handleModal(e, item.id, item)}
+                          />
                         </td>
                         <td>
                           <input
@@ -408,7 +490,12 @@ const readyReceiptsMangalsutra = () => {
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
-                            value={tableData[i].custom_other + totalModalAmount}
+                            value={
+                              tableData[i]?.totalAmount > 0
+                                ? tableData[i].custom_other +
+                                  tableData[i]?.totalAmount
+                                : tableData[i].custom_other
+                            }
                           />
                         </td>
                         <td>
@@ -435,180 +522,192 @@ const readyReceiptsMangalsutra = () => {
         </div>
       </div>
       <div>
-        <Modal size='xl' show={showModal} onHide={closeModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Triggered by Key Press</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
-              <SiAddthis />
-              Add row
-            </button>
-            <div className="container-fluid table-responsive">
-              <table className={` ${styles.table} `} >
-                <thead className={`${styles.table_header}`}>
-                  <tr>
-                    <th className={`${styles.header_item}`} scope="col">Sr. no</th>
-                    <th className={`${styles.header_item}`} scope="col">Material Abbr (Master)</th>
-                    <th className={`${styles.header_item}`} scope="col">Material (Master)</th>
-                    <th className={`${styles.header_item}`} scope="col">Pcs</th>
-                    <th className={`${styles.header_item}`} scope="col">Piece @</th>
-                    <th className={`${styles.header_item}`} scope="col">Carat</th>
-                    <th className={`${styles.header_item}`} scope="col">Carat @</th>
-                    <th className={`${styles.header_item}`} scope="col">Weight</th>
-                    <th className={`${styles.header_item}`} scope="col">Gm @</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {materialWeight?.length > 0 &&
-                    materialWeight?.map((element: any, i: any) => (
-                      <tr key={element.id} className={`${styles.table_row}`}>
-                        <td>{element.id}</td>
-                        <td>
-                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
-                          </select>
-                        </td>
-                        <td>
-                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input 
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={element.pcs}
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "pcs",
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={element.piece_}
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "piece_",
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={element.carat}
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "carat",
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={element.carat_}
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "carat_",
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={element.weight}
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "weight",
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={element.gm_}
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "gm_",
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            readOnly
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "modalRow",
-                                "amount",
-                                +e.target.value
-                              )
-                            }
-                            ref={inputRef}
-                            value={calculateRowValue(i)}
-                          />
-                        </td>
-                        <td>
-                          <button
-                            className="d-flex align-items-center delete-link p-1"
-                            onClick={() =>
-                              handleDeleteChildTableRow(element.id)
-                            }
-                            // onKeyDown={(e) => handleTabPress(e, item.id)}
-                          >
-                            <RiDeleteBin6Line />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeModal}>
-              Close
-            </Button>
-            <Button variant="secondary" onClick={handleSaveModal}>
-              Save
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {tableData.map((item: any, index: any) => (
+          <Modal
+            className="w-100"
+            key={index}
+            show={showModal}
+            onHide={closeModal}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Triggered by Key Press</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <button
+                className={`${styles.addRow}`}
+                onClick={() => handleAddRow("modalRow")}
+              >
+                <SiAddthis />
+                Add row
+              </button>
+              <div className="container-fluid table-responsive">
+                <table className="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sr. no</th>
+                      <th scope="col">Material Abbr (Master)</th>
+                      <th scope="col">Material (Master)</th>
+                      <th scope="col">Pcs</th>
+                      <th scope="col">Piece @</th>
+                      <th scope="col">Carat</th>
+                      <th scope="col">Carat @</th>
+                      <th scope="col">Weight</th>
+                      <th scope="col">Gm @</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {materialWeight?.length > 0 &&
+                      materialWeight?.map((element: any, i: any) => (
+                        <tr key={i}>
+                          <td>{i + 1}</td>
+                          <td>
+                            <select
+                              className="w-100"
+                              name="Karigar"
+                              id="karigar"
+                            >
+                              <option value="karigar1">Karigar 1</option>
+                              <option value="karigar2">Karigar 2</option>
+                            </select>
+                          </td>
+                          <td>
+                            <select
+                              className="w-100"
+                              name="Karigar"
+                              id="karigar"
+                            >
+                              <option value="karigar1">Karigar 1</option>
+                              <option value="karigar2">Karigar 2</option>
+                            </select>
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={element.pcs}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "pcs",
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={element.piece_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "piece_",
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={element.carat}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "carat",
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={element.carat_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "carat_",
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={element.weight}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "weight",
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={element.gm_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "gm_",
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              readOnly
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "amount",
+                                  +e.target.value
+                                )
+                              }
+                              ref={inputRef}
+                              value={calculateRowValue(i)}
+                            />
+                          </td>
+                          <td>
+                            <button
+                              className="d-flex align-items-center delete-link p-1"
+                              onClick={() => handleDeleteChildTableRow(i)}
+                              // onKeyDown={(e) => handleTabPress(e, item.id)}
+                            >
+                             
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeModal}>
+                Close
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => handleSaveModal(item.id)}
+              >
+                Save
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ))}
       </div>
     </div>
   );
