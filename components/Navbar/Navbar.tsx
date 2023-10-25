@@ -8,12 +8,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => (  
-    <nav className="navbar navbar-light bg-light mx-5 ">
-        <div className='container-lg'>
+    <div className='container-lg'>
+    <nav className="navbar navbar-light bg-light p-0 ">
             <Link className="navbar-brand" href="/master">
-                <Image src={logo} alt="logo" height={70}  />
+                <Image src={logo} alt="logo" height={55}  />
             </Link>
-            <button className='p-2 m-2 border-1'>
+            <button className='p-2 m-2 mx-3 border-1 rounded-circle'>
                 <FontAwesomeIcon
                 icon={faUser}
                 className="fas fa-check"
@@ -21,8 +21,8 @@ const Navbar = () => (
                 />
             </button>
 
-        </div>
     </nav>
+    </div>
 
 )
 

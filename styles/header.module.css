@@ -5,12 +5,16 @@
     width: 100%;
 }
 .button{
-    background-color: #403c89;
-    color: #FFF;
-    margin: 10px;
-    padding: 10px 15px;
-    border: none    ;
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFF;
+    color: #000;
+    margin: 5px;
+    padding: 5px 8px;
+    border: 1px solid #b4d1eb;
+    border-radius: 9px;
+    font-family: 'Times New Roman', Times, serif;
 }
 .button:hover{
-    background-color: #57329c;
+    color: #6164ef;
 }
