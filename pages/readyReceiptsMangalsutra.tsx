@@ -190,7 +190,7 @@ const readyReceiptsMangalsutra = () => {
         <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
           <div className="nav-item" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link active"
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -204,7 +204,7 @@ const readyReceiptsMangalsutra = () => {
           </div>
           <div className="nav-item" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link"
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"

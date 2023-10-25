@@ -8,24 +8,6 @@
     color: #000;
     border: none;
 }
-.addRow{
-    padding: 3px 8px;
-    margin-left: 15px;
-    margin-bottom: 10px;
-    background-color:#d5aa66;
-    color: #FFF;
-    border: none;
-    text-align: center;
-    justify-content: center;
-}
-
-.tab_button{
-    margin: 5px;
-    padding: 8px 15px;
-    background-color: #403c89   ;
-    color: #FFF;
-    border: none;
-}
 .input_field{
     margin-top: 2px;
     justify-content: center;

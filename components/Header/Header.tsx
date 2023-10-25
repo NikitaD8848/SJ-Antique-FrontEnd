@@ -14,7 +14,7 @@ const Header = () => {
             <FontAwesomeIcon
               className="p-1"
               icon={faReceipt}
-              style={{ color: "gold", fontSize: 20 }}
+              style={{ color: "#CDAB6E", fontSize: 20 }}
             />
               Ready Receipts(Kundan Karigar)
             </button>
@@ -24,7 +24,7 @@ const Header = () => {
             <FontAwesomeIcon
               className="p-1"
               icon={faReceipt}
-              style={{ color: "gold", fontSize: 20 }}
+              style={{ color: "#CDAB6E", fontSize: 20 }}
             />
               Ready Receipts(Mangalsutra Karigar)
             </button>
@@ -34,7 +34,7 @@ const Header = () => {
             <FontAwesomeIcon
               className="p-1"
               icon={faReceipt}
-              style={{ color: "gold", fontSize: 20 }}
+              style={{ color: "#CDAB6E", fontSize: 20 }}
             />
               Sale -Returns(Customer)
             </button>
@@ -44,7 +44,7 @@ const Header = () => {
             <FontAwesomeIcon
               className="p-1"
               icon={faReceipt}
-              style={{ color: "gold", fontSize: 20 }}
+              style={{ color: "#CDAB6E", fontSize: 20 }}
             />
               Customer-Sale(Customer)
             </button>
