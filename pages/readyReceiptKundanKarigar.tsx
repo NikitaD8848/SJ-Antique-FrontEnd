@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "../styles/readyReceipts.module.css";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { SiAddthis } from "react-icons/si";
 import { Modal, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
+import { Link } from "react-router-dom";
 
 const readyReceiptKundanKarigar = () => {
   // const inputRef = useRef<any>();
@@ -91,11 +93,7 @@ const readyReceiptKundanKarigar = () => {
   console.log(totalModalAmount, "rowValues");
   console.log(totalModalWeight, "totalModalWeight");
 
-  const handleFieldChange = (
-    id: number,
-    field: string,
-    newValue: any
-  ) => {
+  const handleFieldChange = (id: number, field: string, newValue: any) => {
     const updatedData = tableData.map((item: any) => {
       if (item.id === id) {
         return { ...item, [field]: 0 || newValue };
@@ -104,11 +102,7 @@ const readyReceiptKundanKarigar = () => {
     });
     setTableData(updatedData);
   };
-  const handleModalFieldChange = (
-    id: number,
-    field: string,
-    newValue: any
-  ) => {
+  const handleModalFieldChange = (id: number, field: string, newValue: any) => {
     const updatedModalData =
       materialWeight.length > 0 &&
       materialWeight.map((item: any) => {
@@ -135,9 +129,6 @@ const readyReceiptKundanKarigar = () => {
     setTableData([...tableData, newRow]);
   };
 
-  const openModal = ()=> {
-    setShowModal(true);
-  };
   const handleModalAddRow = () => {
     const newModalRow = {
       id: materialWeight?.length + 1,
@@ -161,12 +152,10 @@ const readyReceiptKundanKarigar = () => {
   const closeModal = () => {
     setShowModal(false);
   };
-  const handleModal = (event: any, id: any, data: any) => {
-  
-       if (event.key === "F2") {
+  const handleModal = (event: any) => {
+    if (event.key === "F2") {
       setShowModal(true);
     }
-   
   };
 
   const handleDeleteRow = (id: any) => {
@@ -180,12 +169,16 @@ const readyReceiptKundanKarigar = () => {
   };
 
   return (
-    <div className="mx-5 bg-light">
-      <div className="container-lg ">
-        <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
-          <div className="nav-item" role="presentation">
+    <div className="container-lg">
+      <div>
+        <div
+          className="nav nav-pills mb-2 justify-content-center container-lg "
+          id="pills-tab"
+          role="tablist"
+        >
+          <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link active w-100 p-1 border"
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -197,9 +190,9 @@ const readyReceiptKundanKarigar = () => {
               Ready receipts (kundan karigar)
             </button>
           </div>
-          <div className="nav-item" role="presentation">
+          <div className="nav-tabs tabs-container w-50" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link  w-100 p-1 border"
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"
@@ -227,76 +220,112 @@ const readyReceiptKundanKarigar = () => {
             role="tabpanel"
             aria-labelledby="pills-profile-tab"
           >
-            <h4>Create new ready receipt</h4>
             <div>
-              <div>
-                <div className={`${styles.button_field}`}>
-                  <button type="submit" className={`${styles.create_button}`}>
-                    Create
-                  </button>
-                </div>
-                <div className="container-lg table-responsive">
-                  <table className={` ${styles.table} table table-striped `} >
-                    <thead className={`${styles.table_header}`}>
-                      <tr>
-                        <th className={`${styles.header_item}`} scope="col">Date</th>
-                        <th className={`${styles.header_item}`} scope="col">Receipt Number</th>
-                        <th className={`${styles.header_item}`} scope="col">Karigar(Supplier)</th>
-                        <th className={`${styles.header_item}`} scope="col">Remarks</th>
-                        <th className={`${styles.header_item}`} scope="col">Ready Raceipt Type</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <tr className={`${styles.table_row}`}>
-                        <td scope="row">
-                          <input className="form-control input-lg" type="text" />
-                        </td>
-                        <td>
-                          <input className="form-control input-lg" type="number" />
-                        </td>
-                        <td>
-                          <select className="form-control" name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
-                          </select>
-                        </td>
-                        <td>
-                          <input className="form-control input-lg" type="text"  />
-                        </td>
-                        <td>
-                          <input className="form-control input-lg" type="text" readOnly value={"kundanKarigar"} disabled/>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+              <div className={`${styles.button_field}`}>
+                <button type="submit" className={`${styles.create_button}`}>
+                  Create
+                </button>
               </div>
-              <button className={`${styles.addRow}`} onClick={handleAddRow}>
-                <SiAddthis />
-                Add row
-              </button>
               <div className="container-lg table-responsive">
-                <table className={`${styles.table}`}>
-                  <thead >
-                    <tr className={`${styles.table_header}`}>
-                      <th className={`${styles.header_item}`} scope="col">Sr.no</th>
-                      <th className={`${styles.header_item}`} scope="col">Product Code (Item)</th>
-                      <th className={`${styles.header_item}`} scope="col">Kun Karigar</th>
-                      <th className={`${styles.header_item}`} scope="col">Net Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Few Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Gross Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Mat_Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Other</th>
-                      <th className={`${styles.header_item}`} scope="col">Total</th>
-                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
-                      <th className={`${styles.header_item}`} scope="col"></th>
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th className="thead" scope="col">
+                        Date
+                      </th>
+                      <th className="thead" scope="col">
+                        Receipt Number
+                      </th>
+                      <th className="thead" scope="col">
+                        Karigar(Supplier)
+                      </th>
+                      <th className="thead" scope="col">
+                        Remarks
+                      </th>
+                      <th className="thead" scope="col">
+                        Ready Raceipt Type
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item: any,i:any) => (
+                    <tr className="table_row">
+                      <td scope="row" className="table_row">
+                        <input className="form-control input-sm" type="text" />
+                      </td>
+                      <td className="table_row">
+                        <input
+                          className="form-control input-sm"
+                          type="number"
+                        />
+                      </td>
+                      <td className="table_row">
+                        <select className="form-control" name="Karigar">
+                          <option value="karigar1">Karigar 1</option>
+                          <option value="karigar2">Karigar 2</option>
+                        </select>
+                      </td>
+                      <td className="table_row">
+                        <input className="form-control input-sm" type="text" />
+                      </td>
+                      <td className="table_row">
+                        <input
+                          className="form-control input-sm"
+                          type="text"
+                          readOnly
+                          value={"kundanKarigar"}
+                          disabled
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="container d-flex justify-content-end">
+                  <p className="my-auto btn-link cursor-pointer" onClick={handleAddRow}>Add Row </p>
+              </div>
+              
+              <div className="container-lg table-responsive">
+                <table className="table table-hover table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th className="thead" scope="col">
+                        Sr.no
+                      </th>
+                      <th className="thead" scope="col">
+                        Product Code (Item)
+                      </th>
+                      <th className="thead" scope="col">
+                        Kun Karigar
+                      </th>
+                      <th className="thead" scope="col">
+                        Net Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Few Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Gross Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Mat_Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Other
+                      </th>
+                      <th className="thead" scope="col">
+                        Total
+                      </th>
+                      <th className="thead" scope="col">
+                        Add Photo
+                      </th>
+                      <th className="thead" scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData.map((item: any, i: any) => (
                       <tr key={item.id} className={`${styles.table_row}`}>
-                        <td>{item.id}</td>
-                        <td>
+                        <td className="table_row">{item.id}</td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="text"
@@ -310,13 +339,17 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
-                        <select className={` ${styles.table_select}`}name="Karigar" id="karigar">
+                        <td className="table_row">
+                          <select
+                            className={` ${styles.table_select}`}
+                            name="Karigar"
+                            id="karigar"
+                          >
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -330,7 +363,7 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -344,7 +377,8 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td><input
+                        <td className="table_row">
+                          <input
                             className={` ${styles.input_field}`}
                             type="text"
                             readOnly
@@ -354,17 +388,24 @@ const readyReceiptKundanKarigar = () => {
                               tableData[i].custom_few_wt +
                               totalModalWeight
                             }
-                          /></td>
-                        <td>
-                          <button
-                          className={`${styles.handle_modal_button}`} 
-                          onClick={openModal}
-                          onKeyDown={(e)=>{handleModal(e, item, item.id)}}
-                          >
-                          Click Here
-                          </button>
+                          />
                         </td>
-                        <td>
+                        <td className="table_row">
+                          <input
+                            className={`${styles.input_field}`}
+                            type="number"
+                            value={item.custom_mat_wt}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                "custom_mat_wt",
+                                +e.target.value
+                              )
+                            }
+                            onKeyDown={(e) => handleModal(e)}
+                          />
+                        </td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -378,26 +419,32 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td> <input
+                        <td className="table_row">
+                          {" "}
+                          <input
                             className={` ${styles.input_field}`}
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
                             value={tableData[i].custom_other + totalModalAmount}
-                          /></td>
-                        <td>
+                          />
+                        </td>
+                        <td className="table_row">
                           <input
-                            className={` ${styles.input_field}`}
+                            className={`${styles.input_field}`}
                             type="file"
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <button
-                            className="d-flex align-items-center delete-link p-1 m-1"
+                            className="d-flex align-items-center delete-link p-1 border-0"
                             onClick={() => handleDeleteRow(item.id)}
                             onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <RiDeleteBin6Line />
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: "red", fontSize: 15 }}
+                            />
                           </button>
                         </td>
                       </tr>
@@ -412,49 +459,74 @@ const readyReceiptKundanKarigar = () => {
       <div>
         <Modal size="xl" show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title id="example-modal-sizes-title-lg"
-            >Triggered by Key Press</Modal.Title>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              Triggered by Key Press
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <button className={`${styles.addRow}`} onClick={handleModalAddRow}>
-                <SiAddthis />
-                Add row
-          </button>
-          <div className="container-fluid table-responsive">
-                <table className={`${styles.table}`}>
-                  <thead>
-                    <tr className={`${styles.table_header}`}>
-                      <th className={`${styles.header_item}`} scope="col">Sr. no</th>
-                      <th className={`${styles.header_item}`} scope="col">Material Abbr (Master)</th>
-                      <th className={`${styles.header_item}`} scope="col">Material (Master)</th>
-                      <th className={`${styles.header_item}`} scope="col">Pcs</th>
-                      <th className={`${styles.header_item}`} scope="col">Piece @</th>
-                      <th className={`${styles.header_item}`} scope="col">Carat</th>
-                      <th className={`${styles.header_item}`} scope="col">Carat @</th>
-                      <th className={`${styles.header_item}`} scope="col">Weight</th>
-                      <th className={`${styles.header_item}`} scope="col">Gm @</th>
-                      <th className={`${styles.header_item}`} scope="col">Total</th>
-                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {materialWeight?.length > 0 &&
-                    materialWeight?.map((element: any, i: any) =>(
-                      <tr key={element.id} className={`${styles.table_row}`}>
-                        <td>{element.id}</td>
-                        <td>
-                        <select className="w-100" name="Karigar" id="karigar">
+              <div className="container d-flex justify-content-end">
+                <button className="border-0" onClick={handleModalAddRow}>
+                Add Row
+              </button>
+              </div>
+            <div className="container-lg table-responsive">
+              <table className="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th className="thead" scope="col">
+                      Sr. no
+                    </th>
+                    <th className="thead" scope="col">
+                      Material Abbr (Master)
+                    </th>
+                    <th className="thead" scope="col">
+                      Material (Master)
+                    </th>
+                    <th className="thead" scope="col">
+                      Pcs
+                    </th>
+                    <th className="thead" scope="col">
+                      Piece @
+                    </th>
+                    <th className="thead" scope="col">
+                      Carat
+                    </th>
+                    <th className="thead" scope="col">
+                      Carat @
+                    </th>
+                    <th className="thead" scope="col">
+                      Weight
+                    </th>
+                    <th className="thead" scope="col">
+                      Gm @
+                    </th>
+                    <th className="thead" scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {materialWeight?.length > 0 &&
+                    materialWeight?.map((element: any, i: any) => (
+                      <tr key={element.id}>
+                        <td className="table_row">{element.id}</td>
+                        <td className="table_row">
+                          <select
+                            className={`${styles.table_select}`}
+                            name="Karigar"
+                          >
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
-                        <td>
-                        <select className="w-100" name="Karigar" id="karigar">
+                        <td className="table_row">
+                          <select
+                            className={`${styles.table_select}`}
+                            name="Karigar"
+                          >
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -468,7 +540,7 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -482,17 +554,21 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
                             value={element.carat}
                             onChange={(e) =>
-                              handleModalFieldChange(element.id, "carat", +e.target.value)
+                              handleModalFieldChange(
+                                element.id,
+                                "carat",
+                                +e.target.value
+                              )
                             }
-                            />
+                          />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -506,7 +582,7 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -520,7 +596,7 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -534,35 +610,25 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
-                          <input
-                            type="number"
-                            readOnly
-                            onChange={(e) =>
-                              handleModalFieldChange(
-                                element.id,
-                                "amount",
-                                +e.target.value
-                              )
-                            }
-        
-                            value={calculateRowValue(i)}
-                          />
-                        </td>
-                        <td>
+                        <td className="table_row">
                           <button
-                            className="d-flex align-items-center delete-link p-1"
-                            onClick={() => handleDeleteChildTableRow(element.id)}
+                            className="d-flex align-items-center delete-link p-1 border-0"
+                            onClick={() =>
+                              handleDeleteChildTableRow(element.id)
+                            }
                             onKeyDown={(e) => handleTabPress(e, element.id)}
                           >
-                            <RiDeleteBin6Line />
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: "red", fontSize: 20 }}
+                            />
                           </button>
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                </tbody>
+              </table>
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={closeModal}>

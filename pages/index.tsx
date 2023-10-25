@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import HomePageMaster from "@/components/HomePageMaster";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {

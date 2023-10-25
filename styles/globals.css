@@ -106,7 +106,34 @@ a {
   }
 }
 
-th,td{
-  border: 1px solid;
-  border-collapse: collapse;
+.nav-pills .nav-link.active{
+  background-color: #2f308c !important;
+}
+.nav-tabs .tabs-container{
+  padding: 0 12px;
+  justify-content: center ;
+}
+.thead {
+  background-color: #2f308c !important;
+  color: #FFF !important;
+  line-height: 10px;
+}
+td.table_row{
+  line-height: 10px !important;
+  padding:1px !important;
+}
+input.form-control.input-sm{
+  padding:0;
+  line-height: 7px;
+  font-size: 15px;
+}
+select.form-control{
+  padding: 0;
+  line-height: 20px;
+  font-size: 15px;
+}
+.row{
+  text-align: center;
+  width: 500px;
+  border: 1px;
 }
