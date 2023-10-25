@@ -249,10 +249,8 @@ console.log(totalvalues,"totalvalues ")
     console.log(dublicateData, "materialWeight");
     console.log(materialWeight, "materialWeight");
 
-
     setActiveModalId(id);
     const dataVal = tableData?.filter((item: any) => {
-      if (item.id === id) {
         if (event.key === "F2") {
           setShowModal(true);
           if(indexVal === id && clickBtn === true){
@@ -260,10 +258,9 @@ console.log(totalvalues,"totalvalues ")
           }
           else {
             setMaterialWeight(data.table);
-          }
-         
-        }
-      }
+          }      
+        }  
+        setShowModal(true);
     });
     console.log(dataVal, "dataVal");
   };
@@ -710,7 +707,7 @@ console.log(totalvalues,"totalvalues ")
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => handleSaveModal(index)}
+                onClick={() => handleSaveModal(item.id)}
               >
                 Save
               </Button>
