@@ -9,7 +9,7 @@ const readyReceiptsMangalsutra = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [rowValues, setRowValues] = useState<any>([]);
   const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
-  const [totalModalAmount, setTotalModalAmount] = useState<any>();
+  const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
   const [materialWeight, setMaterialWeight] = useState<any>([
     {
       id: 1,
@@ -109,9 +109,6 @@ const readyReceiptsMangalsutra = () => {
     field: string,
     newValue: any
   ) => {
-    const value = inputRef.current;
-
-    console.log(value, "value");
     const updatedModalData =
       materialWeight.length > 0 &&
       materialWeight.map((item: any) => {
@@ -167,9 +164,15 @@ const readyReceiptsMangalsutra = () => {
   };
 
   const handleModal = (event: any, id: any, data: any) => {
-    if (event.key === "F2") {
+    const dataVal = tableData?.filter((item: any) => {
+      if (item.id === id) {
+       if (event.key === "F2") {
       setShowModal(true);
     }
+      }
+    });
+    console.log(dataVal, "dataVal");
+   
   };
 
   const handleDeleteRow = (id: any) => {
@@ -405,7 +408,7 @@ const readyReceiptsMangalsutra = () => {
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
-                            value={tableData[i].custom_other+totalModalAmount}
+                            value={tableData[i].custom_other + totalModalAmount}
                           />
                         </td>
                         <td>

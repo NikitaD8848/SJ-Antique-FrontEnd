@@ -28,6 +28,33 @@
     color: #FFF;
     border: none;
 }
+<<<<<<< HEAD
+=======
+.table {
+	width:100%;
+	border:1px solid ;
+    margin-bottom: 8px;
+   border-collapse: collapse;
+}
+.table_header{
+    background-color: #403c89 ;
+    color: #FFF;
+    padding: 20px ;
+    
+}
+.header_item{
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    
+}
+.table_row{
+    width: 100%;
+}
+ .table_row{
+    background-color: #d2c6e7;
+}
+>>>>>>> 1528dead08734a6b92bc6d43a7968e8235d95482
 .input_field{
     justify-content: center;
     border: none;
