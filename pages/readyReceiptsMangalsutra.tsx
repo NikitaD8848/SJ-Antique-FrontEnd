@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import styles from "../styles/readyReceipts.module.css";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { SiAddthis } from "react-icons/si";
 import { Modal, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const readyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>();
@@ -257,12 +257,12 @@ const readyReceiptsMangalsutra = () => {
   };
   console.log(tableData, "accu23");
   return (
-    <div className="mx-5 bg-light">
-      <div className="container-lg ">
-        <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
-          <div className="nav-item" role="presentation">
+    <div className="container-lg">
+      <div className="container-lg">
+        <div className="nav nav-pills mb-3 justify-content-center " id="pills-tab" role="tablist">
+          <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
-              className="nav-link active"
+              className="nav-link active w-100 border p-1"
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -274,9 +274,9 @@ const readyReceiptsMangalsutra = () => {
               Ready receipts (Mangalsutra karigar)
             </button>
           </div>
-          <div className="nav-item" role="presentation">
+          <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
-              className="nav-link"
+              className="nav-link  w-100 p-1 border"
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"
@@ -304,7 +304,6 @@ const readyReceiptsMangalsutra = () => {
             role="tabpanel"
             aria-labelledby="pills-profile-tab"
           >
-            <h4>Create new ready receipt</h4>
             <div>
               <div>
                 <div className={`${styles.button_field}`}>
@@ -313,37 +312,37 @@ const readyReceiptsMangalsutra = () => {
                   </button>
                 </div>
 
-                <div className=" container-lg  table-responsive">
-                  <table className={` ${styles.table} `} >
-                    <thead className={`${styles.table_header}`}>
+                <div className="table-responsive">
+                  <table className="table table-hover" >
+                    <thead >
                       <tr>
-                        <th className={`${styles.header_item}`} scope="col">Date</th>
-                        <th className={`${styles.header_item}`} scope="col">Receipt Number</th>
-                        <th className={`${styles.header_item}`} scope="col">Karigar(Supplier)</th>
-                        <th className={`${styles.header_item}`} scope="col">Remarks</th>
-                        <th className={`${styles.header_item}`} scope="col">Ready Raceipt Type</th>
+                        <th className="thead" scope="col">Date</th>
+                        <th className="thead" scope="col">Receipt Number</th>
+                        <th className="thead" scope="col">Karigar(Supplier)</th>
+                        <th className="thead" scope="col">Remarks</th>
+                        <th className="thead" scope="col">Ready Raceipt Type</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td scope="row">
-                          <input className="form-control input-lg" type="text" />
+                        <td scope="row" className="table_row">
+                          <input className="form-control input-sm" type="text" />
                         </td>
-                        <td>
-                          <input className="form-control input-lg" type="number" />
+                        <td className="table_row">
+                          <input className="form-control input-sm" type="number" />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <select className="form-control" name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
-                        <td>
-                          <input className="form-control input-lg" type="text" />
+                        <td className="table_row">
+                          <input className="form-control input-sm" type="text" />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="form-control input-lg"
+                            className="form-control input-sm"
                             type="text"
                             readOnly
                             disabled
@@ -360,31 +359,30 @@ const readyReceiptsMangalsutra = () => {
                 className={`${styles.addRow}`}
                 onClick={() => handleAddRow("tableRow")}
               >
-                <SiAddthis />
                 Add row
               </button>
-              <div className="container-fluid table-responsive">
-                <table className={` ${styles.table} `} >
-                  <thead className={`${styles.table_header}`}>
+              <div className="table-responsive">
+                <table className="table table-striped table-bordered table-hover" >
+                  <thead>
                     <tr>
-                      <th className={`${styles.header_item}`} scope="col">Sr. no</th>
-                      <th className={`${styles.header_item}`} scope="col">Product Code (Item)</th>
-                      <th className={`${styles.header_item}`} scope="col">Kun Karigar</th>
-                      <th className={`${styles.header_item}`} scope="col">Net Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Few Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Gross Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Mat Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Other</th>
-                      <th className={`${styles.header_item}`} scope="col">Total</th>
-                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
-                      <th className={`${styles.header_item}`} scope="col"></th>
+                      <th className="thead" scope="col">Sr. no</th>
+                      <th className="thead" scope="col">Product Code (Item)</th>
+                      <th className="thead" scope="col">Kun Karigar</th>
+                      <th className="thead" scope="col">Net Wt</th>
+                      <th className="thead" scope="col">Few Wt</th>
+                      <th className="thead" scope="col">Gross Wt</th>
+                      <th className="thead" scope="col">Mat Wt</th>
+                      <th className="thead" scope="col">Other</th>
+                      <th className="thead" scope="col">Total</th>
+                      <th className="thead" scope="col">Add Photo</th>
+                      <th className="thead" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {tableData?.map((item: any, i: any) => (
                       <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>
+                        <td className="table_row ">{item.id}</td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="text"
@@ -399,13 +397,13 @@ const readyReceiptsMangalsutra = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
-                        <td className={styles.row_input}>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -420,7 +418,7 @@ const readyReceiptsMangalsutra = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -435,7 +433,7 @@ const readyReceiptsMangalsutra = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="text"
@@ -451,8 +449,9 @@ const readyReceiptsMangalsutra = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
+                            className={`${styles.input_field}`}
                             type="number"
                             value={tableData[i]?.totalModalWeight}
                             readOnly
@@ -467,7 +466,7 @@ const readyReceiptsMangalsutra = () => {
                             onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
                             type="number"
@@ -483,7 +482,7 @@ const readyReceiptsMangalsutra = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           {" "}
                           <input
                             className={` ${styles.input_field}`}
@@ -498,18 +497,21 @@ const readyReceiptsMangalsutra = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input 
                           className={` ${styles.input_field}`}
                           type="file" />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <button
-                            className="d-flex align-items-center delete-link p-1"
+                            className="d-flex align-items-center delete-link p-1 border-0"
                             onClick={() => handleDeleteRow(item.id)}
                             onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <RiDeleteBin6Line />
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: "red", fontSize: 15 }}
+                            />
                           </button>
                         </td>
                       </tr>
@@ -524,7 +526,7 @@ const readyReceiptsMangalsutra = () => {
       <div>
         {tableData.map((item: any, index: any) => (
           <Modal
-            className="w-100"
+            size="xl"
             key={index}
             show={showModal}
             onHide={closeModal}
@@ -537,28 +539,28 @@ const readyReceiptsMangalsutra = () => {
                 className={`${styles.addRow}`}
                 onClick={() => handleAddRow("modalRow")}
               >
-                <SiAddthis />
+                
                 Add row
               </button>
-              <div className="container-fluid table-responsive">
-                <table className="table table-bordered table-hover">
+              <div className="table-responsive">
+                <table className="table table-bordered table-hover table-striped">
                   <thead>
                     <tr>
-                      <th scope="col">Sr. no</th>
-                      <th scope="col">Material Abbr (Master)</th>
-                      <th scope="col">Material (Master)</th>
-                      <th scope="col">Pcs</th>
-                      <th scope="col">Piece @</th>
-                      <th scope="col">Carat</th>
-                      <th scope="col">Carat @</th>
-                      <th scope="col">Weight</th>
-                      <th scope="col">Gm @</th>
+                      <th className="thead" scope="col">Sr. no</th>
+                      <th className="thead" scope="col">Material Abbr (Master)</th>
+                      <th className="thead" scope="col">Material (Master)</th>
+                      <th className="thead" scope="col">Pcs</th>
+                      <th className="thead" scope="col">Piece @</th>
+                      <th className="thead" scope="col">Carat</th>
+                      <th className="thead" scope="col">Carat @</th>
+                      <th className="thead" scope="col">Weight</th>
+                      <th className="thead" scope="col">Gm @</th>
                     </tr>
                   </thead>
                   <tbody>
                     {materialWeight?.length > 0 &&
                       materialWeight?.map((element: any, i: any) => (
-                        <tr key={i}>
+                        <tr key={i} >
                           <td>{i + 1}</td>
                           <td>
                             <select

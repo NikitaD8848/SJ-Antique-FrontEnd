@@ -14,8 +14,8 @@
     border: 1px solid #CDAB6E;
     border-radius: 9px;
     font-family: 'Times New Roman', Times, serif;
-    text-decoration: none;
+    text-decoration-line: none;
 }
 .button:hover{
-    color: #6164ef;
+    color: #0D6EFD;
 }

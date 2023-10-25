@@ -9,7 +9,7 @@ const Header = () => {
     <div className="container-lg">
       <div className="navbar navbar-lightt ">
         <div className={`${styles.nav}`}>
-          <Link href="/readyReceiptKundanKarigar">
+          <Link className="text-decoration-none" href="/readyReceiptKundanKarigar">
             <button className={`${styles.button}`}>
             <FontAwesomeIcon
               className="p-1"
@@ -19,7 +19,7 @@ const Header = () => {
               Ready Receipts(Kundan Karigar)
             </button>
           </Link>
-          <Link href="/readyReceiptsMangalsutra">
+          <Link className="text-decoration-none" href="/readyReceiptsMangalsutra">
             <button className={`${styles.button}`}>
             <FontAwesomeIcon
               className="p-1"
@@ -29,7 +29,7 @@ const Header = () => {
               Ready Receipts(Mangalsutra Karigar)
             </button>
           </Link>
-          <Link href="/saleReturns">
+          <Link className="text-decoration-none" href="/saleReturns">
             <button className={`${styles.button}`}>
             <FontAwesomeIcon
               className="p-1"
@@ -39,7 +39,7 @@ const Header = () => {
               Sale -Returns(Customer)
             </button>
           </Link>
-          <Link href="/customerSale">
+          <Link className="text-decoration-none" href="/customerSale">
             <button className={`${styles.button}`}>
             <FontAwesomeIcon
               className="p-1"

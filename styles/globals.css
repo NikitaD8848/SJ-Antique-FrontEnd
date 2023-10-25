@@ -121,6 +121,7 @@ a {
 td.table_row{
   line-height: 10px !important;
   padding:1px !important;
+  text-align: center;
 }
 input.form-control.input-sm{
   padding:0;
@@ -132,8 +133,6 @@ select.form-control{
   line-height: 20px;
   font-size: 15px;
 }
-.row{
-  text-align: center;
-  width: 500px;
-  border: 1px;
+p .my-auto .btn-link{
+  cursor: pointer;
 }

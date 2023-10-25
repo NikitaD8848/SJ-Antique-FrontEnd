@@ -281,7 +281,7 @@ const readyReceiptKundanKarigar = () => {
                 </table>
               </div>
               <div className="container d-flex justify-content-end">
-                  <p className="my-auto btn-link cursor-pointer" onClick={handleAddRow}>Add Row </p>
+                  <p className=" my-auto btn-link" onClick={handleAddRow}>Add Row </p>
               </div>
               
               <div className="container-lg table-responsive">

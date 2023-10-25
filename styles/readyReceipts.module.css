@@ -2,7 +2,7 @@
     text-align: end;
 }
 .create_button{
-    margin: 10px;
+    margin-bottom: 10px;
     padding: 5px 15px;
     background: #d5aa66;
     color: #000;
@@ -13,6 +13,7 @@
     justify-content: center;
     border: none;
     max-width: 100px;
+    text-align: center;
 }
 .table_select{
     width: 150px;

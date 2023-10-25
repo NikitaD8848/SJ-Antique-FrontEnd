@@ -5,19 +5,19 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import logo from '../../services/assets/Logo.png'
 import Image from 'next/image'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => (  
     <div className='container-lg'>
     <nav className="navbar navbar-light bg-light p-0 ">
             <Link className="navbar-brand" href="/master">
-                <Image src={logo} alt="logo" height={55}  />
+                <Image src={logo} alt="logo" width={96}height={62}  />
             </Link>
-            <button className='p-2 m-2 mx-3 border-1 rounded-circle'>
+            <button className="border-0 p-1">
                 <FontAwesomeIcon
-                icon={faUser}
-                className="fas fa-check"
-                style={{ color: "blue", fontSize: 20 }}
+                icon={faCircleUser}
+                className="fa fa-user-circle "
+                style={{ color: "#CDAB6E", fontSize: 30 }}
                 />
             </button>
 
