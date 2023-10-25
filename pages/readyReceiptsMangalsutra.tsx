@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styles from "../styles/readyReceipts.module.css";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { ImCross } from "react-icons/im";
 import { SiAddthis } from "react-icons/si";
 import { Modal, Button } from "react-bootstrap";
 
@@ -8,8 +8,8 @@ const readyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clickBtn, setClickBtn] = useState<boolean>(false);
-  const [dublicateData, setDublicateData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
+  const [dublicateData, setDublicateData] = useState<any>()
   const [activeModalId, setActiveModalId] = useState<any>(null);
   // const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
   // const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
@@ -140,8 +140,9 @@ const readyReceiptsMangalsutra = () => {
     } else {
       setMaterialWeight([...materialWeight, ...newRow?.table]);
     }
+  
   };
-
+ 
   const handleModalAddRow = () => {
     const newModalRow = {
       id: materialWeight?.length + 1,
@@ -163,9 +164,19 @@ const readyReceiptsMangalsutra = () => {
     }
   };
 
+
   const handleSaveModal = (id: any) => {
-    setIndexVal(id)
-    setDublicateData([...materialWeight]);
+   
+    const val = materialWeight.some((el:any) => Object.values(el).every(e => e !== 0));
+    console.log(materialWeight,"materialWeight34")
+    console.log(val,"vals")
+    // if(val){
+    //   setClickBtn(true)
+    // }
+    // else {
+    //   setClickBtn(false)
+    // }
+    setDublicateData([...materialWeight])
     const modalValue = materialWeight.map(
       ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
         ...rest,
@@ -196,7 +207,7 @@ const readyReceiptsMangalsutra = () => {
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
     // setTotalModalAmount(totalvalues);
-    console.log(totalvalues, "totalvalues ");
+console.log(totalvalues,"totalvalues ")
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
       return accu + val;
     }, 0);
@@ -214,10 +225,12 @@ const readyReceiptsMangalsutra = () => {
       return row;
     });
     setTableData(updatedMaterialWeight);
-    if (totalvalues.length > 0) {
-      setClickBtn(true);
-    } else {
-      setClickBtn(false);
+    setIndexVal(id)
+    if(totalvalues.length>0){
+      setClickBtn(true)
+    }
+    else {
+      setClickBtn(false)
     }
     // setTotalModalAmount(totalAmmountValues);
     // setTotalModalWeight(weightAddition);
@@ -236,21 +249,26 @@ const readyReceiptsMangalsutra = () => {
     console.log(dublicateData, "materialWeight");
     console.log(materialWeight, "materialWeight");
 
+
+    setActiveModalId(id);
     const dataVal = tableData?.filter((item: any) => {
       if (item.id === id) {
         if (event.key === "F2") {
-          if (clickBtn === true && indexVal === id) {
-            setMaterialWeight(dublicateData);      
-          } else {
-            setMaterialWeight(data.table); 
-          }
           setShowModal(true);
+          if(indexVal === id && clickBtn === true){
+            setMaterialWeight(dublicateData);
+          }
+          else {
+            setMaterialWeight(data.table);
+          }
+         
         }
       }
     });
+    console.log(dataVal, "dataVal");
   };
 
-
+  console.log(dublicateData, "materialWeight");
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
@@ -258,11 +276,11 @@ const readyReceiptsMangalsutra = () => {
   console.log(tableData, "accu23");
   return (
     <div className="mx-5 bg-light">
-      <div className="container-lg ">
-        <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+      <div className="container-fluid ">
+        <div className="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <div className="nav-item" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link active"
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -276,7 +294,7 @@ const readyReceiptsMangalsutra = () => {
           </div>
           <div className="nav-item" role="presentation">
             <button
-              className={`${styles.tab_button}`}
+              className="nav-link"
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"
@@ -291,7 +309,7 @@ const readyReceiptsMangalsutra = () => {
         </div>
         <div className="tab-content" id="pills-tabContent">
           <div
-            className="tab-pane fade show "
+            className="tab-pane fade show active"
             id="pills-home"
             role="tabpanel"
             aria-labelledby="pills-home-tab"
@@ -304,46 +322,46 @@ const readyReceiptsMangalsutra = () => {
             role="tabpanel"
             aria-labelledby="pills-profile-tab"
           >
-            <h4>Create new ready receipt</h4>
+            Create new ready receipt
             <div>
               <div>
-                <div className={`${styles.button_field}`}>
-                  <button type="submit" className={`${styles.create_button}`}>
+                <div className={`${styles.button}`}>
+                  <button type="submit" className="btn btn-primary">
                     Create
                   </button>
                 </div>
 
-                <div className=" container-lg  table-responsive">
-                  <table className={` ${styles.table} `} >
-                    <thead className={`${styles.table_header}`}>
+                <div className=" table-responsive">
+                  <table className="table">
+                    <thead>
                       <tr>
-                        <th className={`${styles.header_item}`} scope="col">Date</th>
-                        <th className={`${styles.header_item}`} scope="col">Receipt Number</th>
-                        <th className={`${styles.header_item}`} scope="col">Karigar(Supplier)</th>
-                        <th className={`${styles.header_item}`} scope="col">Remarks</th>
-                        <th className={`${styles.header_item}`} scope="col">Ready Raceipt Type</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Receipt Number</th>
+                        <th scope="col">Karigar(Supplier)</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Ready Raceipt Type</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td scope="row">
-                          <input className="form-control input-lg" type="text" />
+                          <input className="w-100" type="text" />
                         </td>
                         <td>
-                          <input className="form-control input-lg" type="number" />
+                          <input className="w-100" type="number" />
                         </td>
                         <td>
-                          <select className="form-control" name="Karigar" id="karigar">
+                          <select className="w-100" name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td>
-                          <input className="form-control input-lg" type="text" />
+                          <input className="w-100" type="text" />
                         </td>
                         <td>
                           <input
-                            className="form-control input-lg"
+                            className="w-100"
                             type="text"
                             readOnly
                             disabled
@@ -364,20 +382,19 @@ const readyReceiptsMangalsutra = () => {
                 Add row
               </button>
               <div className="container-fluid table-responsive">
-                <table className={` ${styles.table} `} >
-                  <thead className={`${styles.table_header}`}>
+                <table className="table table-bordered table-hover">
+                  <thead>
                     <tr>
-                      <th className={`${styles.header_item}`} scope="col">Sr. no</th>
-                      <th className={`${styles.header_item}`} scope="col">Product Code (Item)</th>
-                      <th className={`${styles.header_item}`} scope="col">Kun Karigar</th>
-                      <th className={`${styles.header_item}`} scope="col">Net Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Few Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Gross Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Mat Wt</th>
-                      <th className={`${styles.header_item}`} scope="col">Other</th>
-                      <th className={`${styles.header_item}`} scope="col">Total</th>
-                      <th className={`${styles.header_item}`} scope="col">Add Photo</th>
-                      <th className={`${styles.header_item}`} scope="col"></th>
+                      <th scope="col">Sr. no</th>
+                      <th scope="col">Product Code (Item)</th>
+                      <th scope="col">Kun Karigar</th>
+                      <th scope="col">Net Wt</th>
+                      <th scope="col">Few Wt</th>
+                      <th scope="col">Gross Wt</th>
+                      <th scope="col">Mat Wt</th>
+                      <th scope="col">Other</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Add Photo</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -386,7 +403,6 @@ const readyReceiptsMangalsutra = () => {
                         <td>{item.id}</td>
                         <td>
                           <input
-                            className={` ${styles.input_field}`}
                             type="text"
                             value={item.product_code}
                             onChange={(e) =>
@@ -400,14 +416,13 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td>
-                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
+                          <select className="w-100" name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
                         </td>
                         <td className={styles.row_input}>
                           <input
-                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_net_wt}
                             onChange={(e) =>
@@ -422,7 +437,6 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
-                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_few_wt}
                             onChange={(e) =>
@@ -437,7 +451,6 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
-                            className={` ${styles.input_field}`}
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
@@ -469,7 +482,6 @@ const readyReceiptsMangalsutra = () => {
                         </td>
                         <td>
                           <input
-                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_other}
                             onChange={(e) =>
@@ -486,7 +498,6 @@ const readyReceiptsMangalsutra = () => {
                         <td>
                           {" "}
                           <input
-                            className={` ${styles.input_field}`}
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
@@ -499,9 +510,7 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td>
-                          <input 
-                          className={` ${styles.input_field}`}
-                          type="file" />
+                          <input type="file" />
                         </td>
                         <td>
                           <button
@@ -509,7 +518,7 @@ const readyReceiptsMangalsutra = () => {
                             onClick={() => handleDeleteRow(item.id)}
                             onKeyDown={(e) => handleTabPress(e, item.id)}
                           >
-                            <RiDeleteBin6Line />
+                            <ImCross />
                           </button>
                         </td>
                       </tr>
@@ -686,7 +695,7 @@ const readyReceiptsMangalsutra = () => {
                               onClick={() => handleDeleteChildTableRow(i)}
                               // onKeyDown={(e) => handleTabPress(e, item.id)}
                             >
-
+                              <ImCross />
                             </button>
                           </td>
                         </tr>
@@ -701,7 +710,7 @@ const readyReceiptsMangalsutra = () => {
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => handleSaveModal(item.id)}
+                onClick={() => handleSaveModal(index)}
               >
                 Save
               </Button>
