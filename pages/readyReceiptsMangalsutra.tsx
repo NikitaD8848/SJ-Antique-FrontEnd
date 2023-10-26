@@ -122,7 +122,7 @@ const readyReceiptsMangalsutra = () => {
       custom_add_photo: "",
       table: [
         {
-          id: +materialWeight?.length + 1,
+          id: materialWeight?.length + 1,
           material_abbr: "",
           material_name: "",
           pcs: "",
@@ -165,7 +165,7 @@ const readyReceiptsMangalsutra = () => {
 
   const handleSaveModal = (id: any) => {
     setIndexVal(id)
-    setDublicateData([...materialWeight]);
+  
     const modalValue = materialWeight.map(
       ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
         ...rest,
@@ -209,6 +209,7 @@ const readyReceiptsMangalsutra = () => {
           ...row,
           totalModalWeight: weightAddition,
           totalAmount: totalAmmountValues,
+          table:materialWeight
         };
       }
       return row;
@@ -219,8 +220,8 @@ const readyReceiptsMangalsutra = () => {
     } else {
       setClickBtn(false);
     }
-    // setTotalModalAmount(totalAmmountValues);
-    // setTotalModalWeight(weightAddition);
+    console.log(updatedMaterialWeight,"data45")
+    // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -233,14 +234,14 @@ const readyReceiptsMangalsutra = () => {
     setActiveModalId(null);
   };
   const handleModal = (event: any, id: any, data: any) => {
-    console.log(dublicateData, "materialWeight");
-    console.log(materialWeight, "materialWeight");
+    console.log(tableData, "materialWeight");
+    // console.log(materialWeight, "materialWeight");
 
     const dataVal = tableData?.filter((item: any) => {
       if (item.id === id) {
         if (event.key === "F2") {
-          if (clickBtn === true && indexVal === id) {
-            setMaterialWeight(dublicateData);      
+          if (item.totalAmount>0) {
+            setMaterialWeight(item.table);      
           } else {
             setMaterialWeight(data.table); 
           }
