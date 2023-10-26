@@ -187,6 +187,7 @@ const readyReceiptKundanKarigar = () => {
           ...row,
           totalModalWeight: weightAddition,
           totalAmount: totalAmmountValues,
+          table:materialWeight
         };
       }
       return row;
@@ -197,8 +198,6 @@ const readyReceiptKundanKarigar = () => {
     } else {
       setClickBtn(false);
     }
-    // setTotalModalAmount(totalAmmountValues);
-    // setTotalModalWeight(weightAddition);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -217,8 +216,8 @@ const readyReceiptKundanKarigar = () => {
     const dataVal = tableData?.filter((item: any) => {
       if (item.id === id) {
         if (event.key === "F2") {
-          if (clickBtn === true && indexVal === id) {
-            setMaterialWeight(dublicateData);      
+          if (item.totalAmount>0) {
+            setMaterialWeight(item.table);      
           } else {
             setMaterialWeight(data.table); 
           }
