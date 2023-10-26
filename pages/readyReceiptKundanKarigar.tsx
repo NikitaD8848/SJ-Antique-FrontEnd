@@ -9,25 +9,13 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { Link } from "react-router-dom";
 
 const readyReceiptKundanKarigar = () => {
-  // const inputRef = useRef<any>();
-  const [showModal, setShowModal] = useState<any>(false);
-  const [rowValues, setRowValues] = useState<any>([]);
-  const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
-  const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
-  const [materialWeight, setMaterialWeight] = useState<any>([
-    {
-      id: 1,
-      material_abbr: "",
-      material_name: "",
-      pcs: "",
-      piece_: "",
-      carat: "",
-      carat_: "",
-      weight: "",
-      gm_: "",
-      amount: "",
-    },
-  ]);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [clickBtn, setClickBtn] = useState<boolean>(false);
+  const [dublicateData, setDublicateData] = useState<any>();
+  const [indexVal, setIndexVal] = useState<any>();
+  const [activeModalId, setActiveModalId] = useState<any>(null);
+  const [materialWeight, setMaterialWeight] = useState<any>();
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
@@ -40,17 +28,122 @@ const readyReceiptKundanKarigar = () => {
       custom_other: "",
       custom_total: "",
       custom_add_photo: "",
+      totalModalWeight: 0,
+      totalAmount: 0,
+      table: [
+        {
+          id: materialWeight?.length + 1,
+          material_abbr: "",
+          material_name: "",
+          pcs: "",
+          piece_: "",
+          carat: "",
+          carat_: "",
+          weight: "",
+          gm_: "",
+          amount: "",
+        },
+      ],
     },
   ]);
 
   const calculateRowValue = (i: any) => {
+    console.log(i, "i");
     return (
       materialWeight[i]?.pcs * materialWeight[i]?.piece_ +
       materialWeight[i]?.carat * materialWeight[i]?.carat_ +
       materialWeight[i]?.weight * materialWeight[i]?.gm_
     );
   };
-  const handleSaveModal = (i: any) => {
+
+  const handleFieldChange = (
+    id: number,
+    val: any,
+    field: string,
+    newValue: any
+  ) => {
+    const updatedData = tableData.map((item: any, i: any) => {
+      if (item.id === id) {
+        return { ...item, [field]: 0 || newValue };
+      }
+      return item;
+    });
+    setTableData(updatedData);
+  };
+  const handleModalFieldChange = (
+    id: number,
+    val: any,
+    field: string,
+    newValue: any
+  ) => {
+    const updatedModalData =
+      materialWeight?.length > 0 &&
+      materialWeight?.map((item: any, i: any) => {
+        if (i === id) {
+          return { ...item, [field]: 0 || newValue };
+        }
+        return item;
+      });
+    setMaterialWeight(updatedModalData);
+  };
+  const handleAddRow = (value: any) => {
+    const newRow = {
+      id: tableData.length + 1,
+      product_code: "",
+      custom_kun_karigar: "",
+      custom_net_wt: "",
+      custom_few_wt: "",
+      custom_gross_wt: "",
+      custom_mat_wt: "",
+      custom_other: "",
+      custom_total: "",
+      custom_add_photo: "",
+      table: [
+        {
+          id: +materialWeight?.length + 1,
+          material_abbr: "",
+          material_name: "",
+          pcs: "",
+          piece_: "",
+          carat: "",
+          carat_: "",
+          weight: "",
+          gm_: "",
+          amount: "",
+        },
+      ],
+    };
+    if (value === "tableRow") {
+      setTableData([...tableData, newRow]);
+    } else {
+      setMaterialWeight([...materialWeight, ...newRow?.table]);
+    }
+  };
+
+  const handleModalAddRow = () => {
+    const newModalRow = {
+      id: materialWeight?.length + 1,
+      material_abbr: "",
+      material_name: "",
+      pcs: "",
+      piece_: "",
+      carat: "",
+      carat_: "",
+      weight: "",
+      gm_: "",
+      amount: "",
+    };
+    setMaterialWeight([...materialWeight, newModalRow]);
+  };
+  const handleTabPress = (event: any, id: any) => {
+    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
+      handleAddRow("tableRow");
+    }
+  };
+
+  const handleSaveModal = (id: any) => {
+    setIndexVal(id)
+    setDublicateData([...materialWeight]);
     const modalValue = materialWeight.map(
       ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
         ...rest,
@@ -81,90 +174,63 @@ const readyReceiptKundanKarigar = () => {
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
     // setTotalModalAmount(totalvalues);
-
+    console.log(totalvalues, "totalvalues ");
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
-      console.log(accu, "accu23");
       return accu + val;
     }, 0);
-    setTotalModalAmount(totalAmmountValues);
-    setTotalModalWeight(weightAddition);
-    setShowModal(false);
-  };
-  console.log(totalModalAmount, "rowValues");
-  console.log(totalModalWeight, "totalModalWeight");
-
-  const handleFieldChange = (id: number, field: string, newValue: any) => {
-    const updatedData = tableData.map((item: any) => {
-      if (item.id === id) {
-        return { ...item, [field]: 0 || newValue };
+    console.log();
+    const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
+      console.log(i, "ij");
+      console.log(id, "ij");
+      if (row.id === id) {
+        return {
+          ...row,
+          totalModalWeight: weightAddition,
+          totalAmount: totalAmmountValues,
+        };
       }
-      return item;
+      return row;
     });
-    setTableData(updatedData);
-  };
-  const handleModalFieldChange = (id: number, field: string, newValue: any) => {
-    const updatedModalData =
-      materialWeight.length > 0 &&
-      materialWeight.map((item: any) => {
-        if (item.id === id) {
-          return { ...item, [field]: 0 || newValue };
-        }
-        return item;
-      });
-    setMaterialWeight(updatedModalData);
-  };
-  const handleAddRow = (value: any) => {
-    const newRow = {
-      id: tableData.length + 1,
-      product_code: "",
-      custom_kun_karigar: "",
-      custom_net_wt: "",
-      custom_few_wt: "",
-      custom_gross_wt: "",
-      custom_mat_wt: "",
-      custom_other: "",
-      custom_total: "",
-      custom_add_photo: "",
-    };
-    setTableData([...tableData, newRow]);
-  };
-
-  const handleModalAddRow = () => {
-    const newModalRow = {
-      id: materialWeight?.length + 1,
-      material_abbr: "",
-      material_name: "",
-      pcs: "",
-      piece_: "",
-      carat: "",
-      carat_: "",
-      weight: "",
-      gm_: "",
-      amount: "",
-    };
-    setMaterialWeight([...materialWeight, newModalRow]);
-  };
-  const handleTabPress = (event: any, id: any) => {
-    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
-      handleAddRow("tableRow");
+    setTableData(updatedMaterialWeight);
+    if (totalvalues.length > 0) {
+      setClickBtn(true);
+    } else {
+      setClickBtn(false);
     }
-  };
-  const closeModal = () => {
+    // setTotalModalAmount(totalAmmountValues);
+    // setTotalModalWeight(weightAddition);
     setShowModal(false);
   };
-  const handleModal = (event: any) => {
-    if (event.key === "F2") {
-      setShowModal(true);
-    }
-  };
-
   const handleDeleteRow = (id: any) => {
     const updatedData = tableData.filter((item: any) => item.id !== id);
     setTableData(updatedData);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    setActiveModalId(null);
+  };
+  const handleModal = (event: any, id: any, data: any) => {
+    console.log(dublicateData, "materialWeight");
+    console.log(materialWeight, "materialWeight");
+
+    const dataVal = tableData?.filter((item: any) => {
+      if (item.id === id) {
+        if (event.key === "F2") {
+          if (clickBtn === true && indexVal === id) {
+            setMaterialWeight(dublicateData);      
+          } else {
+            setMaterialWeight(data.table); 
+          }
+          setShowModal(true);
+        }
+      }
+    });
+  };
+
+
   const handleDeleteChildTableRow = (id: any) => {
-    const updatedData = materialWeight?.filter((item: any) => item.id !== id);
+    const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
 
@@ -280,8 +346,13 @@ const readyReceiptKundanKarigar = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="container d-flex justify-content-end">
-                  <p className=" my-auto btn-link" onClick={handleAddRow}>Add Row </p>
+              <div className="container d-flex justify-content-end">   
+              <button
+                className={`btn btn-link`}
+                onClick={() => handleAddRow("tableRow")}
+              >
+                Add Row
+              </button>
               </div>
               
               <div className="container-lg table-responsive">
@@ -333,8 +404,9 @@ const readyReceiptKundanKarigar = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "product_code",
-                                +e.target.value
+                                e.target.value
                               )
                             }
                           />
@@ -357,6 +429,7 @@ const readyReceiptKundanKarigar = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_net_wt",
                                 +e.target.value
                               )
@@ -371,6 +444,7 @@ const readyReceiptKundanKarigar = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_few_wt",
                                 +e.target.value
                               )
@@ -384,36 +458,43 @@ const readyReceiptKundanKarigar = () => {
                             readOnly
                             name={`sum-${i + 1}`}
                             value={
-                              tableData[i].custom_net_wt +
-                              tableData[i].custom_few_wt +
-                              totalModalWeight
+                              tableData[i]?.totalModalWeight > 0
+                                ? tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt +
+                                  tableData[i]?.totalModalWeight
+                                : tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt
                             }
                           />
                         </td>
                         <td className="table_row">
-                          <input
+                        <input
                             className={`${styles.input_field}`}
                             type="number"
-                            value={item.custom_mat_wt}
+                            value={tableData[i]?.totalModalWeight}
+                            readOnly
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_mat_wt",
                                 +e.target.value
                               )
                             }
-                            onKeyDown={(e) => handleModal(e)}
+                            onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
                         <td className="table_row">
-                          <input
+                        <input
                             className={` ${styles.input_field}`}
                             type="number"
                             value={item.custom_other}
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
+                                "tableRow",
                                 "custom_other",
+
                                 +e.target.value
                               )
                             }
@@ -426,7 +507,12 @@ const readyReceiptKundanKarigar = () => {
                             type="text"
                             readOnly
                             name={`sum-${i + 1}`}
-                            value={tableData[i].custom_other + totalModalAmount}
+                            value={
+                              tableData[i]?.totalAmount > 0
+                                ? tableData[i].custom_other +
+                                  tableData[i]?.totalAmount
+                                : tableData[i].custom_other
+                            }
                           />
                         </td>
                         <td className="table_row">
@@ -457,7 +543,7 @@ const readyReceiptKundanKarigar = () => {
         </div>
       </div>
       <div>
-        <Modal size="xl" show={showModal} onHide={closeModal}>
+      {tableData.map((item: any, index: any) => ( <Modal size="xl" show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title id="example-modal-sizes-title-lg">
               Triggered by Key Press
@@ -465,7 +551,7 @@ const readyReceiptKundanKarigar = () => {
           </Modal.Header>
           <Modal.Body>
               <div className="container d-flex justify-content-end">
-                <button className="border-0" onClick={handleModalAddRow}>
+                <button className="btn btn-link" onClick={() => handleAddRow("modalRow")}>
                 Add Row
               </button>
               </div>
@@ -506,8 +592,8 @@ const readyReceiptKundanKarigar = () => {
                 <tbody>
                   {materialWeight?.length > 0 &&
                     materialWeight?.map((element: any, i: any) => (
-                      <tr key={element.id}>
-                        <td className="table_row">{element.id}</td>
+                      <tr key={i}>
+                        <td className="table_row">{i+1}</td>
                         <td className="table_row">
                           <select
                             className={`${styles.table_select}`}
@@ -533,7 +619,8 @@ const readyReceiptKundanKarigar = () => {
                             value={element.pcs}
                             onChange={(e) =>
                               handleModalFieldChange(
-                                element.id,
+                                i,
+                                "modalRow",
                                 "pcs",
                                 +e.target.value
                               )
@@ -547,7 +634,8 @@ const readyReceiptKundanKarigar = () => {
                             value={element.piece_}
                             onChange={(e) =>
                               handleModalFieldChange(
-                                element.id,
+                                i,
+                                "modalRow",
                                 "piece_",
                                 +e.target.value
                               )
@@ -561,7 +649,8 @@ const readyReceiptKundanKarigar = () => {
                             value={element.carat}
                             onChange={(e) =>
                               handleModalFieldChange(
-                                element.id,
+                                i,
+                                "modalRow",
                                 "carat",
                                 +e.target.value
                               )
@@ -575,7 +664,8 @@ const readyReceiptKundanKarigar = () => {
                             value={element.carat_}
                             onChange={(e) =>
                               handleModalFieldChange(
-                                element.id,
+                                i,
+                                "modalRow",
                                 "carat_",
                                 +e.target.value
                               )
@@ -589,7 +679,8 @@ const readyReceiptKundanKarigar = () => {
                             value={element.weight}
                             onChange={(e) =>
                               handleModalFieldChange(
-                                element.id,
+                                i,
+                                "modalRow",
                                 "weight",
                                 +e.target.value
                               )
@@ -603,20 +694,36 @@ const readyReceiptKundanKarigar = () => {
                             value={element.gm_}
                             onChange={(e) =>
                               handleModalFieldChange(
-                                element.id,
+                                i,
+                                "modalRow",
                                 "gm_",
                                 +e.target.value
                               )
                             }
                           />
                         </td>
+                        <td>
+                            <input
+                              type="number"
+                              readOnly
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  "modalRow",
+                                  "amount",
+                                  +e.target.value
+                                )
+                              }
+                              value={calculateRowValue(i)}
+                            />
+                          </td>
                         <td className="table_row">
                           <button
                             className="d-flex align-items-center delete-link p-1 border-0"
                             onClick={() =>
-                              handleDeleteChildTableRow(element.id)
+                              handleDeleteChildTableRow(i)
                             }
-                            onKeyDown={(e) => handleTabPress(e, element.id)}
+                            // onKeyDown={(e) => handleTabPress(e, element.id)}
                           >
                             <FontAwesomeIcon
                               icon={faTrash}
@@ -634,11 +741,12 @@ const readyReceiptKundanKarigar = () => {
             <Button variant="secondary" onClick={closeModal}>
               Close
             </Button>
-            <Button variant="secondary" onClick={handleSaveModal}>
+            <Button variant="secondary"  onClick={() => handleSaveModal(item.id)}>
               Save
             </Button>
           </Modal.Footer>
         </Modal>
+          ))}
       </div>
     </div>
   );
