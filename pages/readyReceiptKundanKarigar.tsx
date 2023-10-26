@@ -141,8 +141,26 @@ const readyReceiptKundanKarigar = () => {
     }
   };
 
-  const handleSaveModal = (id: any) => {
+  const handleModal = (event: any, id: any, data: any) => {
+    console.log(dublicateData, "materialWeight");
+    console.log(materialWeight, "materialWeight");
     setIndexVal(id)
+    const dataVal = tableData?.filter((item: any) => {
+      if (item.id === id) {
+        if (event.key === "F2") {
+          if (item.totalAmount>0) {
+            setMaterialWeight(item.table);      
+          } else {
+            setMaterialWeight(data.table); 
+          }
+          setShowModal(true);
+        }
+      }
+    });
+  };
+
+  const handleSaveModal = (id: any) => {
+   
     setDublicateData([...materialWeight]);
     const modalValue = materialWeight.map(
       ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
@@ -182,7 +200,7 @@ const readyReceiptKundanKarigar = () => {
     const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
       console.log(i, "ij");
       console.log(id, "ij");
-      if (row.id === id) {
+      if (row.id === indexVal) {
         return {
           ...row,
           totalModalWeight: weightAddition,
@@ -192,12 +210,14 @@ const readyReceiptKundanKarigar = () => {
       }
       return row;
     });
+
     setTableData(updatedMaterialWeight);
     if (totalvalues.length > 0) {
       setClickBtn(true);
     } else {
       setClickBtn(false);
     }
+    console.log(updatedMaterialWeight,"updatedMaterialWeight")
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -209,23 +229,7 @@ const readyReceiptKundanKarigar = () => {
     setShowModal(false);
     setActiveModalId(null);
   };
-  const handleModal = (event: any, id: any, data: any) => {
-    console.log(dublicateData, "materialWeight");
-    console.log(materialWeight, "materialWeight");
 
-    const dataVal = tableData?.filter((item: any) => {
-      if (item.id === id) {
-        if (event.key === "F2") {
-          if (item.totalAmount>0) {
-            setMaterialWeight(item.table);      
-          } else {
-            setMaterialWeight(data.table); 
-          }
-          setShowModal(true);
-        }
-      }
-    });
-  };
 
 
   const handleDeleteChildTableRow = (id: any) => {
