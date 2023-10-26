@@ -127,11 +127,14 @@ input.form-control.input-sm{
   padding:0;
   line-height: 7px;
   font-size: 15px;
+  text-align: center;
+  background: #e0e1f5;
 }
 select.form-control{
   padding: 0;
   line-height: 20px;
   font-size: 15px;
+  background: #e0e1f5;
 }
 p .my-auto .btn-link{
   cursor: pointer;
