@@ -688,7 +688,7 @@ const readyReceiptsMangalsutra = () => {
                               onClick={() => handleDeleteChildTableRow(i)}
                               // onKeyDown={(e) => handleTabPress(e, item.id)}
                             >
-
+                             
                             </button>
                           </td>
                         </tr>
