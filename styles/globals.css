@@ -139,3 +139,13 @@ select.form-control{
 p .my-auto .btn-link{
   cursor: pointer;
 }
+button.btn.btn-primary.mx-5{
+  background-color: #2f308c !important;
+  color: #FFF;
+  border: none;
+}
+button.btn.btn-primary.mx-5.px-5{
+  background-color: #2f308c !important;
+  color: #FFF;
+  border: none;
+}
