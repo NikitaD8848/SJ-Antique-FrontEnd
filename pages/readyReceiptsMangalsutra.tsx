@@ -355,12 +355,14 @@ const readyReceiptsMangalsutra = () => {
                 </div>
               </div>
 
+              <div className="container d-flex justify-content-end">   
               <button
-                className={`${styles.addRow}`}
+                className={`btn btn-link`}
                 onClick={() => handleAddRow("tableRow")}
               >
-                Add row
+                Add Row
               </button>
+              </div>
               <div className="table-responsive">
                 <table className="table table-striped table-bordered table-hover" >
                   <thead>
@@ -535,13 +537,11 @@ const readyReceiptsMangalsutra = () => {
               <Modal.Title>Triggered by Key Press</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <button
-                className={`${styles.addRow}`}
-                onClick={() => handleAddRow("modalRow")}
-              >
-                
-                Add row
+            <div className="container d-flex justify-content-end">
+                <button className="btn btn-link" onClick={() => handleAddRow("modalRow")}>
+                Add Row
               </button>
+              </div>
               <div className="table-responsive">
                 <table className="table table-bordered table-hover table-striped">
                   <thead>
