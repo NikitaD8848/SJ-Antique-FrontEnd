@@ -236,9 +236,9 @@ const readyReceiptKundanKarigar = () => {
 
   return (
     <div className="container-lg">
-      <div>
+      <div className="container-lg">
         <div
-          className="nav nav-pills mb-2 justify-content-center container-lg "
+          className="nav nav-pills mb-2 justify-content-center "
           id="pills-tab"
           role="tablist"
         >
@@ -292,7 +292,7 @@ const readyReceiptKundanKarigar = () => {
                   Create
                 </button>
               </div>
-              <div className="container-lg table-responsive">
+              <div className=" table-responsive">
                 <table className="table table-hover">
                   <thead>
                     <tr>
@@ -355,7 +355,7 @@ const readyReceiptKundanKarigar = () => {
               </button>
               </div>
               
-              <div className="container-lg table-responsive">
+              <div className="table-responsive">
                 <table className="table table-hover table-striped table-bordered">
                   <thead>
                     <tr>
@@ -703,8 +703,9 @@ const readyReceiptKundanKarigar = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                             <input
+                              className={`${styles.input_field}`}
                               type="number"
                               readOnly
                               onChange={(e) =>
