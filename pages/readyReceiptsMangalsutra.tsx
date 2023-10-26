@@ -555,16 +555,18 @@ const readyReceiptsMangalsutra = () => {
                       <th className="thead" scope="col">Carat @</th>
                       <th className="thead" scope="col">Weight</th>
                       <th className="thead" scope="col">Gm @</th>
+                      <th className="thead" scope="col">Total</th>
+                      <th className="thead" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {materialWeight?.length > 0 &&
                       materialWeight?.map((element: any, i: any) => (
                         <tr key={i} >
-                          <td>{i + 1}</td>
-                          <td>
+                          <td className="table_row">{i + 1}</td>
+                          <td className="table_row">
                             <select
-                              className="w-100"
+                              className={`${styles.table_select}`}
                               name="Karigar"
                               id="karigar"
                             >
@@ -572,9 +574,9 @@ const readyReceiptsMangalsutra = () => {
                               <option value="karigar2">Karigar 2</option>
                             </select>
                           </td>
-                          <td>
+                          <td className="table_row">
                             <select
-                              className="w-100"
+                              className={`${styles.table_select}`}
                               name="Karigar"
                               id="karigar"
                             >
@@ -582,8 +584,9 @@ const readyReceiptsMangalsutra = () => {
                               <option value="karigar2">Karigar 2</option>
                             </select>
                           </td>
-                          <td>
+                          <td className="table_row">
                             <input
+                              className={` ${styles.input_field}`}
                               type="number"
                               value={element.pcs}
                               onChange={(e) =>
@@ -596,8 +599,9 @@ const readyReceiptsMangalsutra = () => {
                               }
                             />
                           </td>
-                          <td>
+                          <td className="table_row"> 
                             <input
+                              className={` ${styles.input_field}`}
                               type="number"
                               value={element.piece_}
                               onChange={(e) =>
@@ -610,8 +614,9 @@ const readyReceiptsMangalsutra = () => {
                               }
                             />
                           </td>
-                          <td>
+                          <td className="table_row">
                             <input
+                              className={` ${styles.input_field}`}
                               type="number"
                               value={element.carat}
                               onChange={(e) =>
@@ -624,8 +629,9 @@ const readyReceiptsMangalsutra = () => {
                               }
                             />
                           </td>
-                          <td>
+                          <td className="table_row">
                             <input
+                              className={` ${styles.input_field}`}
                               type="number"
                               value={element.carat_}
                               onChange={(e) =>
@@ -638,8 +644,9 @@ const readyReceiptsMangalsutra = () => {
                               }
                             />
                           </td>
-                          <td>
+                          <td className="table_row">
                             <input
+                              className={` ${styles.input_field}`}
                               type="number"
                               value={element.weight}
                               onChange={(e) =>
@@ -652,8 +659,9 @@ const readyReceiptsMangalsutra = () => {
                               }
                             />
                           </td>
-                          <td>
+                          <td className="table_row">
                             <input
+                              className={` ${styles.input_field}`}
                               type="number"
                               value={element.gm_}
                               onChange={(e) =>
@@ -666,8 +674,9 @@ const readyReceiptsMangalsutra = () => {
                               }
                             />
                           </td>
-                          <td>
+                          <td className="table_row">
                             <input
+                              className={`${styles.input_field}`}
                               type="number"
                               readOnly
                               onChange={(e) =>
@@ -682,13 +691,16 @@ const readyReceiptsMangalsutra = () => {
                               value={calculateRowValue(i)}
                             />
                           </td>
-                          <td>
+                          <td className="table_row">
                             <button
-                              className="d-flex align-items-center delete-link p-1"
+                              className="d-flex align-items-center delete-link p-1 border-0"
                               onClick={() => handleDeleteChildTableRow(i)}
-                              // onKeyDown={(e) => handleTabPress(e, item.id)}
+                              onKeyDown={(e) => handleTabPress(e, item.id)}
                             >
-                             
+                              <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: "red", fontSize: 15 }}
+                            />
                             </button>
                           </td>
                         </tr>

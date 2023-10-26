@@ -586,6 +586,7 @@ const readyReceiptKundanKarigar = () => {
                     <th className="thead" scope="col">
                       Gm @
                     </th>
+                    <th className="thead" scope="col">Total</th>
                     <th className="thead" scope="col"></th>
                   </tr>
                 </thead>
