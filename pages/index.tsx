@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import HomePageMaster from "@/components/HomePageMaster";
+import Login from "@/components/Login/Login";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -10,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return( 
   <>
-    <HomePageMaster/>
+    
   </>
   )
 }

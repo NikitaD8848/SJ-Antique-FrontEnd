@@ -52,12 +52,12 @@ const saleReturns = () => {
         }
       };
   return (
-    <div className="mx-5 bg-light">
-      <div className="container-fluid ">
-        <div className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-          <div className="nav-item" role="presentation">
+    <div className="container-lg">
+      <div className="container-lg">
+        <div className="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+          <div className="nav-tabs tabs-container w-50" role="presentation">
             <button
-              className="nav-link active"
+              className="nav-link active w-100 border p-1"
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -69,9 +69,9 @@ const saleReturns = () => {
               Sale Returns- (Customer)
             </button>
           </div>
-          <div className="nav-item" role="presentation">
+          <div className="nav-tabs tabs-container w-50" role="presentation">
             <button
-              className="nav-link"
+              className="nav-link w-100 border p-1"
               id="pills-profile-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-profile"
@@ -99,61 +99,64 @@ const saleReturns = () => {
             role="tabpanel"
             aria-labelledby="pills-profile-tab"
           >
-            Create new sale return
             <div>
               <div>
-                <div className={`${styles.button}`}>
-                  <button type="submit" className="btn btn-primary">
+              <div className={`${styles.button_field}`}>
+                  <button type="submit" className={`${styles.create_button}`}>
                     Create
                   </button>
                 </div>
-                <div className="">
-                  <table className="container-fluid table">
+                <div className="table-responsive">
+                  <table className="table table-hover">
                     <thead>
                       <tr>
-                        <th scope="col">Transaction Date</th>
-                        <th scope="col">Receipt no</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Detail</th>
+                        <th className="thead" scope="col">Transaction Date</th>
+                        <th className="thead" scope="col">Receipt no</th>
+                        <th className="thead" scope="col">Customer</th>
+                        <th className="thead" scope="col">Detail</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td scope="row">
-                          <input className="w-100" type="text" />
+                        <td  className="table_row" scope="row">
+                          <input className="form-control input-sm" type="text" />
                         </td>
-                        <td>
-                          <input className="w-100" type="number" />
+                        <td className="table_row" >
+                          <input className="form-control input-sm" type="number" />
                         </td>
-                        <td>
-                          <input className="w-100" type="text" />
+                        <td className="table_row" >
+                          <input className="form-control input-sm" type="text" />
                         </td>
-                        <td>
-                          <input className="w-100" type="text" />
+                        <td className="table_row" >
+                          <input className="form-control input-sm" type="text" />
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-              <button className={`${styles.addRow}`} onClick={handleAddRow}>
-                <SiAddthis />
-                Add row
+              <div className="container d-flex justify-content-end">   
+              <button
+                className={`btn btn-link`}
+                onClick={() => handleAddRow()}
+              >
+                Add Row
               </button>
-              <div className="container-fluid table-responsive">
-                <table className="table table-bordered table-hover ">
+              </div>
+              <div className="table-responsive">
+                <table className="table table-bordered table-hover table-striped ">
                   <thead>
                     <tr>
-                      <th scope="col">Sr. no</th>
-                      <th scope="col">Item</th>
-                      <th scope="col">G Wt</th>
-                      <th scope="col">C/s Wt</th>
-                      <th scope="col">Kun Wt</th>
-                      <th scope="col">Net Wt</th>
-                      <th scope="col">C/S</th>
-                      <th scope="col">Kun Pc</th>
-                      <th scope="col">Other</th>
-                      <th scope="col">Total</th>
+                      <th className="thead" scope="col">Sr. no</th>
+                      <th className="thead" scope="col">Item</th>
+                      <th className="thead" scope="col">G Wt</th>
+                      <th className="thead" scope="col">C/s Wt</th>
+                      <th className="thead" scope="col">Kun Wt</th>
+                      <th className="thead" scope="col">Net Wt</th>
+                      <th className="thead" scope="col">C/S</th>
+                      <th className="thead" scope="col">Kun Pc</th>
+                      <th className="thead" scope="col">Other</th>
+                      <th className="thead" scope="col">Total</th>
                       </tr>
                   </thead>
                   <tbody>
