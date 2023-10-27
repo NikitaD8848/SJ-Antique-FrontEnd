@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import getAccessTokenApi from '@/services/api/login-api';
 
 
-const Login = () => {
+const LoginMaster = () => {
   //const dispatch = useDispatch();
   //const navigate = useNavigate();
 
@@ -84,4 +84,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginMaster;

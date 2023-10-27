@@ -1,5 +1,5 @@
-export const KundanListingPage = {
-    KundanListingDataset:[
+export const KundanListingDataset = {
+    data:[
         {
             Receipt_no : "12345",
             transaction_date : '12/10/2023',

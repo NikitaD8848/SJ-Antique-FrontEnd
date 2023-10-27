@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import HomePageMaster from "@/components/HomePageMaster";
-import Login from "@/components/Login/Login";
+import Login from "@/components/Login/LoginMaster";
 
 
 const inter = Inter({ subsets: ["latin"] });
