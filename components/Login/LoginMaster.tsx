@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import getAccessTokenApi from '@/services/api/login-api';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getAccessToken,
   get_access_token,
 } from '@/store/slices/auth/login-slice';
+import { useRouter } from 'next/router';
 
 const LoginMaster = () => {
   const dispatch = useDispatch();
-  const selector = useSelector(get_access_token);
-  console.log(selector, 'selector');
-  //const navigate = useNavigate();
-
+  const loginAcessToken = useSelector(get_access_token);
+  const [loginToken, setLoginToken] = useState('');
+  console.log(loginAcessToken, 'selector');
+  const router = useRouter();
   const [userData, setUserData] = useState<any>({
     username: '',
     password: '',
@@ -25,7 +25,13 @@ const LoginMaster = () => {
   const HandleFormSubmit = () => {
     dispatch(getAccessToken(userData));
   };
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (loginAcessToken.token !== '') {
+      router.push('/');
+    } else {
+      router.push('/login');
+    }
+  }, [loginAcessToken]);
 
   return (
     <>

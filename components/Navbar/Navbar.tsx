@@ -9,10 +9,19 @@ import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Header1 from '../Header/Header-1';
 import Header2 from '../Header/Header-2';
+import { useDispatch } from 'react-redux';
+import { ClearToken } from '@/store/slices/auth/login-slice';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
+  const router = useRouter();
   const [showButtons1, setShowButtons1] = useState<any>(false);
   const [showButtons2, setShowButtons2] = useState<any>(false);
+  const dispatch = useDispatch();
+  const handleClick = () => {
+    dispatch(ClearToken());
+    router.push('/login');
+  };
 
   return (
     <div className="container-lg">
@@ -38,7 +47,7 @@ const Navbar = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/logout">Logout</Dropdown.Item>
+            <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
         <Header1 showButtons1={showButtons1} />
