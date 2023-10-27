@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CONSTANTS } from "../config/api-config";
 
 const purchaseReceiptApi = async () => {
     let response: any;
@@ -10,7 +11,7 @@ const purchaseReceiptApi = async () => {
     }
     await axios
       .post(
-        `http://127.0.0.1:8000/api/method/sj_antique.sdk.api`,
+        `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api`,
         {
             ...config,
             timeout:5000,

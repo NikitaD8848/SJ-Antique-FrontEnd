@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CONSTANTS } from "../config/api-config";
 
 const postMaterialApi = async () => {
     let response: any;
@@ -10,7 +11,7 @@ const postMaterialApi = async () => {
     }
     await axios
       .get(
-        `http://127.0.0.1:8000/api/method/sj_antique.sdk.api?version=v1&method=create_material&entity=material_post_api`,
+        `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=create_material&entity=material_post_api`,
         {
             ...config,
             timeout:5000,

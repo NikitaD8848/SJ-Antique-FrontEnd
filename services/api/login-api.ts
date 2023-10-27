@@ -1,10 +1,11 @@
 import axios from "axios";
+import { CONSTANTS } from "../config/api-config";
 
 const getAccessTokenApi = async () => {
     let response: any;
     await axios
       .get(
-        `http://172.0.0.1:8000/api/method/sj_antique.sdk.api?version=v1&method=get_access_token&entity=access_token&usr=Administrator&pwd=Erp@123`
+        `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=get_access_token&entity=access_token&usr=Administrator&pwd=Erp@123`
       )
       .then((res: any) => {
         console.log("Access token", res);

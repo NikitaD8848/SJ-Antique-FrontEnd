@@ -147,16 +147,16 @@ const saleReturns = () => {
                 <table className="table table-bordered table-hover table-striped ">
                   <thead>
                     <tr>
-                      <th scope="col">Sr. no</th>
-                      <th scope="col">Item</th>
-                      <th scope="col">G Wt</th>
-                      <th scope="col">C/s Wt</th>
-                      <th scope="col">Kun Wt</th>
-                      <th scope="col">Net Wt</th>
-                      <th scope="col">C/S</th>
-                      <th scope="col">Kun Pc</th>
-                      <th scope="col">Other</th>
-                      <th scope="col">Total</th>
+                      <th className="thead" scope="col">Sr. no</th>
+                      <th className="thead" scope="col">Item</th>
+                      <th className="thead" scope="col">G Wt</th>
+                      <th className="thead" scope="col">C/s Wt</th>
+                      <th className="thead" scope="col">Kun Wt</th>
+                      <th className="thead" scope="col">Net Wt</th>
+                      <th className="thead" scope="col">C/S</th>
+                      <th className="thead" scope="col">Kun Pc</th>
+                      <th className="thead" scope="col">Other</th>
+                      <th className="thead" scope="col">Total</th>
                       </tr>
                   </thead>
                   <tbody>

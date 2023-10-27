@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CONSTANTS } from "../config/api-config";
 
 const getKarigarApi = async () => {
     let response: any;
@@ -10,7 +11,7 @@ const getKarigarApi = async () => {
     }
     await axios
       .get(
-        `http://127.0.0.1:8000/api/method/sj_antique.sdk.api?version=v1&method=get_karigar&entity=karigar_get_api`,
+        `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=get_karigar&entity=karigar_get_api`,
         {
             ...config,
             timeout:5000,
