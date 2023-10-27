@@ -7,7 +7,6 @@ const purchaseReceiptApi = async () => {
         headers: {
           Accept: "application/json",
         },
-        withCredentials: true,
     }
     await axios
       .post(

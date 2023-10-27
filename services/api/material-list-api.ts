@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { CONSTANTS } from '../config/api-config';
 
-const materialApi = async () => {
+const materialApi = async (get_access_token:any) => {
   let response: any;
   const config = {
     headers: {
       Accept: 'application/json',
+      Authorization: get_access_token
     },
-    withCredentials: true,
   };
   await axios
     .get(

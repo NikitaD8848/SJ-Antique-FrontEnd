@@ -333,7 +333,7 @@ const readyReceiptsMangalsutra = () => {
                           <input className="form-control input-sm" type="number" />
                         </td>
                         <td className="table_row">
-                          <select className="form-control" name="Karigar" id="karigar">
+                          <select className="form-select border-0" name="Karigar" id="karigar">
                             <option value="karigar1">Karigar 1</option>
                             <option value="karigar2">Karigar 2</option>
                           </select>
@@ -483,6 +483,7 @@ const readyReceiptsMangalsutra = () => {
                                 +e.target.value
                               )
                             }
+                            onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
                         <td className="table_row">

@@ -6,8 +6,7 @@ const purchasreceiptTaohaidApi = async () => {
     const config = {
         headers: {
           Accept: "application/json",
-        },
-        withCredentials: true,
+        }
     }
     await axios
       .get(

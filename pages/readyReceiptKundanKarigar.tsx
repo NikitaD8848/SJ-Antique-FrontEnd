@@ -8,8 +8,16 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { Link } from 'react-router-dom';
 import getKarigarApi from '@/services/api/karigar-list-api';
+import { get_access_token } from '@/store/slices/auth/login-slice';
+import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
+import materialApi from '@/services/api/material-list-api';
 
 const readyReceiptKundanKarigar = () => {
+  // api states
+  const [karigarList, setKarigarList] = useState<any>([{}])
+  const [kundaKarigarList, setKundanKarigarList] = useState<any>([{}])
+  const [materialList, setMaterialList] = useState<any>([{}])
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clickBtn, setClickBtn] = useState<boolean>(false);
   const [dublicateData, setDublicateData] = useState<any>();
@@ -233,6 +241,37 @@ const readyReceiptKundanKarigar = () => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
+  const getKarigarList = async () => {
+    const getKarigarList = await getKarigarApi(get_access_token);
+    if (getKarigarList?.status === 200 && getKarigarList?.data === "success") {
+      setKarigarList([...getKarigarList?.data]);
+    } else {
+      setKarigarList([]);
+    }
+  };
+  const getKundanKarigarList = async () => {
+    const getKundanKarigarList = await materialApi(get_access_token);
+    if(getKundanKarigarList?.status === 200 && getKundanKarigarList?.data === "success"){
+      setKundanKarigarList([...kundaKarigarList?.data]);
+    }
+    else{
+      setKundanKarigarList([]);
+    }
+  }
+  const getMaterialList = async () => {
+    const getMaterialList = await kundanKarigarApi(get_access_token);
+    if(getMaterialList?.status === 200 && getMaterialList?.data === "success"){
+      setMaterialList([...materialList?.data]);
+    }
+    else{
+      setMaterialList([]);
+    }
+  }
+  useEffect(() => {
+    getKarigarList();
+    getKundanKarigarList();
+    getMaterialList();
+  }, []);
 
   return (
     <div className="container-lg">
@@ -273,7 +312,7 @@ const readyReceiptKundanKarigar = () => {
         </div>
         <div className="tab-content" id="pills-tabContent">
           <div
-            className="tab-pane fade show"
+            className="tab-pane fade show active"
             id="pills-home"
             role="tabpanel"
             aria-labelledby="pills-home-tab"
@@ -325,7 +364,7 @@ const readyReceiptKundanKarigar = () => {
                         />
                       </td>
                       <td className="table_row">
-                        <select className="" name="Karigar">
+                        <select className="form-select border-0" name="Karigar">
                           <option value="karigar1">Karigar 1</option>
                           <option value="karigar2">Karigar 2</option>
                         </select>

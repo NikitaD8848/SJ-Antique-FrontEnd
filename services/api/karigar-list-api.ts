@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { CONSTANTS, headerGenerator } from '../config/api-config';
 
-const getKarigarApi = async () => {
+const getKarigarApi = async (get_access_token:any) => {
   let response: any;
   // const getHeaders = headerGenerator(token);
   const config = {
     headers: {
       Accept: 'application/json',
+      Authorzation : get_access_token
     },
-    withCredentials: true,
   };
   await axios
     .get(

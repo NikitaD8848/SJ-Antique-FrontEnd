@@ -117,6 +117,8 @@ a {
   background-color: #2f308c !important;
   color: #FFF !important;
   line-height: 10px;
+  font-weight: 400;
+  font-size: 15px;
 }
 td.table_row{
   line-height: 10px !important;
@@ -128,13 +130,11 @@ input.form-control.input-sm{
   line-height: 7px;
   font-size: 15px;
   text-align: center;
-  background: #e0e1f5;
 }
-select.form-control{
-  padding: 0;
-  line-height: 20px;
+select.form-select.border-0{
+  line-height: 20px ;
   font-size: 15px;
-  background: #e0e1f5;
+  padding: 0;
 }
 p .my-auto .btn-link{
   cursor: pointer;
