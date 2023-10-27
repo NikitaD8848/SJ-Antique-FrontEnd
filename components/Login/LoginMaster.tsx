@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import getAccessTokenApi from '@/services/api/login-api';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getAccessToken,
+  get_access_token,
+} from '@/store/slices/auth/login-slice';
 
-const Login = () => {
-  //const dispatch = useDispatch();
+const LoginMaster = () => {
+  const dispatch = useDispatch();
+  const selector = useSelector(get_access_token);
+  console.log(selector, 'selector');
   //const navigate = useNavigate();
 
   const [userData, setUserData] = useState<any>({
@@ -13,11 +20,13 @@ const Login = () => {
   const HandleInputChange: any = (e: any) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
+  console.log(userData, 'userData');
 
-  const HandleFormSubmit: any = async (e: any) => {
-    e.preventDefault();
-    const getAccessToken = getAccessTokenApi();
+  const HandleFormSubmit = () => {
+    dispatch(getAccessToken(userData));
   };
+  useEffect(() => {}, []);
+
   return (
     <>
       <div className="container mt-5">
@@ -30,10 +39,7 @@ const Login = () => {
               <div className="  p-lg-5 p-0">
                 <p className="text-uppercase fs-3 text-center">login </p>
                 <div className="card-body p-0">
-                  <form
-                    onSubmit={HandleFormSubmit}
-                    className="login-form p-2 mx-auto text-center"
-                  >
+                  <form className="login-form p-2 mx-auto text-center">
                     <div className="mb-3">
                       <input
                         type="text"
@@ -59,9 +65,9 @@ const Login = () => {
                         />
                       </div>
                     </div>
-
                     <button
-                      type="submit"
+                      type="button"
+                      onClick={HandleFormSubmit}
                       className="btn btn-primary mt-3 py-1 px-4"
                     >
                       Login
@@ -77,4 +83,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginMaster;

@@ -1,5 +1,5 @@
 export const CONSTANTS = {
-  API_BASE_URL: 'http://127.0.0.1:8000/',
+  API_BASE_URL: 'https://shilpiantique.8848digitalerp.com',
 };
 
 export const headerGenerator = (token: any) => {

@@ -1,11 +1,12 @@
 import axios from "axios";
 import { CONSTANTS } from "../config/api-config";
 
-const purchasreceiptTaohaidApi = async () => {
+const purchasreceiptTaohaidApi = async (get_access_token:any) => {
     let response: any;
     const config = {
         headers: {
           Accept: "application/json",
+          Authorization: get_access_token
         }
     }
     await axios

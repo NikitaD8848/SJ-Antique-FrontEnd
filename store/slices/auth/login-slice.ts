@@ -7,8 +7,8 @@ import getAccessTokenApi from '@/services/api/login-api';
 
 export const getAccessToken: any = createAsyncThunk(
   'accessToken/getAccessToken',
-  async (param: any, { dispatch }) => {
-    const AccessTokenData = await getAccessTokenApi();
+  async (param: any) => {
+    const AccessTokenData = await getAccessTokenApi(param);
     console.log(AccessTokenData, 'AccessTokenData');
     return AccessTokenData;
   }

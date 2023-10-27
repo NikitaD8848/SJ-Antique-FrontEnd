@@ -1,6 +1,6 @@
 import React from 'react'
 import {BrowserRouter,  Route, Router, Routes } from 'react-router-dom'
-import Login from './Login/Login'
+import Login from './Login/LoginMaster'
 
 const AppRoutes = () => {
   return (
