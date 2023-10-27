@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 const KundanListing = () => {
+    //const [kundanListing, setKundanListing] = useState(KundanListingDataset)
+
   return (
     <div className="container lg">
         <div className='container-lg table-responsive'>
-            <table className='table table-striped table-hover'>
+            <table className='table table-striped table-hover table-bordered'>
                 <thead>
                     <tr>
                         <th className='thead' scope='col'>Receipt No.</th>
@@ -17,6 +19,14 @@ const KundanListing = () => {
                 </thead>
                 <tbody>
                     <tr>
+                        <td className='table_row' ></td>
+                        <td className='table_row' >12</td>
+                        <td className='table_row' >Karigar1</td>
+                        <td className='table_row' >sdf</td>
+                        <td className='table_row' >asdf</td>
+                        <td className='table_row' >asdf</td>
+                    </tr>
+                    <tr>
                         <td className='table_row' >12</td>
                         <td className='table_row' >12</td>
                         <td className='table_row' >Karigar1</td>
@@ -25,7 +35,7 @@ const KundanListing = () => {
                         <td className='table_row' >asdf</td>
                     </tr>
                 </tbody>
-                table listing
+                
             </table>
         </div>
     </div>

@@ -119,9 +119,10 @@ a {
   line-height: 10px;
   font-weight: 400;
   font-size: 15px;
+  text-align: center;
 }
 td.table_row{
-  line-height: 10px !important;
+  line-height: 15px !important;
   padding:1px !important;
   text-align: center;
 }
