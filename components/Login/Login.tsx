@@ -1,12 +1,5 @@
 import { useState } from 'react';
-//import '../../Style/Login.css';
-import { useDispatch } from 'react-redux';
-//import { getAccessToken } from '../../store/slices/auth/token-login-slice';
-//import { showToast } from '../ToastNotification';
-import axios from "axios"
-import { useNavigate } from 'react-router-dom';
 import getAccessTokenApi from '@/services/api/login-api';
-
 
 const Login = () => {
   //const dispatch = useDispatch();
@@ -23,7 +16,7 @@ const Login = () => {
 
   const HandleFormSubmit: any = async (e: any) => {
     e.preventDefault();
-    const getAccessToken = getAccessTokenApi()
+    const getAccessToken = getAccessTokenApi();
   };
   return (
     <>
