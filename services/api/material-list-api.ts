@@ -1,24 +1,24 @@
 import axios from 'axios';
 import { CONSTANTS } from '../config/api-config';
 
-const postMaterialApi = async () => {
+const materialApi = async (get_access_token:any) => {
   let response: any;
   const config = {
     headers: {
       Accept: 'application/json',
+      Authorization: get_access_token
     },
-    withCredentials: true,
   };
   await axios
     .get(
-      `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=create_material&entity=material_post_api`,
+      `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=get_material&entity=material_api`,
       {
         ...config,
         timeout: 5000,
       }
     )
     .then((res: any) => {
-      console.log('post material', res);
+      console.log('get material', res);
       response = res?.data?.message?.data;
     })
     .catch((err: any) => {
@@ -36,4 +36,4 @@ const postMaterialApi = async () => {
   return response;
 };
 
-export default postMaterialApi;
+export default materialApi;
