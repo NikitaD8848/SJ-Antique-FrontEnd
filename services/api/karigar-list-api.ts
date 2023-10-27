@@ -1,22 +1,14 @@
 import axios from 'axios';
 import { CONSTANTS, headerGenerator } from '../config/api-config';
 
-const getKarigarApi = async (get_access_token:any) => {
+const getKarigarApi = async (get_access_token: any) => {
   let response: any;
-  // const getHeaders = headerGenerator(token);
-  const config = {
-    headers: {
-      Accept: 'application/json',
-      Authorzation : get_access_token
-    },
-  };
+  const getHeaders = headerGenerator(get_access_token);
+
   await axios
     .get(
-      `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=get_karigar&entity=karigar_get_api`,
-      {
-        ...config,
-        timeout: 5000,
-      }
+      `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=get_karigar&entity=karigar_get_api`,
+      getHeaders
     )
     .then((res: any) => {
       console.log('get karigar', res);

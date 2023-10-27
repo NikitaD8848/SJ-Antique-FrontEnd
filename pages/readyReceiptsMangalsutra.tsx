@@ -1,16 +1,25 @@
-import React, { useState, useRef } from "react";
-import styles from "../styles/readyReceipts.module.css";
-import { Modal, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useRef, useEffect } from 'react';
+import styles from '../styles/readyReceipts.module.css';
+import { Modal, Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import getKarigarApi from '@/services/api/karigar-list-api';
+import { get_access_token } from '@/store/slices/auth/login-slice';
+import { useSelector } from 'react-redux';
+import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
+import materialApi from '@/services/api/material-list-api';
 
 const readyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clickBtn, setClickBtn] = useState<boolean>(false);
-  const [dublicateData, setDublicateData] = useState<any>();
+  const [karigarData, setKarigarData] = useState<any>();
+  const [kundanKarigarData, setKundanKarigarData] = useState<any>();
+  const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
+  const loginAcessToken = useSelector(get_access_token);
+  console.log(loginAcessToken, 'loginAcessToken');
   // const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
   // const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
   // const [materialWeight, setMaterialWeight] = useState<any>([
@@ -31,36 +40,50 @@ const readyReceiptsMangalsutra = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      product_code: "",
-      custom_kun_karigar: "",
-      custom_net_wt: "",
-      custom_few_wt: "",
-      custom_gross_wt: "",
-      custom_mat_wt: "",
-      custom_other: "",
-      custom_total: "",
-      custom_add_photo: "",
+      product_code: '',
+      custom_kun_karigar: '',
+      custom_net_wt: '',
+      custom_few_wt: '',
+      custom_gross_wt: '',
+      custom_mat_wt: '',
+      custom_other: '',
+      custom_total: '',
+      custom_add_photo: '',
       totalModalWeight: 0,
       totalAmount: 0,
       table: [
         {
           id: materialWeight?.length + 1,
-          material_abbr: "",
-          material_name: "",
-          pcs: "",
-          piece_: "",
-          carat: "",
-          carat_: "",
-          weight: "",
-          gm_: "",
-          amount: "",
+          material_abbr: '',
+          material_name: '',
+          pcs: '',
+          piece_: '',
+          carat: '',
+          carat_: '',
+          weight: '',
+          gm_: '',
+          amount: '',
         },
       ],
     },
   ]);
 
+  const getKaragirlist = async () => {};
+  useEffect(() => {
+    const getStateData: any = async () => {
+      const stateData: any = await getKarigarApi(loginAcessToken.token);
+      const KundanKarigarAPI = await kundanKarigarApi(loginAcessToken.token);
+      const materialListApi = await materialApi(loginAcessToken.token);
+      console.log(KundanKarigarAPI, 'stateData');
+      setKarigarData(stateData);
+      setKundanKarigarData(KundanKarigarAPI);
+      setMaterialListData(materialListApi);
+    };
+    getStateData();
+  }, []);
+  console.log(karigarData, 'karigarData');
   const calculateRowValue = (i: any) => {
-    console.log(i, "i");
+    console.log(i, 'i');
     return (
       materialWeight[i]?.pcs * materialWeight[i]?.piece_ +
       materialWeight[i]?.carat * materialWeight[i]?.carat_ +
@@ -111,31 +134,31 @@ const readyReceiptsMangalsutra = () => {
   const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
-      product_code: "",
-      custom_kun_karigar: "",
-      custom_net_wt: "",
-      custom_few_wt: "",
-      custom_gross_wt: "",
-      custom_mat_wt: "",
-      custom_other: "",
-      custom_total: "",
-      custom_add_photo: "",
+      product_code: '',
+      custom_kun_karigar: '',
+      custom_net_wt: '',
+      custom_few_wt: '',
+      custom_gross_wt: '',
+      custom_mat_wt: '',
+      custom_other: '',
+      custom_total: '',
+      custom_add_photo: '',
       table: [
         {
           id: materialWeight?.length + 1,
-          material_abbr: "",
-          material_name: "",
-          pcs: "",
-          piece_: "",
-          carat: "",
-          carat_: "",
-          weight: "",
-          gm_: "",
-          amount: "",
+          material_abbr: '',
+          material_name: '',
+          pcs: '',
+          piece_: '',
+          carat: '',
+          carat_: '',
+          weight: '',
+          gm_: '',
+          amount: '',
         },
       ],
     };
-    if (value === "tableRow") {
+    if (value === 'tableRow') {
       setTableData([...tableData, newRow]);
     } else {
       setMaterialWeight([...materialWeight, ...newRow?.table]);
@@ -145,35 +168,35 @@ const readyReceiptsMangalsutra = () => {
   const handleModalAddRow = () => {
     const newModalRow = {
       id: materialWeight?.length + 1,
-      material_abbr: "",
-      material_name: "",
-      pcs: "",
-      piece_: "",
-      carat: "",
-      carat_: "",
-      weight: "",
-      gm_: "",
-      amount: "",
+      material_abbr: '',
+      material_name: '',
+      pcs: '',
+      piece_: '',
+      carat: '',
+      carat_: '',
+      weight: '',
+      gm_: '',
+      amount: '',
     };
     setMaterialWeight([...materialWeight, newModalRow]);
   };
   const handleTabPress = (event: any, id: any) => {
-    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
-      handleAddRow("tableRow");
+    if (event.key === 'Tab' && id === tableData[tableData.length - 1].id) {
+      handleAddRow('tableRow');
     }
   };
 
   const handleModal = (event: any, id: any, data: any) => {
-    setIndexVal(id)
-    console.log(tableData, "materialWeight");
+    setIndexVal(id);
+    console.log(tableData, 'materialWeight');
     // console.log(materialWeight, "materialWeight");
     const dataVal = tableData?.filter((item: any) => {
       if (item.id === id) {
-        if (event.key === "F2") {
-          if (item.totalAmount>0) {
-            setMaterialWeight(item.table);      
+        if (event.key === 'F2') {
+          if (item.totalAmount > 0) {
+            setMaterialWeight(item.table);
           } else {
-            setMaterialWeight(data.table); 
+            setMaterialWeight(data.table);
           }
           setShowModal(true);
         }
@@ -201,9 +224,9 @@ const readyReceiptsMangalsutra = () => {
         ...rest
       }: any) => ({ ...rest })
     );
-    console.log(totalAmmount, "bfggh");
+    console.log(totalAmmount, 'bfggh');
     const weightAddition = materialWeight.reduce((accu: any, val: any) => {
-      console.log(accu, "accu23");
+      console.log(accu, 'accu23');
       return accu + val.weight;
     }, 0);
 
@@ -212,20 +235,20 @@ const readyReceiptsMangalsutra = () => {
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
     // setTotalModalAmount(totalvalues);
-    console.log(totalvalues, "totalvalues ");
+    console.log(totalvalues, 'totalvalues ');
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
       return accu + val;
     }, 0);
     console.log();
     const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
-      console.log(i, "ij");
-      console.log(id, "ij");
+      console.log(i, 'ij');
+      console.log(id, 'ij');
       if (row.id === indexVal) {
         return {
           ...row,
           totalModalWeight: weightAddition,
           totalAmount: totalAmmountValues,
-          table:materialWeight
+          table: materialWeight,
         };
       }
       return row;
@@ -236,7 +259,7 @@ const readyReceiptsMangalsutra = () => {
     } else {
       setClickBtn(false);
     }
-    console.log(updatedMaterialWeight,"data45")
+    console.log(updatedMaterialWeight, 'data45');
     // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
@@ -250,17 +273,19 @@ const readyReceiptsMangalsutra = () => {
     setActiveModalId(null);
   };
 
-
-
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
-  console.log(tableData, "accu23");
+  console.log(tableData, 'accu23');
   return (
     <div className="container-lg">
       <div className="container-lg">
-        <div className="nav nav-pills mb-3 justify-content-center " id="pills-tab" role="tablist">
+        <div
+          className="nav nav-pills mb-3 justify-content-center "
+          id="pills-tab"
+          role="tablist"
+        >
           <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
               className="nav-link active w-100 border p-1"
@@ -314,32 +339,57 @@ const readyReceiptsMangalsutra = () => {
                 </div>
 
                 <div className="table-responsive">
-                  <table className="table table-hover" >
-                    <thead >
+                  <table className="table table-hover">
+                    <thead>
                       <tr>
-                        <th className="thead" scope="col">Date</th>
-                        <th className="thead" scope="col">Receipt Number</th>
-                        <th className="thead" scope="col">Karigar(Supplier)</th>
-                        <th className="thead" scope="col">Remarks</th>
-                        <th className="thead" scope="col">Ready Raceipt Type</th>
+                        <th className="thead" scope="col">
+                          Date
+                        </th>
+                        <th className="thead" scope="col">
+                          Receipt Number
+                        </th>
+                        <th className="thead" scope="col">
+                          Karigar(Supplier)
+                        </th>
+                        <th className="thead" scope="col">
+                          Remarks
+                        </th>
+                        <th className="thead" scope="col">
+                          Ready Raceipt Type
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td scope="row" className="table_row">
-                          <input className="form-control input-sm" type="text" />
+                          <input
+                            className="form-control input-sm"
+                            type="text"
+                          />
                         </td>
                         <td className="table_row">
-                          <input className="form-control input-sm" type="number" />
+                          <input
+                            className="form-control input-sm"
+                            type="number"
+                          />
                         </td>
                         <td className="table_row">
-                          <select className="form-select border-0" name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
+                          <select
+                            className="form-select border-0"
+                            name="Karigar"
+                            id="karigar"
+                          >
+                            {karigarData?.length > 0 &&
+                              karigarData?.map((name: any, i: any) => (
+                                <option key={i}>{name.karigar_name}</option>
+                              ))}
                           </select>
                         </td>
                         <td className="table_row">
-                          <input className="form-control input-sm" type="text" />
+                          <input
+                            className="form-control input-sm"
+                            type="text"
+                          />
                         </td>
                         <td className="table_row">
                           <input
@@ -347,7 +397,7 @@ const readyReceiptsMangalsutra = () => {
                             type="text"
                             readOnly
                             disabled
-                            value={"Mangalsutra"}
+                            value={'Mangalsutra'}
                           />
                         </td>
                       </tr>
@@ -356,28 +406,48 @@ const readyReceiptsMangalsutra = () => {
                 </div>
               </div>
 
-              <div className="container d-flex justify-content-end">   
-              <button
-                className={`btn btn-link`}
-                onClick={() => handleAddRow("tableRow")}
-              >
-                Add Row
-              </button>
+              <div className="container d-flex justify-content-end">
+                <button
+                  className={`btn btn-link`}
+                  onClick={() => handleAddRow('tableRow')}
+                >
+                  Add Row
+                </button>
               </div>
               <div className="table-responsive">
-                <table className="table table-striped table-bordered table-hover" >
+                <table className="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
-                      <th className="thead" scope="col">Sr. no</th>
-                      <th className="thead" scope="col">Product Code (Item)</th>
-                      <th className="thead" scope="col">Kun Karigar</th>
-                      <th className="thead" scope="col">Net Wt</th>
-                      <th className="thead" scope="col">Few Wt</th>
-                      <th className="thead" scope="col">Gross Wt</th>
-                      <th className="thead" scope="col">Mat Wt</th>
-                      <th className="thead" scope="col">Other</th>
-                      <th className="thead" scope="col">Total</th>
-                      <th className="thead" scope="col">Add Photo</th>
+                      <th className="thead" scope="col">
+                        Sr. no
+                      </th>
+                      <th className="thead" scope="col">
+                        Product Code (Item)
+                      </th>
+                      <th className="thead" scope="col">
+                        Kun Karigar
+                      </th>
+                      <th className="thead" scope="col">
+                        Net Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Few Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Gross Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Mat Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Other
+                      </th>
+                      <th className="thead" scope="col">
+                        Total
+                      </th>
+                      <th className="thead" scope="col">
+                        Add Photo
+                      </th>
                       <th className="thead" scope="col"></th>
                     </tr>
                   </thead>
@@ -393,17 +463,25 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "tableRow",
-                                "product_code",
+                                'tableRow',
+                                'product_code',
                                 +e.target.value
                               )
                             }
                           />
                         </td>
                         <td className="table_row">
-                          <select className={` ${styles.table_select}`} name="Karigar" id="karigar">
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
+                          <select
+                            className={` ${styles.table_select}`}
+                            name="Karigar"
+                            id="karigar"
+                          >
+                            {kundanKarigarData?.length > 0 &&
+                              kundanKarigarData.map((name: any, i: any) => (
+                                <option value="karigar1">
+                                  {name.karigar_name}
+                                </option>
+                              ))}
                           </select>
                         </td>
                         <td className="table_row">
@@ -414,8 +492,8 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "tableRow",
-                                "custom_net_wt",
+                                'tableRow',
+                                'custom_net_wt',
                                 +e.target.value
                               )
                             }
@@ -429,8 +507,8 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "tableRow",
-                                "custom_few_wt",
+                                'tableRow',
+                                'custom_few_wt',
                                 +e.target.value
                               )
                             }
@@ -461,8 +539,8 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "tableRow",
-                                "custom_mat_wt",
+                                'tableRow',
+                                'custom_mat_wt',
                                 +e.target.value
                               )
                             }
@@ -477,8 +555,8 @@ const readyReceiptsMangalsutra = () => {
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
-                                "tableRow",
-                                "custom_other",
+                                'tableRow',
+                                'custom_other',
 
                                 +e.target.value
                               )
@@ -487,7 +565,7 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td className="table_row">
-                          {" "}
+                          {' '}
                           <input
                             className={` ${styles.input_field}`}
                             type="text"
@@ -502,9 +580,10 @@ const readyReceiptsMangalsutra = () => {
                           />
                         </td>
                         <td className="table_row">
-                          <input 
-                          className={` ${styles.input_field}`}
-                          type="file" />
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="file"
+                          />
                         </td>
                         <td className="table_row">
                           <button
@@ -514,7 +593,7 @@ const readyReceiptsMangalsutra = () => {
                           >
                             <FontAwesomeIcon
                               icon={faTrash}
-                              style={{ color: "red", fontSize: 15 }}
+                              style={{ color: 'red', fontSize: 15 }}
                             />
                           </button>
                         </td>
@@ -529,42 +608,60 @@ const readyReceiptsMangalsutra = () => {
       </div>
       <div>
         {tableData.map((item: any, index: any) => (
-          <Modal
-            size="xl"
-            key={index}
-            show={showModal}
-            onHide={closeModal}
-          >
+          <Modal size="xl" key={index} show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>
               <Modal.Title>Triggered by Key Press</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <div className="container d-flex justify-content-end">
-                <button className="btn btn-link" onClick={() => handleAddRow("modalRow")}>
-                Add Row
-              </button>
+              <div className="container d-flex justify-content-end">
+                <button
+                  className="btn btn-link"
+                  onClick={() => handleAddRow('modalRow')}
+                >
+                  Add Row
+                </button>
               </div>
               <div className="table-responsive">
                 <table className="table table-bordered table-hover table-striped">
                   <thead>
                     <tr>
-                      <th className="thead" scope="col">Sr. no</th>
-                      <th className="thead" scope="col">Material Abbr (Master)</th>
-                      <th className="thead" scope="col">Material (Master)</th>
-                      <th className="thead" scope="col">Pcs</th>
-                      <th className="thead" scope="col">Piece @</th>
-                      <th className="thead" scope="col">Carat</th>
-                      <th className="thead" scope="col">Carat @</th>
-                      <th className="thead" scope="col">Weight</th>
-                      <th className="thead" scope="col">Gm @</th>
-                      <th className="thead" scope="col">Total</th>
+                      <th className="thead" scope="col">
+                        Sr. no
+                      </th>
+                      <th className="thead" scope="col">
+                        Material Abbr (Master)
+                      </th>
+                      <th className="thead" scope="col">
+                        Material (Master)
+                      </th>
+                      <th className="thead" scope="col">
+                        Pcs
+                      </th>
+                      <th className="thead" scope="col">
+                        Piece @
+                      </th>
+                      <th className="thead" scope="col">
+                        Carat
+                      </th>
+                      <th className="thead" scope="col">
+                        Carat @
+                      </th>
+                      <th className="thead" scope="col">
+                        Weight
+                      </th>
+                      <th className="thead" scope="col">
+                        Gm @
+                      </th>
+                      <th className="thead" scope="col">
+                        Total
+                      </th>
                       <th className="thead" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {materialWeight?.length > 0 &&
                       materialWeight?.map((element: any, i: any) => (
-                        <tr key={i} >
+                        <tr key={i}>
                           <td className="table_row">{i + 1}</td>
                           <td className="table_row">
                             <select
@@ -582,8 +679,12 @@ const readyReceiptsMangalsutra = () => {
                               name="Karigar"
                               id="karigar"
                             >
-                              <option value="karigar1">Karigar 1</option>
-                              <option value="karigar2">Karigar 2</option>
+                              {materialListData?.length > 0 &&
+                                materialListData?.map((name: any, i: any) => (
+                                  <option value="karigar1">
+                                    {name.material_name}
+                                  </option>
+                                ))}
                             </select>
                           </td>
                           <td className="table_row">
@@ -594,14 +695,14 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "pcs",
+                                  'modalRow',
+                                  'pcs',
                                   +e.target.value
                                 )
                               }
                             />
                           </td>
-                          <td className="table_row"> 
+                          <td className="table_row">
                             <input
                               className={` ${styles.input_field}`}
                               type="number"
@@ -609,8 +710,8 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "piece_",
+                                  'modalRow',
+                                  'piece_',
                                   +e.target.value
                                 )
                               }
@@ -624,8 +725,8 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "carat",
+                                  'modalRow',
+                                  'carat',
                                   +e.target.value
                                 )
                               }
@@ -639,8 +740,8 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "carat_",
+                                  'modalRow',
+                                  'carat_',
                                   +e.target.value
                                 )
                               }
@@ -654,8 +755,8 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "weight",
+                                  'modalRow',
+                                  'weight',
                                   +e.target.value
                                 )
                               }
@@ -669,8 +770,8 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "gm_",
+                                  'modalRow',
+                                  'gm_',
                                   +e.target.value
                                 )
                               }
@@ -684,8 +785,8 @@ const readyReceiptsMangalsutra = () => {
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
-                                  "modalRow",
-                                  "amount",
+                                  'modalRow',
+                                  'amount',
                                   +e.target.value
                                 )
                               }
@@ -700,9 +801,9 @@ const readyReceiptsMangalsutra = () => {
                               onKeyDown={(e) => handleTabPress(e, item.id)}
                             >
                               <FontAwesomeIcon
-                              icon={faTrash}
-                              style={{ color: "red", fontSize: 15 }}
-                            />
+                                icon={faTrash}
+                                style={{ color: 'red', fontSize: 15 }}
+                              />
                             </button>
                           </td>
                         </tr>

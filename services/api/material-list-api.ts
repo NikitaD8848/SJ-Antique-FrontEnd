@@ -1,21 +1,13 @@
 import axios from 'axios';
-import { CONSTANTS } from '../config/api-config';
+import { CONSTANTS, headerGenerator } from '../config/api-config';
 
-const materialApi = async (get_access_token:any) => {
+const materialApi = async (get_access_token: any) => {
   let response: any;
-  const config = {
-    headers: {
-      Accept: 'application/json',
-      Authorization: get_access_token
-    },
-  };
+  const getHeaders = headerGenerator(get_access_token);
   await axios
     .get(
-      `${CONSTANTS.API_BASE_URL}api/method/sj_antique.sdk.api?version=v1&method=get_material&entity=material_api`,
-      {
-        ...config,
-        timeout: 5000,
-      }
+      `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=get_material&entity=material_api`,
+      getHeaders
     )
     .then((res: any) => {
       console.log('get material', res);
