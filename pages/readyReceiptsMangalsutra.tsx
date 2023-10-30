@@ -14,6 +14,7 @@ import { table } from 'console';
 const readyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [abbrivationVal, setAbbrivationVal] = useState('');
   const [recipitData, setRecipitData] = useState({
     version: 'v1',
     method: 'create_purchase_receipt',
@@ -31,27 +32,12 @@ const readyReceiptsMangalsutra = () => {
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
-  // const [totalModalWeight, setTotalModalWeight] = useState<any>(0);
-  // const [totalModalAmount, setTotalModalAmount] = useState<any>(0);
-  // const [materialWeight, setMaterialWeight] = useState<any>([
-  //   {
-  //     id: 1,
-  //     material_abbr: "",
-  //     material_name: "",
-  //     pcs: "",
-  //     piece_: "",
-  //     carat: "",
-  //     carat_: "",
-  //     weight: "",
-  //     gm_: "",
-  //     amount: "",
-  //   },
-  // ]);
+
   const [materialWeight, setMaterialWeight] = useState<any>();
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      product_code: '',
+      item_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -102,7 +88,7 @@ const readyReceiptsMangalsutra = () => {
     );
   };
 
-  const handleFieldChange = (
+  const handleFieldChange: any = (
     id: number,
     val: any,
     field: string,
@@ -114,6 +100,7 @@ const readyReceiptsMangalsutra = () => {
       }
       return item;
     });
+    console.log(updatedData, 'bbb');
     setTableData(updatedData);
   };
   const handleModalFieldChange = (
@@ -131,6 +118,10 @@ const readyReceiptsMangalsutra = () => {
         return item;
       });
 
+    const newVal = tableData?.table?.filter(
+      (item: any) => materialListData?.includes(item.material)
+    );
+    console.log(newVal, 'newVal');
     console.log(disabledValue, 'disabledValue');
     // const updatedMaterialWeight = materialWeight?.map((row:any,i:any) => {
     //   console.log(i,"ij")
@@ -146,7 +137,7 @@ const readyReceiptsMangalsutra = () => {
   const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
-      product_code: '',
+      item_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -271,13 +262,13 @@ const readyReceiptsMangalsutra = () => {
           ...row,
           totalModalWeight: weightAddition,
           totalAmount: totalAmmountValues,
-          table: materialWeight,
+          table: materialWeight.map(({ id, ...rest }: any) => ({ ...rest })),
           custom_mat_wt: weightAddition,
           custom_gross_wt:
             parseInt(row.custom_net_wt, 10) +
             parseInt(row.custom_few_wt, 10) +
             weightAddition,
-          custom_total: parseInt(row.custom_other, 10) + totalAmmountValues,
+          custom_total: parseInt(row.custom_other) + totalAmmountValues,
         };
       }
       return row;
@@ -309,6 +300,7 @@ const readyReceiptsMangalsutra = () => {
       setClickBtn(false);
     }
     console.log(updatedMaterialWeight, 'data45');
+
     // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
@@ -327,18 +319,26 @@ const readyReceiptsMangalsutra = () => {
   console.log(recipitData, 'recipitData');
   const handleCreate = async () => {
     console.log(tableData, 'table56');
-    console.log(calculateRowValue, 'table56');
-    // const purchaseReceipt: any = await purchaseReceiptApi(
-    //   loginAcessToken.token
-    // );
+
+    const modalValue = tableData.map(
+      ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
+        ...rest,
+      })
+    );
+    // const finalVal = tableData?.table?.map(({ id, ...rest }: any) => ({
+    //   ...rest,
+    // }));
+    const values = {
+      ...recipitData,
+      items: modalValue,
+    };
+    console.log(values, 'finalVal');
+    const purchaseReceipt: any = await purchaseReceiptApi(
+      loginAcessToken.token,
+      values
+    );
   };
-  const newvalFunction = (element: any) => {
-    materialListData?.filter((data: any) => {
-      if (data.material_name === element.material_name) {
-        data.abbr;
-      }
-    });
-  };
+  //
 
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
@@ -445,9 +445,11 @@ const readyReceiptsMangalsutra = () => {
                           >
                             {karigarData?.length > 0 &&
                               karigarData?.map((name: any, i: any) => (
-                                <option key={i} value={name.karigar_name}>
-                                  {name.karigar_name}
-                                </option>
+                                <>
+                                  <option key={i} value={name.karigar_name}>
+                                    {name.karigar_name}
+                                  </option>
+                                </>
                               ))}
                           </select>
                         </td>
@@ -533,7 +535,7 @@ const readyReceiptsMangalsutra = () => {
                               handleFieldChange(
                                 item.id,
                                 'tableRow',
-                                'product_code',
+                                'item_code',
                                 e.target.value
                               )
                             }
@@ -661,13 +663,13 @@ const readyReceiptsMangalsutra = () => {
                           <input
                             className={` ${styles.input_field}`}
                             type="file"
-                            value={item.custom_add_photo}
+                            // value={item.custom_add_photo}
                             onChange={(e) =>
                               handleFieldChange(
                                 item.id,
                                 'tableRow',
                                 'custom_add_photo',
-                                e.target.name
+                                e.target.files?.[0].name
                               )
                             }
                           />
@@ -750,19 +752,22 @@ const readyReceiptsMangalsutra = () => {
                       materialWeight?.map((element: any, i: any) => (
                         <tr key={i}>
                           <td className="table_row">{i + 1}</td>
-                          <td className="table_row">
-                            {/* <input
+                          {/* <td className="table_row">
+                            <input
                               className={`${styles.table_select}`}
                               name="Karigar"
                               id="karigar"
-                              value={newvalFunction(element)}
+                              value={
+                                abbrivationVal !== '' ? abbrivationVal : ''
+                              }
                             />
-                            tableData */}
+                          </td> */}
+                          <td className="table_row">
                             <select
                               className={`${styles.table_select}`}
                               name="material_abbr"
                               id="material_abbr"
-                              value={element.material}
+                              value={element.material_abbr}
                               onChange={(e) =>
                                 handleModalFieldChange(
                                   i,
@@ -772,12 +777,19 @@ const readyReceiptsMangalsutra = () => {
                                 )
                               }
                             >
-                              {materialListData?.length > 0 &&
-                                materialListData?.map((name: any, i: any) => {
-                                  <option value={name.abbr}>
-                                    {name.abbr}
-                                  </option>;
-                                })}
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData?.map(
+                                    (names: any, i: any) => {
+                                      return (
+                                        <option key={i} value={names.abbr}>
+                                          {names.abbr}
+                                        </option>
+                                      );
+                                    }
+                                  )}
+                                </>
+                              )}
                             </select>
                           </td>
                           <td className="table_row">
@@ -795,12 +807,21 @@ const readyReceiptsMangalsutra = () => {
                                 )
                               }
                             >
-                              {materialListData?.length > 0 &&
-                                materialListData?.map((name: any, i: any) => (
-                                  <option value={name.material_name}>
-                                    {name.material_name}
-                                  </option>
-                                ))}
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData.map((name: any, i: any) => {
+                                    // Assuming setAbbrivationVal is a state updater function
+                                    return (
+                                      <option
+                                        key={i}
+                                        value={name.material_name}
+                                      >
+                                        {name.material_name}
+                                      </option>
+                                    );
+                                  })}
+                                </>
+                              )}
                             </select>
                           </td>
                           <td className="table_row">

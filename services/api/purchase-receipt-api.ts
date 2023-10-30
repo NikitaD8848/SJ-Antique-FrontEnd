@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CONSTANTS, headerGenerator } from '../config/api-config';
 
-const purchaseReceiptApi = async (get_access_token: any) => {
+const purchaseReceiptApi = async (get_access_token: any, val: any) => {
   let response: any;
   const getHeaders = headerGenerator(get_access_token);
   const config = {
@@ -10,11 +10,10 @@ const purchaseReceiptApi = async (get_access_token: any) => {
       Authorization: get_access_token,
     },
   };
-  const body = {};
   await axios
     .post(
       `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=create_purchase_receipt&entity=purchase_receipt`,
-      body,
+      val,
       getHeaders
     )
     .then((res: any) => {

@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <div className="container-lg">
       <nav className="navbar navbar-light bg-light p-0 ">
-        <Link className="navbar-brand" href="/master">
+        <Link className="navbar-brand" href="#/master">
           <Image src={logo} alt="logo" width={96} height={62} />
         </Link>
         <div>
@@ -50,8 +50,8 @@ const Navbar = () => {
             <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <Header1 showButtons1={showButtons1} />
-        <Header2 showButtons2={showButtons2} />
+        <Header1 />
+        
       </nav>
     </div>
   );
