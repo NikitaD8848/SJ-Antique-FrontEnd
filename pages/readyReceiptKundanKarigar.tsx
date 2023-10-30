@@ -4,19 +4,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/readyReceipts.module.css';
 import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { Link } from 'react-router-dom';
 import getKarigarApi from '@/services/api/karigar-list-api';
 import { get_access_token } from '@/store/slices/auth/login-slice';
 import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
 import materialApi from '@/services/api/material-list-api';
+import { useSelector } from 'react-redux';
+import KundanListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
 
 const readyReceiptKundanKarigar = () => {
   // api states
-  const [karigarList, setKarigarList] = useState<any>([{}])
-  const [kundaKarigarList, setKundanKarigarList] = useState<any>([{}])
-  const [materialList, setMaterialList] = useState<any>([{}])
+  const [karigarData, setKarigarData] = useState<any>()
+  const [kundanKarigarData, setKundanKarigarData] = useState<any>()
+  const [materialData, setMaterialData] = useState<any>()
+  const loginAcessToken = useSelector(get_access_token);
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clickBtn, setClickBtn] = useState<boolean>(false);
@@ -54,7 +56,18 @@ const readyReceiptKundanKarigar = () => {
       ],
     },
   ]);
-
+  useEffect(() => {
+    const getStateData: any = async () => {
+      const karigarList = await getKarigarApi(loginAcessToken.token);
+      const KundanKarigarApi = await kundanKarigarApi(loginAcessToken.token);
+      const materialListApi = await materialApi(loginAcessToken.token);
+      //console.log(KundanKarigarApi, 'karigarList');
+      setKarigarData(karigarList);
+      setKundanKarigarData(KundanKarigarApi);
+      setMaterialData(materialListApi);
+    };
+    getStateData(); 
+  },[]);
   const calculateRowValue = (i: any) => {
     console.log(i, 'i');
     return (
@@ -241,38 +254,7 @@ const readyReceiptKundanKarigar = () => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
-  const getKarigarList = async () => {
-    const getKarigarList = await getKarigarApi(get_access_token);
-    if (getKarigarList?.status === 200 && getKarigarList?.data === "success") {
-      setKarigarList([...getKarigarList?.data]);
-    } else {
-      setKarigarList([]);
-    }
-  };
-  const getKundanKarigarList = async () => {
-    const getKundanKarigarList = await materialApi(get_access_token);
-    if(getKundanKarigarList?.status === 200 && getKundanKarigarList?.data === "success"){
-      setKundanKarigarList([...kundaKarigarList?.data]);
-    }
-    else{
-      setKundanKarigarList([]);
-    }
-  }
-  const getMaterialList = async () => {
-    const getMaterialList = await kundanKarigarApi(get_access_token);
-    if(getMaterialList?.status === 200 && getMaterialList?.data === "success"){
-      setMaterialList([...materialList?.data]);
-    }
-    else{
-      setMaterialList([]);
-    }
-  }
-  useEffect(() => {
-    getKarigarList();
-    getKundanKarigarList();
-    getMaterialList();
-  }, []);
-
+  
   return (
     <div className="container-lg">
       <div className="container-lg">
@@ -317,7 +299,7 @@ const readyReceiptKundanKarigar = () => {
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            Ready receipts (kundan karigar)
+            <KundanListing/>
           </div>
           <div
             className="tab-pane fade"
@@ -365,8 +347,10 @@ const readyReceiptKundanKarigar = () => {
                       </td>
                       <td className="table_row">
                         <select className="form-select border-0" name="Karigar">
-                          <option value="karigar1">Karigar 1</option>
-                          <option value="karigar2">Karigar 2</option>
+                        {karigarData?.length > 0 &&
+                              karigarData?.map((name: any, i: any) => (
+                                <option key={i}>{name.karigar_name}</option>
+                              ))}
                         </select>
                       </td>
                       <td className="table_row">
@@ -456,8 +440,13 @@ const readyReceiptKundanKarigar = () => {
                             name="Karigar"
                             id="karigar"
                           >
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
+                            {kundanKarigarData?.length > 0 &&
+                              kundanKarigarData.map((name: any, i: any) => (
+                                <option value="karigar1">
+                                  {name.karigar_name}
+                                </option>
+                              ))}
+                            
                           </select>
                         </td>
                         <td className="table_row">
@@ -641,21 +630,29 @@ const readyReceiptKundanKarigar = () => {
                         <tr key={i}>
                           <td className="table_row">{i + 1}</td>
                           <td className="table_row">
-                            <select
-                              className={`${styles.table_select}`}
-                              name="Karigar"
-                            >
-                              <option value="karigar1">Karigar 1</option>
-                              <option value="karigar2">Karigar 2</option>
-                            </select>
+                            {materialData.length > 0 &&
+                            materialData.map((name:any, i:any)=>(
+                              <input type="text"
+                              className={` ${styles.input_field}`}
+                              name='abbr'
+                              value={name.abbr}
+                              readOnly
+
+                              />
+                                
+                            ))}
                           </td>
                           <td className="table_row">
                             <select
                               className={`${styles.table_select}`}
                               name="Karigar"
                             >
-                              <option value="karigar1">Karigar 1</option>
-                              <option value="karigar2">Karigar 2</option>
+                              {materialData.length > 0 &&
+                              materialData.map((name:any, i:any)=>(
+                                <option value="karigar1">
+                                  {name.material_name}
+                                </option>
+                              ))}
                             </select>
                           </td>
                           <td className="table_row">

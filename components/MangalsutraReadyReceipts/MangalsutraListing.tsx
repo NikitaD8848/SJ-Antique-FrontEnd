@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {KundanListingDataset} from '../../datasets/Ready-Receipts-kundan/KundanListing'
 
-const KundanListing = () => {
-  const [kundanListing, setKundanListing] = useState(KundanListingDataset.data)
+const MangalsutraListing = () => {
+  const [mangalsutraListing, setMangalsutraListing] = useState(KundanListingDataset.data)
 
   return (
     <div className="container lg">
@@ -17,7 +17,7 @@ const KundanListing = () => {
                 Transaction Date
               </th>
               <th className="thead" scope="col">
-                Kundan Karigar
+                Karigar
               </th>
               <th className="thead" scope="col">
                 A
@@ -31,8 +31,8 @@ const KundanListing = () => {
             </tr>
           </thead>
           <tbody>
-          {kundanListing.length > 0 &&
-            kundanListing.map((item:any)=>(
+          {mangalsutraListing.length > 0 &&
+              mangalsutraListing.map((item:any)=>(
             <tr>
                 <td className='table_row' >{item.Receipt_no}</td>
                 <td className='table_row' >{item.transaction_date}</td>
@@ -40,6 +40,8 @@ const KundanListing = () => {
                 <td className='table_row' >{item.A}</td>
                 <td className='table_row' >{item.B}</td>
                 <td className='table_row' >{item.C}</td>
+                
+              
             </tr>
             ))}
           </tbody>
@@ -49,4 +51,4 @@ const KundanListing = () => {
   );
 };
 
-export default KundanListing;
+export default MangalsutraListing;

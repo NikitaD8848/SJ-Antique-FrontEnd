@@ -10,6 +10,7 @@ import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
 import materialApi from '@/services/api/material-list-api';
 
 const readyReceiptsMangalsutra = () => {
+ 
   const inputRef = useRef<any>();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [clickBtn, setClickBtn] = useState<boolean>(false);
