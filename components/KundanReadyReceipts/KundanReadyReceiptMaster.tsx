@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../styles/readyReceipts.module.css';
@@ -12,22 +12,36 @@ import { get_access_token } from '@/store/slices/auth/login-slice';
 import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
 import materialApi from '@/services/api/material-list-api';
 import KundanListing from './KundanReadyReceiptsListing';
+import purchaseReceiptApi from '@/services/api/purchase-receipt-api';
+import { useSelector } from 'react-redux';
 
 const KundanReadyReceiptMaster = () => {
-  const [karigarList, setKarigarList] = useState<any>([{}]);
-  const [kundaKarigarList, setKundanKarigarList] = useState<any>([{}]);
-  const [materialList, setMaterialList] = useState<any>([{}]);
-
+  const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [abbrivationVal, setAbbrivationVal] = useState('');
+  const [recipitData, setRecipitData] = useState({
+    version: 'v1',
+    method: 'create_purchase_receipt',
+    entity: 'purchase_receipt',
+    custom_karigar: ' ',
+    remarks: '',
+    custom_ready_receipt_type: 'Mangalsutra',
+  });
   const [clickBtn, setClickBtn] = useState<boolean>(false);
-  const [dublicateData, setDublicateData] = useState<any>();
+  const [karigarData, setKarigarData] = useState<any>();
+  const [kundanKarigarData, setKundanKarigarData] = useState<any>();
+  const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
+  const loginAcessToken = useSelector(get_access_token);
+  console.log(loginAcessToken, 'loginAcessToken');
+  let disabledValue: any;
+
   const [materialWeight, setMaterialWeight] = useState<any>();
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      product_code: '',
+      item_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -42,7 +56,7 @@ const KundanReadyReceiptMaster = () => {
         {
           id: materialWeight?.length + 1,
           material_abbr: '',
-          material_name: '',
+          material: '',
           pcs: '',
           piece_: '',
           carat: '',
@@ -55,6 +69,20 @@ const KundanReadyReceiptMaster = () => {
     },
   ]);
 
+  const getKaragirlist = async () => {};
+  useEffect(() => {
+    const getStateData: any = async () => {
+      const stateData: any = await getKarigarApi(loginAcessToken.token);
+      const KundanKarigarAPI = await kundanKarigarApi(loginAcessToken.token);
+      const materialListApi = await materialApi(loginAcessToken.token);
+      console.log(KundanKarigarAPI, 'stateData');
+      setKarigarData(stateData);
+      setKundanKarigarData(KundanKarigarAPI);
+      setMaterialListData(materialListApi);
+    };
+    getStateData();
+  }, []);
+  console.log(karigarData, 'karigarData');
   const calculateRowValue = (i: any) => {
     console.log(i, 'i');
     return (
@@ -64,7 +92,7 @@ const KundanReadyReceiptMaster = () => {
     );
   };
 
-  const handleFieldChange = (
+  const handleFieldChange: any = (
     id: number,
     val: any,
     field: string,
@@ -76,6 +104,7 @@ const KundanReadyReceiptMaster = () => {
       }
       return item;
     });
+    console.log(updatedData, 'bbb');
     setTableData(updatedData);
   };
   const handleModalFieldChange = (
@@ -92,12 +121,27 @@ const KundanReadyReceiptMaster = () => {
         }
         return item;
       });
+
+    const newVal = tableData?.table?.filter(
+      (item: any) => materialListData?.includes(item.material)
+    );
+    console.log(newVal, 'newVal');
+    console.log(disabledValue, 'disabledValue');
+    // const updatedMaterialWeight = materialWeight?.map((row:any,i:any) => {
+    //   console.log(i,"ij")
+    //   console.log(id,"ij")
+    //   if (i === id) {
+    //     return { ...row, totalModalWeight: weightAddition, amount: totalAmmountValues };
+    //   }
+    //   return row;
+    // });
+
     setMaterialWeight(updatedModalData);
   };
   const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
-      product_code: '',
+      item_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -108,9 +152,9 @@ const KundanReadyReceiptMaster = () => {
       custom_add_photo: '',
       table: [
         {
-          id: +materialWeight?.length + 1,
+          id: materialWeight?.length + 1,
           material_abbr: '',
-          material_name: '',
+          material: '',
           pcs: '',
           piece_: '',
           carat: '',
@@ -150,9 +194,9 @@ const KundanReadyReceiptMaster = () => {
   };
 
   const handleModal = (event: any, id: any, data: any) => {
-    console.log(dublicateData, 'materialWeight');
-    console.log(materialWeight, 'materialWeight');
     setIndexVal(id);
+    console.log(tableData, 'materialWeight');
+    // console.log(materialWeight, "materialWeight");
     const dataVal = tableData?.filter((item: any) => {
       if (item.id === id) {
         if (event.key === 'F2') {
@@ -168,12 +212,17 @@ const KundanReadyReceiptMaster = () => {
   };
 
   const handleSaveModal = (id: any) => {
-    setDublicateData([...materialWeight]);
     const modalValue = materialWeight.map(
       ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
         ...rest,
       })
     );
+    if (inputRef.current) {
+      disabledValue = inputRef.current.value;
+    } else {
+      console.error('The ref to the input element is not available.');
+    }
+
     const totalAmmount = materialWeight.map(
       ({
         pcs,
@@ -183,7 +232,7 @@ const KundanReadyReceiptMaster = () => {
         gm_,
         id,
         material_abbr,
-        material_name,
+        material,
         weight,
         ...rest
       }: any) => ({ ...rest })
@@ -193,7 +242,12 @@ const KundanReadyReceiptMaster = () => {
       console.log(accu, 'accu23');
       return accu + val.weight;
     }, 0);
-
+    const updatedMaterialVal = materialWeight.map((item: any) => {
+      return {
+        ...item,
+        amount: disabledValue,
+      };
+    });
     const totalvalues = materialWeight.map(
       (row: any) =>
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
@@ -212,19 +266,46 @@ const KundanReadyReceiptMaster = () => {
           ...row,
           totalModalWeight: weightAddition,
           totalAmount: totalAmmountValues,
-          table: materialWeight,
+          table: materialWeight.map(({ id, ...rest }: any) => ({ ...rest })),
+          custom_mat_wt: weightAddition,
+          custom_gross_wt:
+            parseInt(row.custom_net_wt, 10) +
+            parseInt(row.custom_few_wt, 10) +
+            weightAddition,
+          custom_total: parseInt(row.custom_other) + totalAmmountValues,
+        };
+      }
+      return row;
+    });
+    const updatedDataVal = updatedMaterialWeight.map((row: any, i: any) => {
+      if (row.id === indexVal) {
+        return {
+          ...row,
+          table: row.table.map((tableItem: any) => ({
+            ...tableItem,
+            amount:
+              (parseInt(tableItem.pcs, 10) || 0) *
+                (parseInt(tableItem.piece_, 10) || 0) +
+              (parseFloat(tableItem.carat) || 0) *
+                (parseFloat(tableItem.carat_) || 0) +
+              (parseFloat(tableItem.weight) || 0) *
+                (parseFloat(tableItem.gm_) || 0),
+          })),
         };
       }
       return row;
     });
 
-    setTableData(updatedMaterialWeight);
+    console.log(updatedDataVal, 'updatedDataVa');
+    setTableData(updatedDataVal);
     if (totalvalues.length > 0) {
       setClickBtn(true);
     } else {
       setClickBtn(false);
     }
-    console.log(updatedMaterialWeight, 'updatedMaterialWeight');
+    console.log(updatedMaterialWeight, 'data45');
+
+    // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -236,46 +317,38 @@ const KundanReadyReceiptMaster = () => {
     setShowModal(false);
     setActiveModalId(null);
   };
+  const handleRecipietChange = (e: any) => {
+    setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
+  };
+  console.log(recipitData, 'recipitData');
+  const handleCreate = async () => {
+    console.log(tableData, 'table56');
+
+    const modalValue = tableData.map(
+      ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
+        ...rest,
+      })
+    );
+    // const finalVal = tableData?.table?.map(({ id, ...rest }: any) => ({
+    //   ...rest,
+    // }));
+    const values = {
+      ...recipitData,
+      items: modalValue,
+    };
+    console.log(values, 'finalVal');
+    const purchaseReceipt: any = await purchaseReceiptApi(
+      loginAcessToken.token,
+      values
+    );
+  };
+  //
 
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
-  const getKarigarList = async () => {
-    const getKarigarList = await getKarigarApi(get_access_token);
-    if (getKarigarList?.status === 200 && getKarigarList?.data === 'success') {
-      setKarigarList([...getKarigarList?.data]);
-    } else {
-      setKarigarList([]);
-    }
-  };
-  const getKundanKarigarList = async () => {
-    const getKundanKarigarList = await materialApi(get_access_token);
-    if (
-      getKundanKarigarList?.status === 200 &&
-      getKundanKarigarList?.data === 'success'
-    ) {
-      setKundanKarigarList([...kundaKarigarList?.data]);
-    } else {
-      setKundanKarigarList([]);
-    }
-  };
-  const getMaterialList = async () => {
-    const getMaterialList = await kundanKarigarApi(get_access_token);
-    if (
-      getMaterialList?.status === 200 &&
-      getMaterialList?.data === 'success'
-    ) {
-      setMaterialList([...materialList?.data]);
-    } else {
-      setMaterialList([]);
-    }
-  };
-  useEffect(() => {
-    getKarigarList();
-    getKundanKarigarList();
-    getMaterialList();
-  }, []);
+  console.log(calculateRowValue, 'accu23');
   return (
     <>
       <div className="container-lg">
@@ -331,7 +404,11 @@ const KundanReadyReceiptMaster = () => {
             >
               <div>
                 <div className={`${styles.button_field}`}>
-                  <button type="button" className={`${styles.create_button}`}>
+                  <button
+                    type="button"
+                    className={`${styles.create_button}`}
+                    onClick={handleCreate}
+                  >
                     Create
                   </button>
                 </div>
@@ -341,9 +418,6 @@ const KundanReadyReceiptMaster = () => {
                       <tr>
                         <th className="thead" scope="col">
                           Date
-                        </th>
-                        <th className="thead" scope="col">
-                          Receipt Number
                         </th>
                         <th className="thead" scope="col">
                           Karigar(Supplier)
@@ -364,25 +438,32 @@ const KundanReadyReceiptMaster = () => {
                             type="text"
                           />
                         </td>
-                        <td className="table_row">
-                          <input
-                            className="form-control input-sm"
-                            type="number"
-                          />
-                        </td>
+
                         <td className="table_row">
                           <select
                             className="form-select border-0"
-                            name="Karigar"
+                            name="custom_karigar"
+                            id="custom_karigar"
+                            value={recipitData.custom_karigar}
+                            onChange={handleRecipietChange}
                           >
-                            <option value="karigar1">Karigar 1</option>
-                            <option value="karigar2">Karigar 2</option>
+                            {karigarData?.length > 0 &&
+                              karigarData?.map((name: any, i: any) => (
+                                <>
+                                  <option key={i} value={name.karigar_name}>
+                                    {name.karigar_name}
+                                  </option>
+                                </>
+                              ))}
                           </select>
                         </td>
                         <td className="table_row">
                           <input
                             className="form-control input-sm"
                             type="text"
+                            name="remarks"
+                            value={recipitData.remarks}
+                            onChange={handleRecipietChange}
                           />
                         </td>
                         <td className="table_row">
@@ -390,8 +471,8 @@ const KundanReadyReceiptMaster = () => {
                             className="form-control input-sm"
                             type="text"
                             readOnly
-                            value={'kundanKarigar'}
                             disabled
+                            value={'Mangalsutra'}
                           />
                         </td>
                       </tr>
@@ -457,7 +538,7 @@ const KundanReadyReceiptMaster = () => {
                                 handleFieldChange(
                                   item.id,
                                   'tableRow',
-                                  'product_code',
+                                  'item_code',
                                   e.target.value
                                 )
                               }
@@ -466,11 +547,24 @@ const KundanReadyReceiptMaster = () => {
                           <td className="table_row">
                             <select
                               className={` ${styles.table_select}`}
-                              name="Karigar"
+                              name="custom_kun_karigar"
                               id="karigar"
+                              value={item.custom_kun_karigar}
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  item.id,
+                                  'tableRow',
+                                  'custom_kun_karigar',
+                                  e.target.value
+                                )
+                              }
                             >
-                              <option value="karigar1">Karigar 1</option>
-                              <option value="karigar2">Karigar 2</option>
+                              {kundanKarigarData?.length > 0 &&
+                                kundanKarigarData.map((name: any, i: any) => (
+                                  <option value={name.karigar_name}>
+                                    {name.karigar_name}
+                                  </option>
+                                ))}
                             </select>
                           </td>
                           <td className="table_row">
@@ -571,6 +665,14 @@ const KundanReadyReceiptMaster = () => {
                             <input
                               className={`${styles.input_field}`}
                               type="file"
+                              onChange={(e) =>
+                                handleFieldChange(
+                                  item.id,
+                                  'tableRow',
+                                  'custom_add_photo',
+                                  e.target.files?.[0].name
+                                )
+                              }
                             />
                           </td>
                           <td className="table_row">
@@ -656,19 +758,65 @@ const KundanReadyReceiptMaster = () => {
                             <td className="table_row">
                               <select
                                 className={`${styles.table_select}`}
-                                name="Karigar"
+                                name="material_abbr"
+                                id="material_abbr"
+                                value={element.material_abbr}
+                                onChange={(e) =>
+                                  handleModalFieldChange(
+                                    i,
+                                    'modalRow',
+                                    'material_abbr',
+                                    e.target.value
+                                  )
+                                }
                               >
-                                <option value="karigar1">Karigar 1</option>
-                                <option value="karigar2">Karigar 2</option>
+                                {materialListData?.length > 0 && (
+                                  <>
+                                    {materialListData?.map(
+                                      (names: any, i: any) => {
+                                        return (
+                                          <option key={i} value={names.abbr}>
+                                            {names.abbr}
+                                          </option>
+                                        );
+                                      }
+                                    )}
+                                  </>
+                                )}
                               </select>
                             </td>
                             <td className="table_row">
                               <select
                                 className={`${styles.table_select}`}
-                                name="Karigar"
+                                name="material"
+                                id="material"
+                                value={element.material}
+                                onChange={(e) =>
+                                  handleModalFieldChange(
+                                    i,
+                                    'modalRow',
+                                    'material',
+                                    e.target.value
+                                  )
+                                }
                               >
-                                <option value="karigar1">Karigar 1</option>
-                                <option value="karigar2">Karigar 2</option>
+                                {materialListData?.length > 0 && (
+                                  <>
+                                    {materialListData.map(
+                                      (name: any, i: any) => {
+                                        // Assuming setAbbrivationVal is a state updater function
+                                        return (
+                                          <option
+                                            key={i}
+                                            value={name.material_name}
+                                          >
+                                            {name.material_name}
+                                          </option>
+                                        );
+                                      }
+                                    )}
+                                  </>
+                                )}
                               </select>
                             </td>
                             <td className="table_row">
