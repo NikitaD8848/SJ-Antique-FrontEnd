@@ -67,9 +67,9 @@ const readyReceiptKundanKarigar = () => {
       setMaterialData(materialListApi);
     };
     getStateData(); 
-  },[]);
+  }, []);
   const calculateRowValue = (i: any) => {
-    console.log(i, 'i');
+    // console.log(i, 'i');
     return (
       materialWeight[i]?.pcs * materialWeight[i]?.piece_ +
       materialWeight[i]?.carat * materialWeight[i]?.carat_ +

@@ -116,9 +116,10 @@ a {
 .thead {
   background-color: #2f308c !important;
   color: #FFF !important;
-  line-height: 10px;
+  line-height: 12px;
   font-weight: 400;
   font-size: 15px;
+  padding: 4px !important;
   text-align: center;
 }
 td.table_row{
