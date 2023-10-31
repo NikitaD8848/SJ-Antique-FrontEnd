@@ -338,7 +338,6 @@ const readyReceiptsMangalsutra = () => {
       values
     );
   };
-  //
 
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
