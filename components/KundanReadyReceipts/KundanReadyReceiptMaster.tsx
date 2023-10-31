@@ -25,7 +25,7 @@ const KundanReadyReceiptMaster = () => {
     entity: 'purchase_receipt',
     custom_karigar: ' ',
     remarks: '',
-    custom_ready_receipt_type: 'Mangalsutra',
+    custom_ready_receipt_type: 'Kundan',
   });
   const [clickBtn, setClickBtn] = useState<boolean>(false);
   const [karigarData, setKarigarData] = useState<any>();
@@ -321,17 +321,15 @@ const KundanReadyReceiptMaster = () => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
   };
   console.log(recipitData, 'recipitData');
+
   const handleCreate = async () => {
-    console.log(tableData, 'table56');
+    alert('HI');
 
     const modalValue = tableData.map(
       ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
         ...rest,
       })
     );
-    // const finalVal = tableData?.table?.map(({ id, ...rest }: any) => ({
-    //   ...rest,
-    // }));
     const values = {
       ...recipitData,
       items: modalValue,
@@ -342,8 +340,6 @@ const KundanReadyReceiptMaster = () => {
       values
     );
   };
-  //
-
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
