@@ -257,7 +257,7 @@ const readyReceiptKundanKarigar = () => {
   
   return (
     <div className="container-lg">
-      <div className="container-lg">
+      <div >
         <div
           className="nav nav-pills mb-2 justify-content-center "
           id="pills-tab"

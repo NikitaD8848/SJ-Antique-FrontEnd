@@ -5,8 +5,8 @@ const KundanListing = () => {
   const [kundanListing, setKundanListing] = useState(KundanListingDataset.data)
 
   return (
-    <div className="container lg">
-      <div className="container-lg table-responsive">
+    
+      <div className=" table-responsive py-2">
         <table className="table table-striped table-hover table-bordered">
           <thead>
             <tr>
@@ -45,7 +45,7 @@ const KundanListing = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    
   );
 };
 
