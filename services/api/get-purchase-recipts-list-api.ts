@@ -1,24 +1,18 @@
 import axios from 'axios';
 import { CONSTANTS, headerGenerator } from '../config/api-config';
 
-const postMaterialApi = async (get_access_token: any, val: any) => {
+const getPurchasreceiptListApi = async (get_access_token: any, val: string) => {
   let response: any;
-  const config = {
-    headers: {
-      Accept: 'application/json',
-    },
-    withCredentials: true,
-  };
-  const getHeaders = headerGenerator(get_access_token);
+  const getHeaders = headerGenerator(get_access_token?.token);
+  const params = `fields=["name", "posting_date", "custom_karigar","docstatus"]&filters={"custom_ready_receipt_type":"${val}"}`;
   await axios
-    .post(
-      `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=create_material&entity=material_post_api`,
-      val,
+    .get(
+      `${CONSTANTS.API_BASE_URL}/api/resource/Purchase Receipt?${params}`,
       getHeaders
     )
     .then((res: any) => {
-      console.log('post material', res);
-      response = res?.data?.message?.data;
+      response = res?.data?.data;
+      console.log('purchase receipt response', response);
     })
     .catch((err: any) => {
       if (err.code === 'ECONNABORTED') {
@@ -35,4 +29,4 @@ const postMaterialApi = async (get_access_token: any, val: any) => {
   return response;
 };
 
-export default postMaterialApi;
+export default getPurchasreceiptListApi;

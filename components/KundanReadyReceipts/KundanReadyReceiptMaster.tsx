@@ -7,12 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { Link } from 'react-router-dom';
-import getKarigarApi from '@/services/api/karigar-list-api';
+import getKarigarApi from '@/services/api/get-karigar-list-api';
 import { get_access_token } from '@/store/slices/auth/login-slice';
-import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
-import materialApi from '@/services/api/material-list-api';
+import kundanKarigarApi from '@/services/api/get-kundan-karigar-list-api';
+import materialApi from '@/services/api/get-material-list-api';
 import KundanListing from './KundanReadyReceiptsListing';
-import purchaseReceiptApi from '@/services/api/purchase-receipt-api';
+import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
 import { useSelector } from 'react-redux';
 
 const KundanReadyReceiptMaster = () => {

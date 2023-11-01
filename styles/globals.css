@@ -151,3 +151,27 @@ button.btn.btn-primary.mx-5.px-5{
   color: #FFF;
   border: none;
 }
+.dropdown-ul-list {
+  background-color: #ffffff;
+  border-radius: 2px 2px 2px 2px;
+  border: 1px solid #2f308c !important;
+  list-style: none;
+  width: 100%;
+  padding: 0px;
+  z-index: 999;
+  cursor: pointer;
+}
+.dropdown-ul-list {
+  max-height: 170px;
+  overflow-y: auto;
+}
+
+.dropdown-ul-list li {
+  padding: 2px 4px;
+  font-size: 0.9rem;
+}
+
+.dropdown-ul-list li:hover {
+  background-color: #a9b6ca;
+  color: white;
+}

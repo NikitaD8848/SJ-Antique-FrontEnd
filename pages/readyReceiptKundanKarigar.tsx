@@ -6,13 +6,14 @@ import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { Link } from 'react-router-dom';
-import getKarigarApi from '@/services/api/karigar-list-api';
+import getKarigarApi from '@/services/api/get-karigar-list-api';
 import { get_access_token } from '@/store/slices/auth/login-slice';
-import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
-import materialApi from '@/services/api/material-list-api';
+import kundanKarigarApi from '@/services/api/get-kundan-karigar-list-api';
+import materialApi from '@/services/api/get-material-list-api';
 import { useSelector } from 'react-redux';
 import KundanListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
-import purchaseReceiptApi from '@/services/api/purchase-receipt-api';
+import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
+import postMaterialApi from '@/services/api/post-material-api';
 
 const readyReceiptKundanKarigar = () => {
   // api states
@@ -211,9 +212,19 @@ const readyReceiptKundanKarigar = () => {
     });
   };
 
-  const handleSaveModal = (id: any) => {
+  const handleSaveModal = async (id: any) => {
     const modalValue = materialWeight.map(
-      ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
+      ({
+        pcs,
+        piece_,
+        carat,
+        carat_,
+        weight,
+        gm_,
+        amount,
+        id,
+        ...rest
+      }: any) => ({
         ...rest,
       })
     );
@@ -304,7 +315,7 @@ const readyReceiptKundanKarigar = () => {
       setClickBtn(false);
     }
     console.log(updatedMaterialWeight, 'data45');
-
+    await postMaterialApi(loginAcessToken.token, modalValue);
     // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
@@ -387,7 +398,10 @@ const readyReceiptKundanKarigar = () => {
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            <KundanListing />
+            <KundanListing
+              loginAcessToken={loginAcessToken}
+              Fields={'Kundan'}
+            />
           </div>
           <div
             className="tab-pane fade"
@@ -757,8 +771,11 @@ const readyReceiptKundanKarigar = () => {
                                   {materialListData?.map(
                                     (names: any, i: any) => {
                                       return (
-                                        <option key={i} value={names.abbr}>
-                                          {names.abbr}
+                                        <option
+                                          key={i}
+                                          value={names.material_abbrabbr}
+                                        >
+                                          {names.material_abbr}
                                         </option>
                                       );
                                     }
@@ -787,11 +804,8 @@ const readyReceiptKundanKarigar = () => {
                                   {materialListData.map((name: any, i: any) => {
                                     // Assuming setAbbrivationVal is a state updater function
                                     return (
-                                      <option
-                                        key={i}
-                                        value={name.material_name}
-                                      >
-                                        {name.material_name}
+                                      <option key={i} value={name.material}>
+                                        {name.material}
                                       </option>
                                     );
                                   })}

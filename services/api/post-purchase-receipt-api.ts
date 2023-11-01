@@ -10,6 +10,7 @@ const purchaseReceiptApi = async (get_access_token: any, val: any) => {
       Authorization: get_access_token,
     },
   };
+
   await axios
     .post(
       `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=create_purchase_receipt&entity=purchase_receipt`,
