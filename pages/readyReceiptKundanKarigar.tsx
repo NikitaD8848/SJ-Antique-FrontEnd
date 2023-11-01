@@ -14,9 +14,13 @@ import { useSelector } from 'react-redux';
 import KundanListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
 import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
 import postMaterialApi from '@/services/api/post-material-api';
+import { useRouter } from 'next/router';
+import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 
 const readyReceiptKundanKarigar = () => {
   // api states
+  const route = useRouter();
+  console.log(route, 'route');
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [abbrivationVal, setAbbrivationVal] = useState('');
@@ -354,6 +358,21 @@ const readyReceiptKundanKarigar = () => {
     setMaterialWeight(updatedData);
   };
 
+  // kundankarigar listing api
+  const [kundanListing, setKundanListing] = useState<any>([]);
+  console.log(loginAcessToken, 'loginAcessToken');
+
+  useEffect(() => {
+    const getPurchaseList = async () => {
+      const listData = await getPurchasreceiptListApi(
+        loginAcessToken,
+        'Kundan'
+      );
+      setKundanListing(listData);
+    };
+    getPurchaseList();
+  }, []);
+
   return (
     <div className="container-lg">
       <div className="container-lg">
@@ -398,10 +417,7 @@ const readyReceiptKundanKarigar = () => {
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            <KundanListing
-              loginAcessToken={loginAcessToken}
-              Fields={'Kundan'}
-            />
+            <KundanListing kundanListing={kundanListing} />
           </div>
           <div
             className="tab-pane fade"
