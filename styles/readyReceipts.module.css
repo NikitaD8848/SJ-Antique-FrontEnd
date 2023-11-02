@@ -23,13 +23,5 @@
     margin-top: 2px;
     width: 150px;
     line-height:20px;
-}
-/* .handle_modal_button{
-    padding: 3px;
-    margin-left: 10px;
-    margin-top: 3px;
-    border: none;
-    background-color: #d5aa66;;
-    color: #000;
-    font-size: 12px;
-} */
+    text-align: center;
+}   

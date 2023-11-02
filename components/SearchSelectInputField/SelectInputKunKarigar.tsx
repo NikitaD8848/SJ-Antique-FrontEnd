@@ -29,7 +29,7 @@ const SelectInputKunKarigar = ({
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
-    setTableData({ ...tableData, custom_kun_karigar: selectedDropdownValue });
+    //setTableData([...tableData, custom_kun_karigar: selectedDropdownValue ]);
   };
   console.log(tableData,"tabledata kun karigar")
 
@@ -49,7 +49,7 @@ const SelectInputKunKarigar = ({
     console.log('dataa', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    setTableData({ ...tableData, custom_kun_karigar: data });
+    //setTableData([ ...tableData, tableData.custom_kundan_karigar: data ]);
   };
   console.log(tableData,"tabledata kun karigar")
   console.log(selectedDropdownValue, 'selected value');

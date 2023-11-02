@@ -43,7 +43,6 @@ const Navbar = () => {
             >
               <FontAwesomeIcon
                 icon={faCircleUser}
-                className="fa fa-user-circle  "
                 style={{ color: '#CDAB6E', fontSize: 30 }}
               />
             </Dropdown.Toggle>

@@ -45,11 +45,11 @@ const Header1 = () => {
           onClick={() => handleReadyRecipt('Master')}
         >
           <FontAwesomeIcon
-            className="p-1"
+            className="p-1 "
             icon={faReceipt}
             style={{ color: '#CDAB6E', fontSize: 20 }}
           />
-          Master
+          <span className='pt-1'>Master</span>
         </button>
         <button
           className={`${styles.button}`}
@@ -60,7 +60,7 @@ const Header1 = () => {
             icon={faReceipt}
             style={{ color: '#CDAB6E', fontSize: 20 }}
           />
-          Ready Receipts
+          <span className="pt-1">Ready Receipts</span>
         </button>
         <button
           className={`${styles.button}`}
@@ -71,7 +71,7 @@ const Header1 = () => {
             icon={faReceipt}
             style={{ color: '#CDAB6E', fontSize: 20 }}
           />
-          Sales
+          <span className="pt-1">Sales</span>
         </button>
       </div>
       <div className="container-lg justify-content-center">
@@ -83,7 +83,7 @@ const Header1 = () => {
                   className="text-decoration-none btn-margin"
                   href="/readyReceiptKundanKarigar"
                 >
-                  <button className={`text-dark btn btn-outline-primary`}>
+                  <button className={` btn btn-outline-primary`}>
                     Ready Receipts(Kundan Karigar)
                   </button>
                 </Link>
@@ -91,7 +91,7 @@ const Header1 = () => {
                   className="text-decoration-none btn-margin"
                   href="/readyReceiptsMangalsutra"
                 >
-                  <button className={`text-dark btn btn-outline-primary`}>
+                  <button className={` btn btn-outline-primary`}>
                     Ready Receipts(Mangalsutra Karigar)
                   </button>
                 </Link>

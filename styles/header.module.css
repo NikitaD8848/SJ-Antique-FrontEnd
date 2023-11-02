@@ -5,8 +5,8 @@
     width: 100%;
 }
 .button{
-    display: inline-block;
-    justify-content: center ;
+    display: inline-flex;
+    justify-content: space-between ;
     background-color: #FFF;
     color: #000;
     margin: 5px;
@@ -15,7 +15,6 @@
     border-radius: 9px;
     font-family: 'Times New Roman', Times, serif;
     text-decoration-line: none;
-    
 }
 .button:hover{
     color: #0D6EFD;
