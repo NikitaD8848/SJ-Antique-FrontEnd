@@ -15,15 +15,11 @@ const SearchSelectInputField = ({
 
   console.log("check karigar", karigarData)
   console.log(typeof[karigarData],"type ")
-  // useEffect(()=>{
-  //   if (karigarData.length > 0 ){
-  //       setMasterData(karigarData)
-  //   }
-  //   else {
-  //     setMasterData(kundanKarigarData)
-  //   }
-    
-  // },[])
+  useEffect(()=>{
+    if (karigarData.length > 0 ){
+        setMasterData(karigarData)
+    }
+  },[])
   console.log("master state",masterData)
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
