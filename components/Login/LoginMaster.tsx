@@ -24,18 +24,19 @@ const LoginMaster = () => {
   console.log(userData, 'userData');
 
   const HandleFormSubmit = () => {
-    dispatch(getAccessToken(userData));
-  };
-  useEffect(() => {
+    const loginsucess = dispatch(getAccessToken(userData));
+    console.log(loginsucess, 'loginsucess');
     if (loginAcessToken.token !== '') {
       toast.success('Login Sucessfully');
       setTimeout(() => {
         router.push('/readyReceiptKundanKarigar');
       }, 900);
-    } else {
+    }
+    if (loginAcessToken.error !== '') {
+      toast.error(loginAcessToken.error);
       router.push('/');
     }
-  }, [loginAcessToken]);
+  };
 
   return (
     <>

@@ -42,6 +42,11 @@ export const GetAccessTokenScreen = createSlice({
       if (action?.payload?.data?.hasOwnProperty('access_token')) {
         state.token = action?.payload?.data?.access_token;
         state.isLoading = 'succeeded';
+        state.error = '';
+      }
+      if (action?.payload.msg === 'error') {
+        state.isLoading = 'succeeded';
+        state.error = 'Invalid User Or Password';
       }
     });
     builder.addCase(getAccessToken.rejected, (state, action) => {

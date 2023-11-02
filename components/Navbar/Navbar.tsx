@@ -24,9 +24,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className='bg-light'>
+    <div className="bg-light">
       <div className=" container-lg">
-        <nav className="navbar navbar-light p-0 ">
+        <nav className="navbar navbar-light p-0 mt-2 ">
           <div>
             {/* <button className="btn btn-primary mx-5 "
               onClick={()=>setShowButtons1(!showButtons1)}  
@@ -53,11 +53,10 @@ const Navbar = () => {
             </Dropdown.Menu>
           </Dropdown>
         </nav>
+        <hr />
         <Header1 />
       </div>
-      <hr className='p-o'/>
     </div>
-
   );
 };
 

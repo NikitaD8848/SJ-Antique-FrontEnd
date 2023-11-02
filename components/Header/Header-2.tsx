@@ -6,33 +6,17 @@ import styles from '../../styles/header.module.css';
 
 const Header2 = ({ showButtons2 }: any) => {
   return (
-    <div className="container-lg">
-      <div className="navbar ">
-        <div className={`${styles.nav}`}>
-          <div>
-            <Link className="text-decoration-none" href="/saleReturns">
-              <button className={`${styles.button}`}>
-                <FontAwesomeIcon
-                  className="p-1"
-                  icon={faReceipt}
-                  style={{ color: '#CDAB6E', fontSize: 20 }}
-                />
-                Sale -Returns(Customer)
-              </button>
-            </Link>
-            <Link className="text-decoration-none" href="/customerSale">
-              <button className={`${styles.button}`}>
-                <FontAwesomeIcon
-                  className="p-1"
-                  icon={faReceipt}
-                  style={{ color: '#CDAB6E', fontSize: 20 }}
-                />
-                Customer-Sale(Customer)
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
+    <div>
+      <Link className="text-decoration-none btn-margin" href="/saleReturns">
+        <button className={`btn btn-outline-primary`}>
+          Sale -Returns(Customer)
+        </button>
+      </Link>
+      <Link className="text-decoration-none btn-margin " href="/customerSale">
+        <button className={` btn btn-outline-primary`}>
+          Customer-Sale(Customer)
+        </button>
+      </Link>
     </div>
   );
 };
