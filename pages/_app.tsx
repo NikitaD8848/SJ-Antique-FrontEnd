@@ -8,7 +8,9 @@ import { Provider, useSelector } from 'react-redux';
 import { persistor, store } from '../store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import KundanReadyReceiptsListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
-import login from '@/pages/login';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 config.autoAddCss = false;
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -18,6 +20,16 @@ export default function App({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <Layout>
+            <ToastContainer
+              position="top-right"
+              autoClose={7000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              draggable={false}
+              // pauseOnVisibilityChange
+              closeOnClick
+              pauseOnHover
+            />
             <Component {...pageProps} />
           </Layout>
         </PersistGate>

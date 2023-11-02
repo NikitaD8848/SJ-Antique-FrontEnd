@@ -2,6 +2,8 @@ import axios from 'axios';
 import { CONSTANTS, headerGenerator } from '../config/api-config';
 
 const purchaseReceiptApi = async (get_access_token: any, val: any) => {
+  console.log(val, 'vals');
+
   let response: any;
   const getHeaders = headerGenerator(get_access_token);
   const config = {

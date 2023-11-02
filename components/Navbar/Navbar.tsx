@@ -20,7 +20,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const handleClick = () => {
     dispatch(ClearToken());
-    router.push('/login');
+    router.push('/');
   };
 
   return (
@@ -51,7 +51,6 @@ const Navbar = () => {
           </Dropdown.Menu>
         </Dropdown>
         <Header1 />
-        
       </nav>
     </div>
   );
