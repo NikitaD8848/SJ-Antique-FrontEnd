@@ -188,3 +188,9 @@ button.btn.btn-primary.mx-5.px-5{
 input:disabled{
   background-color: #e9ecef;
 }
+hr {
+  margin: 0.4rem 0 !important;
+}
+#dropdown-basic {
+  padding: 3px 6px !important;
+}

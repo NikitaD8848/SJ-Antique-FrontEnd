@@ -26,14 +26,13 @@ const LoginMaster = () => {
   const HandleFormSubmit = () => {
     const loginsucess = dispatch(getAccessToken(userData));
     console.log(loginsucess, 'loginsucess');
-    if (loginAcessToken.token !== '') {
+    if (loginAcessToken.error === '' && loginAcessToken.token !== '') {
       toast.success('Login Sucessfully');
       setTimeout(() => {
         router.push('/readyReceiptKundanKarigar');
       }, 900);
-    }
-    if (loginAcessToken.error !== '') {
-      toast.error(loginAcessToken.error);
+    } else {
+      toast.error('invalid userName Or Password');
       router.push('/');
     }
   };
