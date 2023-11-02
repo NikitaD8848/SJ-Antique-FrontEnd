@@ -18,6 +18,7 @@ import postMaterialApi from '@/services/api/post-material-api';
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 import KundanListing from './KundanReadyReceiptsListing';
 import SearchSelectInputField from '../SearchSelectInputField/SearchSelectInputField';
+import CurrentDate from '../CurrentDate';
 
 const ReadyReceiptKundanKarigarMaster = () => {
   // api states
@@ -459,11 +460,14 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   <tbody>
                     <tr className="table_row">
                       <td scope="row" className="table_row">
-                        <input className="form-control input-sm" type="text" />
+                        <CurrentDate/>
                       </td>
                       <td className="table_row">
-                        <SearchSelectInputField
-                        />
+                      <SearchSelectInputField
+                            karigarData={karigarData}
+                            recipitData={recipitData}
+                            setRecipitData={setRecipitData}
+                          />
                       </td>
                       <td className="table_row">
                         <input
