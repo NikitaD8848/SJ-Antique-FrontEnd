@@ -8,7 +8,7 @@ const Layout = ({ children }: any) => {
   console.log(router, 'router');
   return (
     <>
-      {router.pathname === '/login' ? '' : <Navbar/>}
+      {router.pathname === '/' ? '' : <Navbar />}
       {children}
     </>
   );

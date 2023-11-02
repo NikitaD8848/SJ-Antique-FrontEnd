@@ -28,7 +28,6 @@ const KundanListing = ({ kundanListing }: any) => {
                   <td className="table_row">{item.name}</td>
                   <td className="table_row">{item.posting_date}</td>
                   <td className="table_row">{item.custom_karigar}</td>
-                  <td className="table_row">{item.custom_karigar}</td>
                   <td className="table_row">
                     {item.docstatus === 0
                       ? 'Draft'

@@ -18,7 +18,7 @@ import postMaterialApi from '@/services/api/post-material-api';
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 import KundanListing from './KundanReadyReceiptsListing';
 
-const ReadyReceiptKundanKarigar = () => {
+const ReadyReceiptKundanKarigarMaster = () => {
   // api states
   const route = useRouter();
   console.log(route, 'route');
@@ -972,4 +972,4 @@ const ReadyReceiptKundanKarigar = () => {
   );
 };
 
-export default ReadyReceiptKundanKarigar;
+export default ReadyReceiptKundanKarigarMaster;
