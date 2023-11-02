@@ -19,6 +19,7 @@ import SearchSelectInputField from '../SearchSelectInputField/SearchSelectInputF
 import CurrentDate from '../CurrentDate';
 import ModalMaster from '../ModalMaster/ModalMaster';
 import KundanListing from '../KundanReadyReceipts/KundanReadyReceiptsListing';
+import { ToastContainer, toast } from 'react-toastify';
 
 const MangalsutraReadyReceiptsMaster = () => {
   const inputRef = useRef<any>(null);
@@ -317,9 +318,21 @@ const MangalsutraReadyReceiptsMaster = () => {
     } else {
       setClickBtn(false);
     }
+    const values = {
+      version: 'v1',
+      method: 'create_material',
+      entity: 'material_post_api',
+      items: modalValue,
+    };
     console.log(updatedMaterialWeight, 'data45');
-    await postMaterialApi(loginAcessToken.token, modalValue);
-    // setDublicateData([...materialWeight]);
+    const materialApiVal = await postMaterialApi(loginAcessToken.token, values);
+    if (materialApiVal.status === 'success') {
+      toast.success('Material Created Sucessfully');
+    } else {
+      toast.error('Error in Creating Material');
+    }
+    console.log(materialApiVal, 'materialApiVal');
+
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -346,15 +359,6 @@ const MangalsutraReadyReceiptsMaster = () => {
     // const finalVal = tableData?.table?.map(({ id, ...rest }: any) => ({
     //   ...rest,
     // }));
-    const values = {
-      ...recipitData,
-      items: modalValue,
-    };
-    console.log(values, 'finalVal');
-    const purchaseReceipt: any = await purchaseReceiptApi(
-      loginAcessToken.token,
-      values
-    );
   };
 
   const handleDeleteChildTableRow = (id: any) => {

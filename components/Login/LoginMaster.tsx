@@ -4,6 +4,7 @@ import {
   getAccessToken,
   get_access_token,
 } from '@/store/slices/auth/login-slice';
+import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 const LoginMaster = () => {
@@ -27,7 +28,10 @@ const LoginMaster = () => {
   };
   useEffect(() => {
     if (loginAcessToken.token !== '') {
-      router.push('/readyReceiptKundanKarigar');
+      toast.success('Login Sucessfully');
+      setTimeout(() => {
+        router.push('/readyReceiptKundanKarigar');
+      }, 900);
     } else {
       router.push('/');
     }
