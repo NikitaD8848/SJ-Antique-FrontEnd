@@ -49,7 +49,7 @@ const SelectInputKunKarigar = ({
     console.log('dataa', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    // setTableData({ ...tableData, custom_kun_karigar: data });
+    setTableData({ ...tableData, custom_kun_karigar: data });
   };
   console.log(tableData,"tabledata kun karigar")
   console.log(selectedDropdownValue, 'selected value');
