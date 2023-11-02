@@ -127,7 +127,7 @@ td.table_row{
   padding:1px !important;
   text-align: center;
 }
-input.form-control.input-sm{
+input.form-control.input-sm {
   padding:0;
   line-height: 7px;
   font-size: 15px;
@@ -175,4 +175,7 @@ button.btn.btn-primary.mx-5.px-5{
 }
 .form-label-bold {
   font-weight: 600;
+}
+.select_width{
+  width: 150px;
 }

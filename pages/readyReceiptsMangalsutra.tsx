@@ -13,6 +13,7 @@ import { table } from 'console';
 import KundanListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
 import postMaterialApi from '@/services/api/post-material-api';
 import SearchSelectInputField from '@/components/SearchSelectInputField/SearchSelectInputField';
+import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 import CurrentDate from '@/components/CurrentDate';
 
 const readyReceiptsMangalsutra = () => {
@@ -33,6 +34,7 @@ const readyReceiptsMangalsutra = () => {
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
+  const [kundanListing, setKundanListing] = useState<any>([]);
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
@@ -356,6 +358,19 @@ const readyReceiptsMangalsutra = () => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
+
+  console.log(loginAcessToken, 'loginAcessToken');
+
+  useEffect(() => {
+    const getPurchaseList = async () => {
+      const listData = await getPurchasreceiptListApi(
+        loginAcessToken,
+        'Mangalsutra'
+      );
+      setKundanListing(listData);
+    };
+    getPurchaseList();
+  }, []);
   console.log(calculateRowValue, 'accu23');
   return (
     <div className="container-lg">
@@ -401,10 +416,7 @@ const readyReceiptsMangalsutra = () => {
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            <KundanListing
-              loginAcessToken={loginAcessToken}
-              Fields={'Mangalsutra'}
-            />
+            <KundanListing kundanListing={kundanListing} />
           </div>
           <div
             className="tab-pane fade"

@@ -1,21 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { KundanListingDataset } from '../../datasets/Ready-Receipts-kundan/KundanListing';
-import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 
-const KundanListing = ({ loginAcessToken, Fields }: any) => {
-  const [kundanListing, setKundanListing] = useState<any>([]);
-  console.log(loginAcessToken, 'loginAcessToken');
-  console.log(Fields, 'loginAcessToken');
-  useEffect(() => {
-    const getPurchaseList = async () => {
-      const listData = await getPurchasreceiptListApi(loginAcessToken, Fields);
-      setKundanListing(listData);
-    };
-
-    getPurchaseList();
-  }, []);
-  console.log(kundanListing, 'kundanListing');
-
+const KundanListing = ({ kundanListing }: any) => {
   return (
     
       <div className=" table-responsive py-2">

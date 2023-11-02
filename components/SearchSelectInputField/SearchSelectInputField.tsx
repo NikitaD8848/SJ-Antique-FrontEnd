@@ -4,22 +4,27 @@ const SearchSelectInputField = ({
   karigarData,
   recipitData,
   setRecipitData,
+  kundanKarigarData
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedDropdownValue, setSelectedDropdownValue] = useState();
   const [noRecords, setNoRecordsFound] = useState(false);
   const [filterDropdownList, setFilterDropdownList] = useState([]);
-  const [masterState, setMasterState] = useState([]);
+  const [masterData, setMasterData] = useState<any>();
 
   console.log("check karigar", karigarData)
-  // console.log(typeof[karigarData],"type ")
+  console.log(typeof[karigarData],"type ")
   // useEffect(()=>{
   //   if (karigarData.length > 0 ){
-  //       setMasterState(karigarData)
+  //       setMasterData(karigarData)
   //   }
+  //   else {
+  //     setMasterData(kundanKarigarData)
+  //   }
+    
   // },[])
-  // console.log("master state",masterState)
+  console.log("master state",masterData)
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
     setShowDropdown(true);
@@ -82,7 +87,7 @@ const SearchSelectInputField = ({
         onChange={HandleSelectInputField}
         onClick={handleShowDropdown}
         value={selectedDropdownValue}
-        defaultValue={karigarData?.karigar_name}
+        defaultValue={masterData?.karigar_name}
         onKeyDown={handleKeyDown}
         autoComplete="off"
         ref={inputRef}
