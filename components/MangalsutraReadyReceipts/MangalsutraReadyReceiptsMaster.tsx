@@ -14,14 +14,13 @@ import materialApi from '@/services/api/get-material-list-api';
 import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
 import postMaterialApi from '@/services/api/post-material-api';
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
-import KundanListing from './KundanReadyReceiptsListing';
+// import KundanListing from './KundanReadyReceiptsListing';
 import SearchSelectInputField from '../SearchSelectInputField/SearchSelectInputField';
 import CurrentDate from '../CurrentDate';
 import ModalMaster from '../ModalMaster/ModalMaster';
+import KundanListing from '../KundanReadyReceipts/KundanReadyReceiptsListing';
 
-const ReadyReceiptKundanKarigarMaster = () => {
-  // api states
-
+const MangalsutraReadyReceiptsMaster = () => {
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [recipitData, setRecipitData] = useState({
@@ -30,7 +29,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
     entity: 'purchase_receipt',
     custom_karigar: ' ',
     remarks: '',
-    custom_ready_receipt_type: 'Kundan',
+    custom_ready_receipt_type: 'Mangalsutra',
   });
   const [clickBtn, setClickBtn] = useState<boolean>(false);
   const [karigarData, setKarigarData] = useState<any>();
@@ -38,6 +37,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
+  const [kundanListing, setKundanListing] = useState<any>([]);
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
@@ -230,6 +230,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
         ...rest,
       })
     );
+    console.log(modalValue, 'modalValue');
     if (inputRef.current) {
       disabledValue = inputRef.current.value;
     } else {
@@ -334,13 +335,17 @@ const ReadyReceiptKundanKarigarMaster = () => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
   };
   console.log(recipitData, 'recipitData');
-
   const handleCreate = async () => {
+    console.log(tableData, 'table56');
+
     const modalValue = tableData.map(
       ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
         ...rest,
       })
     );
+    // const finalVal = tableData?.table?.map(({ id, ...rest }: any) => ({
+    //   ...rest,
+    // }));
     const values = {
       ...recipitData,
       items: modalValue,
@@ -351,37 +356,36 @@ const ReadyReceiptKundanKarigarMaster = () => {
       values
     );
   };
+
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
 
-  // kundankarigar listing api
-  const [kundanListing, setKundanListing] = useState<any>([]);
   console.log(loginAcessToken, 'loginAcessToken');
 
   useEffect(() => {
     const getPurchaseList = async () => {
       const listData = await getPurchasreceiptListApi(
         loginAcessToken,
-        'Kundan'
+        'Mangalsutra'
       );
       setKundanListing(listData);
     };
     getPurchaseList();
   }, []);
-
+  console.log(calculateRowValue, 'accu23');
   return (
     <div className="container-lg">
       <div className="container-lg">
         <div
-          className="nav nav-pills mb-2 justify-content-center "
+          className="nav nav-pills mb-3 justify-content-center "
           id="pills-tab"
           role="tablist"
         >
           <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
-              className="nav-link active w-100 p-1 border"
+              className="nav-link active w-100 border p-1"
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -390,10 +394,10 @@ const ReadyReceiptKundanKarigarMaster = () => {
               aria-controls="pills-home"
               aria-selected="true"
             >
-              Ready receipts (kundan karigar)
+              Ready receipts (Mangalsutra karigar)
             </button>
           </div>
-          <div className="nav-tabs tabs-container w-50" role="presentation">
+          <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
               className="nav-link  w-100 p-1 border"
               id="pills-profile-tab"
@@ -424,68 +428,71 @@ const ReadyReceiptKundanKarigarMaster = () => {
             aria-labelledby="pills-profile-tab"
           >
             <div>
-              <div className={`${styles.button_field}`}>
-                <button
-                  type="button"
-                  className={`${styles.create_button}`}
-                  onClick={handleCreate}
-                >
-                  Create
-                </button>
-              </div>
-              <div className=" table-responsive">
-                <table className="table table-hover">
-                  <thead>
-                    <tr>
-                      <th className="thead" scope="col">
-                        Date
-                      </th>
+              <div>
+                <div className={`${styles.button_field}`}>
+                  <button
+                    type="button"
+                    className={`${styles.create_button}`}
+                    onClick={handleCreate}
+                  >
+                    Create
+                  </button>
+                </div>
 
-                      <th className="thead" scope="col">
-                        Karigar(Supplier)
-                      </th>
-                      <th className="thead" scope="col">
-                        Remarks
-                      </th>
-                      <th className="thead" scope="col">
-                        Ready Raceipt Type
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="table_row">
-                      <td scope="row" className="table_row">
-                        <CurrentDate />
-                      </td>
-                      <td className="table_row">
-                        <SearchSelectInputField
-                          karigarData={karigarData}
-                          recipitData={recipitData}
-                          setRecipitData={setRecipitData}
-                        />
-                      </td>
-                      <td className="table_row">
-                        <input
-                          className="form-control input-sm"
-                          type="text"
-                          name="remarks"
-                          value={recipitData.remarks}
-                          onChange={handleRecipietChange}
-                        />
-                      </td>
-                      <td className="table_row">
-                        <input
-                          className="form-control input-sm"
-                          type="text"
-                          readOnly
-                          value={'Kundan'}
-                          disabled
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div className="table-responsive">
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th className="thead" scope="col">
+                          Date
+                        </th>
+                        <th className="thead" scope="col">
+                          Karigar(Supplier)
+                        </th>
+                        <th className="thead" scope="col">
+                          Remarks
+                        </th>
+                        <th className="thead" scope="col">
+                          Ready Raceipt Type
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td scope="row" className="table_row">
+                          <CurrentDate />
+                        </td>
+                        <td className="table_row">
+                          <SearchSelectInputField
+                            karigarData={karigarData}
+                            recipitData={recipitData}
+                            setRecipitData={setRecipitData}
+                          />
+                        </td>
+                        <td className="table_row">
+                          <input
+                            className="form-control input-sm"
+                            type="text"
+                            name="remarks"
+                            value={recipitData.remarks}
+                            onChange={handleRecipietChange}
+                          />
+                        </td>
+                        <td className="table_row">
+                          <input
+                            className="form-control input-sm"
+                            type="text"
+                            readOnly
+                            disabled
+                            value={'Mangalsutra'}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
               <div className="container d-flex justify-content-end">
                 <button
                   className={`btn btn-link`}
@@ -494,13 +501,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   Add Row
                 </button>
               </div>
-
               <div className="table-responsive">
-                <table className="table table-hover table-striped table-bordered">
+                <table className="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
                       <th className="thead" scope="col">
-                        Sr.no
+                        Sr. no
                       </th>
                       <th className="thead" scope="col">
                         Product Code (Item)
@@ -518,7 +524,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         Gross Wt
                       </th>
                       <th className="thead" scope="col">
-                        Mat_Wt
+                        Mat Wt
                       </th>
                       <th className="thead" scope="col">
                         Other
@@ -533,9 +539,9 @@ const ReadyReceiptKundanKarigarMaster = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item: any, i: any) => (
-                      <tr key={item.id} className={`${styles.table_row}`}>
-                        <td className="table_row">{item.id}</td>
+                    {tableData?.map((item: any, i: any) => (
+                      <tr key={item.id}>
+                        <td className="table_row ">{item.id}</td>
                         <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
@@ -554,12 +560,21 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         <td className="table_row">
                           <select
                             className={` ${styles.table_select}`}
-                            name="Karigar"
+                            name="custom_kun_karigar"
                             id="karigar"
+                            value={item.custom_kun_karigar}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'custom_kun_karigar',
+                                e.target.value
+                              )
+                            }
                           >
                             {kundanKarigarData?.length > 0 &&
                               kundanKarigarData.map((name: any, i: any) => (
-                                <option key={i} value={name.karigar_name}>
+                                <option value={name.karigar_name} key={i}>
                                   {name.karigar_name}
                                 </option>
                               ))}
@@ -642,6 +657,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                                 +e.target.value
                               )
                             }
+                            onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
                         <td className="table_row">
@@ -697,12 +713,249 @@ const ReadyReceiptKundanKarigarMaster = () => {
       </div>
       <div>
         {tableData.map((item: any, index: any) => (
-          <Modal size="xl" show={showModal} onHide={closeModal} key={index}>
+          <Modal size="xl" key={index} show={showModal} onHide={closeModal}>
             <Modal.Header closeButton>
-              <Modal.Title id="example-modal-sizes-title-lg">
-                Triggered by Key Press
-              </Modal.Title>
+              <Modal.Title>Triggered by Key Press</Modal.Title>
             </Modal.Header>
+            {/* <Modal.Body>
+              <div className="container d-flex justify-content-end">
+                <button
+                  className="btn btn-link"
+                  onClick={() => handleAddRow('modalRow')}
+                >
+                  Add Row
+                </button>
+              </div>
+              <div className="table-responsive">
+                <table className="table table-bordered table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th className="thead" scope="col">
+                        Sr. no
+                      </th>
+                      <th className="thead" scope="col">
+                        Material Abbr (Master)
+                      </th>
+                      <th className="thead" scope="col">
+                        Material (Master)
+                      </th>
+                      <th className="thead" scope="col">
+                        Pcs
+                      </th>
+                      <th className="thead" scope="col">
+                        Piece @
+                      </th>
+                      <th className="thead" scope="col">
+                        Carat
+                      </th>
+                      <th className="thead" scope="col">
+                        Carat @
+                      </th>
+                      <th className="thead" scope="col">
+                        Weight
+                      </th>
+                      <th className="thead" scope="col">
+                        Gm @
+                      </th>
+                      <th className="thead" scope="col">
+                        Total
+                      </th>
+                      <th className="thead" scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {materialWeight?.length > 0 &&
+                      materialWeight?.map((element: any, i: any) => (
+                        <tr key={i}>
+                          <td className="table_row">{i + 1}</td>
+                       
+                          <td className="table_row">
+                            <select
+                              className={`${styles.table_select}`}
+                              name="material_abbr"
+                              id="material_abbr"
+                              value={element.material_abbr}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'material_abbr',
+                                  e.target.value
+                                )
+                              }
+                            >
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData?.map(
+                                    (names: any, i: any) => {
+                                      return (
+                                        <option
+                                          key={i}
+                                          value={names.material_abbr}
+                                        >
+                                          {names.material_abbr}
+                                        </option>
+                                      );
+                                    }
+                                  )}
+                                </>
+                              )}
+                            </select>
+                          </td>
+                          <td className="table_row">
+                            <select
+                              className={`${styles.table_select}`}
+                              name="material"
+                              id="material"
+                              value={element.material}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'material',
+                                  e.target.value
+                                )
+                              }
+                            >
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData.map((name: any, i: any) => {
+                                    // Assuming setAbbrivationVal is a state updater function
+                                    return (
+                                      <option key={i} value={name?.material}>
+                                        {name?.material}
+                                      </option>
+                                    );
+                                  })}
+                                </>
+                              )}
+                            </select>
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.pcs}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'pcs',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.piece_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'piece_',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.carat}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'carat',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.carat_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'carat_',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.weight}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'weight',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.gm_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'gm_',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={`${styles.input_field}`}
+                              type="number"
+                              readOnly
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'amount',
+                                  +e.target.value
+                                )
+                              }
+                              ref={inputRef}
+                              value={calculateRowValue(i)}
+                            />
+                          </td>
+                          <td className="table_row">
+                            <button
+                              className="d-flex align-items-center delete-link p-1 border-0"
+                              onClick={() => handleDeleteChildTableRow(i)}
+                              onKeyDown={(e) => handleTabPress(e, item.id)}
+                            >
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                style={{ color: 'red', fontSize: 15 }}
+                              />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </Modal.Body> */}
             <ModalMaster
               handleModalFieldChange={handleModalFieldChange}
               handleAddRow={handleAddRow}
@@ -729,4 +982,4 @@ const ReadyReceiptKundanKarigarMaster = () => {
   );
 };
 
-export default ReadyReceiptKundanKarigarMaster;
+export default MangalsutraReadyReceiptsMaster;
