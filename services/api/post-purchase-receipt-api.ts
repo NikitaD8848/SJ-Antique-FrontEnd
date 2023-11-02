@@ -21,7 +21,7 @@ const purchaseReceiptApi = async (get_access_token: any, val: any) => {
     )
     .then((res: any) => {
       console.log('post purchase receipt', res);
-      response = res?.data?.message?.data;
+      response = res?.data?.message;
     })
     .catch((err: any) => {
       if (err.code === 'ECONNABORTED') {

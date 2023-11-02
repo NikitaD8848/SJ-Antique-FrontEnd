@@ -50,8 +50,8 @@ const Navbar = () => {
             <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <Header1 />
       </nav>
+      <Header1 />
     </div>
   );
 };

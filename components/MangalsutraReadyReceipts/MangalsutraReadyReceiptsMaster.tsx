@@ -356,9 +356,20 @@ const MangalsutraReadyReceiptsMaster = () => {
         ...rest,
       })
     );
-    // const finalVal = tableData?.table?.map(({ id, ...rest }: any) => ({
-    //   ...rest,
-    // }));
+    const values = {
+      ...recipitData,
+      items: modalValue,
+    };
+    console.log(values, 'finalVal');
+    const purchaseReceipt: any = await purchaseReceiptApi(
+      loginAcessToken.token,
+      values
+    );
+    if (purchaseReceipt.status === 'success') {
+      toast.success('Purchase Receipt Created Sucessfully');
+    } else {
+      toast.error('Error in Creating Purchase Receipt');
+    }
   };
 
   const handleDeleteChildTableRow = (id: any) => {

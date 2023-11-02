@@ -179,3 +179,6 @@ button.btn.btn-primary.mx-5.px-5{
 .select_width{
   width: 150px;
 }
+.btn-margin {
+  margin-right: 10px;
+}

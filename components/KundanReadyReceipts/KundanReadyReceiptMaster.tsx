@@ -317,6 +317,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
     } else {
       setClickBtn(false);
     }
+    console.log(updatedMaterialWeight, 'data45');
     const values = {
       version: 'v1',
       method: 'create_material',
@@ -330,7 +331,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
     } else {
       toast.error('Error in Creating Material');
     }
-    console.log(materialApiVal, 'materialApiVal');
+
+    // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -353,6 +355,20 @@ const ReadyReceiptKundanKarigarMaster = () => {
         ...rest,
       })
     );
+    const values = {
+      ...recipitData,
+      items: modalValue,
+    };
+    console.log(values, 'finalVal');
+    const purchaseReceipt: any = await purchaseReceiptApi(
+      loginAcessToken.token,
+      values
+    );
+    if (purchaseReceipt.status === 'success') {
+      toast.success('Purchase Receipt Created Sucessfully');
+    } else {
+      toast.error('Error in Creating Purchase Receipt');
+    }
   };
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
