@@ -24,35 +24,40 @@ const Navbar = () => {
   };
 
   return (
-    <div className="container-lg">
-      <nav className="navbar navbar-light bg-light p-0 ">
-        <Link className="navbar-brand" href="#/master">
-          <Image src={logo} alt="logo" width={96} height={62} />
-        </Link>
-        <div>
-          {/* <button className="btn btn-primary mx-5 "
+    <div className='bg-light'>
+      <div className=" container-lg">
+        <nav className="navbar navbar-light p-0 ">
+          <div>
+            {/* <button className="btn btn-primary mx-5 "
               onClick={()=>setShowButtons1(!showButtons1)}  
                 >
                 Ready Receipts</button>
       <button className="btn btn-primary mx-5 px-5" 
        onClick={()=>setShowButtons2(!showButtons2)} >Sales</button> */}
-        </div>
-        <Dropdown>
-          <Dropdown.Toggle variant="light" id="dropdown-basic">
-            <FontAwesomeIcon
-              icon={faCircleUser}
-              className="fa fa-user-circle "
-              style={{ color: '#CDAB6E', fontSize: 30 }}
-            />
-          </Dropdown.Toggle>
+          </div>
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="light"
+              id="dropdown-basic"
+              className="border"
+            >
+              <FontAwesomeIcon
+                icon={faCircleUser}
+                className="fa fa-user-circle  "
+                style={{ color: '#CDAB6E', fontSize: 30 }}
+              />
+            </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </nav>
         <Header1 />
-      </nav>
+      </div>
+      <hr className='p-o'/>
     </div>
+
   );
 };
 

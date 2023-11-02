@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import styles from '../../styles/readyReceipts.module.css';
 
 const SelectInputKunKarigar = ({
   kundanKarigarData,
-  recipitData,
-  setRecipitData,
+  tableData,
+  setTableData,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -28,8 +29,9 @@ const SelectInputKunKarigar = ({
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
-    setRecipitData({ ...recipitData, custom_karigar: selectedDropdownValue });
+    setTableData({ ...tableData, custom_kun_karigar: selectedDropdownValue });
   };
+  console.log(tableData,"tabledata kun karigar")
 
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -47,8 +49,9 @@ const SelectInputKunKarigar = ({
     console.log('dataa', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    setRecipitData({ ...recipitData, custom_karigar: data });
+    // setTableData({ ...tableData, custom_kun_karigar: data });
   };
+  console.log(tableData,"tabledata kun karigar")
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {
     const handleDocumentClick = (e: any) => {
@@ -71,7 +74,7 @@ const SelectInputKunKarigar = ({
       <input
         type="text"
         name="custom_karigar"
-        className="form-control input-sm"
+        className={` ${styles.table_select}`}
         id="exampleInputEmail1"
         placeholder="Karigar Name"
         onChange={HandleSelectInputField}

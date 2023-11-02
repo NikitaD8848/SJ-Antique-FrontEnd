@@ -19,6 +19,7 @@ import SearchSelectInputField from '../SearchSelectInputField/SearchSelectInputF
 import CurrentDate from '../CurrentDate';
 import ModalMaster from '../ModalMaster/ModalMaster';
 import { ToastContainer, toast } from 'react-toastify';
+import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
 
 const ReadyReceiptKundanKarigarMaster = () => {
   // api states
@@ -376,7 +377,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
 
   return (
     <div className="container-lg">
-      <div className="container-lg">
+      <div >
         <div
           className="nav nav-pills mb-2 justify-content-center "
           id="pills-tab"
@@ -437,7 +438,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                 </button>
               </div>
               <div className=" table-responsive">
-                <table className="table table-hover">
+                <table className="table table-hover table-bordered">
                   <thead>
                     <tr>
                       <th className="thead" scope="col">
@@ -451,14 +452,14 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         Remarks
                       </th>
                       <th className="thead" scope="col">
-                        Ready Raceipt Type
+                        Ready Receipt Type
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="table_row">
                       <td scope="row" className="table_row">
-                        <CurrentDate />
+                        <CurrentDate/>
                       </td>
                       <td className="table_row">
                         <SearchSelectInputField
@@ -489,9 +490,9 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="container d-flex justify-content-end">
+              <div className="container d-flex justify-content-end p-o">
                 <button
-                  className={`btn btn-link`}
+                  className="btn btn-link p-0"
                   onClick={() => handleAddRow('tableRow')}
                 >
                   Add Row
@@ -536,7 +537,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item: any, i: any) => (
+                    {tableData?.map((item: any, i: any) => (
                       <tr key={item.id} className={`${styles.table_row}`}>
                         <td className="table_row">{item.id}</td>
                         <td className="table_row">
@@ -555,18 +556,11 @@ const ReadyReceiptKundanKarigarMaster = () => {
                           />
                         </td>
                         <td className="table_row">
-                          <select
-                            className={` ${styles.table_select}`}
-                            name="Karigar"
-                            id="karigar"
-                          >
-                            {kundanKarigarData?.length > 0 &&
-                              kundanKarigarData.map((name: any, i: any) => (
-                                <option key={i} value={name.karigar_name}>
-                                  {name.karigar_name}
-                                </option>
-                              ))}
-                          </select>
+                        <SelectInputKunKarigar
+                            kundanKarigarData={kundanKarigarData}
+                            tableData={tableData}
+                            setTableData={setTableData}
+                          />
                         </td>
                         <td className="table_row">
                           <input
@@ -603,6 +597,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                             className={` ${styles.input_field}`}
                             type="text"
                             readOnly
+                            disabled
                             name={`sum-${i + 1}`}
                             value={
                               tableData[i]?.totalModalWeight > 0
@@ -616,7 +611,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         </td>
                         <td className="table_row">
                           <input
-                            className={`${styles.input_field}`}
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={tableData[i]?.totalModalWeight}
                             readOnly
@@ -653,6 +648,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                             className={` ${styles.input_field}`}
                             type="text"
                             readOnly
+                            disabled
                             name={`sum-${i + 1}`}
                             value={
                               tableData[i]?.totalAmount > 0
@@ -713,6 +709,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
               materialListData={materialListData}
               calculateRowValue={calculateRowValue}
               handleDeleteChildTableRow={handleDeleteChildTableRow}
+              setRecipitData={setRecipitData}
+              recipitData={recipitData}
             />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>

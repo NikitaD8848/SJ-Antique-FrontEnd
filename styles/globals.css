@@ -133,6 +133,9 @@ input.form-control.input-sm {
   font-size: 15px;
   text-align: center;
 }
+.input :disabled{
+ background-color: #ced3d7;
+}
 select.form-select.border-0{
   line-height: 20px ;
   font-size: 15px;
@@ -178,4 +181,7 @@ button.btn.btn-primary.mx-5.px-5{
 }
 .select_width{
   width: 150px;
+}
+input:disabled{
+  background-color: #ced3d7;
 }

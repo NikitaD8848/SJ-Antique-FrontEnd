@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '../../styles/readyReceipts.module.css';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
+import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
 const ModalMaster = ({
   handleModalFieldChange,
   handleAddRow,
@@ -10,6 +11,8 @@ const ModalMaster = ({
   materialListData,
   calculateRowValue,
   handleDeleteChildTableRow,
+  recipitData,
+  setRecipitData
 }: any) => {
   return (
     <>
@@ -23,7 +26,7 @@ const ModalMaster = ({
           </button>
         </div>
         <div className="container-lg table-responsive">
-          <table className="table table-striped table-hover">
+          <table className="table table-striped table-hover table-bordered">
             <thead>
               <tr>
                 <th className="thead" scope="col">
@@ -65,7 +68,7 @@ const ModalMaster = ({
                   <tr key={i}>
                     <td className="table_row">{i + 1}</td>
                     <td className="table_row">
-                      <select
+                    <select
                         className={`${styles.table_select}`}
                         name="material_abbr"
                         id="material_abbr"
@@ -216,6 +219,7 @@ const ModalMaster = ({
                         className={`${styles.input_field}`}
                         type="number"
                         readOnly
+                        disabled
                         onChange={(e) =>
                           handleModalFieldChange(
                             i,
