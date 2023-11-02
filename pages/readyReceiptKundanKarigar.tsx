@@ -17,7 +17,7 @@ import postMaterialApi from '@/services/api/post-material-api';
 import { useRouter } from 'next/router';
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 
-const readyReceiptKundanKarigar = () => {
+const ReadyReceiptKundanKarigar = () => {
   // api states
   const route = useRouter();
   console.log(route, 'route');
@@ -572,7 +572,7 @@ const readyReceiptKundanKarigar = () => {
                           >
                             {kundanKarigarData?.length > 0 &&
                               kundanKarigarData.map((name: any, i: any) => (
-                                <option value="karigar1">
+                                <option key={i} value={name.karigar_name}>
                                   {name.karigar_name}
                                 </option>
                               ))}
@@ -710,7 +710,7 @@ const readyReceiptKundanKarigar = () => {
       </div>
       <div>
         {tableData.map((item: any, index: any) => (
-          <Modal size="xl" show={showModal} onHide={closeModal}>
+          <Modal size="xl" show={showModal} onHide={closeModal} key={index}>
             <Modal.Header closeButton>
               <Modal.Title id="example-modal-sizes-title-lg">
                 Triggered by Key Press
@@ -971,4 +971,4 @@ const readyReceiptKundanKarigar = () => {
   );
 };
 
-export default readyReceiptKundanKarigar;
+export default ReadyReceiptKundanKarigar;

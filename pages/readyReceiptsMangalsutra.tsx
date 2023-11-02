@@ -15,7 +15,7 @@ import postMaterialApi from '@/services/api/post-material-api';
 import SearchSelectInputField from '@/components/SearchSelectInputField/SearchSelectInputField';
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 
-const readyReceiptsMangalsutra = () => {
+const ReadyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [abbrivationVal, setAbbrivationVal] = useState('');
@@ -573,7 +573,7 @@ const readyReceiptsMangalsutra = () => {
                           >
                             {kundanKarigarData?.length > 0 &&
                               kundanKarigarData.map((name: any, i: any) => (
-                                <option value={name.karigar_name}>
+                                <option value={name.karigar_name} key={i}>
                                   {name.karigar_name}
                                 </option>
                               ))}
@@ -982,4 +982,4 @@ const readyReceiptsMangalsutra = () => {
   );
 };
 
-export default readyReceiptsMangalsutra;
+export default ReadyReceiptsMangalsutra;

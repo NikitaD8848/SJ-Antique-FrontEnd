@@ -1,8 +1,7 @@
 import LoginMaster from '@/components/Login/LoginMaster';
-import Login from '@/components/Login/LoginMaster';
 import React from 'react';
 
-const login = () => {
+const Login = () => {
   return (
     <div className="container-lg">
       <LoginMaster />
@@ -10,4 +9,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
