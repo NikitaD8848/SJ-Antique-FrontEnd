@@ -20,6 +20,7 @@ import CurrentDate from '../CurrentDate';
 import ModalMaster from '../ModalMaster/ModalMaster';
 import KundanListing from '../KundanReadyReceipts/KundanReadyReceiptsListing';
 import { ToastContainer, toast } from 'react-toastify';
+import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
 
 const MangalsutraReadyReceiptsMaster = () => {
   const inputRef = useRef<any>(null);
@@ -392,7 +393,7 @@ const MangalsutraReadyReceiptsMaster = () => {
   console.log(calculateRowValue, 'accu23');
   return (
     <div className="container-lg">
-      <div className="container-lg">
+      <div>
         <div
           className="nav nav-pills mb-3 justify-content-center "
           id="pills-tab"
@@ -455,7 +456,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                 </div>
 
                 <div className="table-responsive">
-                  <table className="table table-hover">
+                  <table className="table table-hover table-bordered">
                     <thead>
                       <tr>
                         <th className="thead" scope="col">
@@ -508,9 +509,9 @@ const MangalsutraReadyReceiptsMaster = () => {
                 </div>
               </div>
 
-              <div className="container d-flex justify-content-end">
+              <div className="container d-flex justify-content-end p-0">
                 <button
-                  className={`btn btn-link`}
+                  className={`btn btn-link p-0`}
                   onClick={() => handleAddRow('tableRow')}
                 >
                   Add Row
@@ -573,27 +574,11 @@ const MangalsutraReadyReceiptsMaster = () => {
                           />
                         </td>
                         <td className="table_row">
-                          <select
-                            className={` ${styles.table_select}`}
-                            name="custom_kun_karigar"
-                            id="karigar"
-                            value={item.custom_kun_karigar}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_kun_karigar',
-                                e.target.value
-                              )
-                            }
-                          >
-                            {kundanKarigarData?.length > 0 &&
-                              kundanKarigarData.map((name: any, i: any) => (
-                                <option value={name.karigar_name} key={i}>
-                                  {name.karigar_name}
-                                </option>
-                              ))}
-                          </select>
+                        <SelectInputKunKarigar
+                            kundanKarigarData={kundanKarigarData}
+                            recipitData={recipitData}
+                            setRecipitData={setRecipitData}
+                          />
                         </td>
                         <td className="table_row">
                           <input
@@ -630,6 +615,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                             className={` ${styles.input_field}`}
                             type="text"
                             readOnly
+                            disabled
                             name={`sum-${i + 1}`}
                             value={
                               tableData[i]?.totalModalWeight > 0
@@ -643,7 +629,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                         </td>
                         <td className="table_row">
                           <input
-                            className={`${styles.input_field}`}
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={tableData[i]?.totalModalWeight}
                             readOnly
@@ -681,6 +667,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                             className={` ${styles.input_field}`}
                             type="text"
                             readOnly
+                            disabled
                             name={`sum-${i + 1}`}
                             value={
                               tableData[i]?.totalAmount > 0
@@ -732,245 +719,6 @@ const MangalsutraReadyReceiptsMaster = () => {
             <Modal.Header closeButton>
               <Modal.Title>Triggered by Key Press</Modal.Title>
             </Modal.Header>
-            {/* <Modal.Body>
-              <div className="container d-flex justify-content-end">
-                <button
-                  className="btn btn-link"
-                  onClick={() => handleAddRow('modalRow')}
-                >
-                  Add Row
-                </button>
-              </div>
-              <div className="table-responsive">
-                <table className="table table-bordered table-hover table-striped">
-                  <thead>
-                    <tr>
-                      <th className="thead" scope="col">
-                        Sr. no
-                      </th>
-                      <th className="thead" scope="col">
-                        Material Abbr (Master)
-                      </th>
-                      <th className="thead" scope="col">
-                        Material (Master)
-                      </th>
-                      <th className="thead" scope="col">
-                        Pcs
-                      </th>
-                      <th className="thead" scope="col">
-                        Piece @
-                      </th>
-                      <th className="thead" scope="col">
-                        Carat
-                      </th>
-                      <th className="thead" scope="col">
-                        Carat @
-                      </th>
-                      <th className="thead" scope="col">
-                        Weight
-                      </th>
-                      <th className="thead" scope="col">
-                        Gm @
-                      </th>
-                      <th className="thead" scope="col">
-                        Total
-                      </th>
-                      <th className="thead" scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {materialWeight?.length > 0 &&
-                      materialWeight?.map((element: any, i: any) => (
-                        <tr key={i}>
-                          <td className="table_row">{i + 1}</td>
-                       
-                          <td className="table_row">
-                            <select
-                              className={`${styles.table_select}`}
-                              name="material_abbr"
-                              id="material_abbr"
-                              value={element.material_abbr}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'material_abbr',
-                                  e.target.value
-                                )
-                              }
-                            >
-                              {materialListData?.length > 0 && (
-                                <>
-                                  {materialListData?.map(
-                                    (names: any, i: any) => {
-                                      return (
-                                        <option
-                                          key={i}
-                                          value={names.material_abbr}
-                                        >
-                                          {names.material_abbr}
-                                        </option>
-                                      );
-                                    }
-                                  )}
-                                </>
-                              )}
-                            </select>
-                          </td>
-                          <td className="table_row">
-                            <select
-                              className={`${styles.table_select}`}
-                              name="material"
-                              id="material"
-                              value={element.material}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'material',
-                                  e.target.value
-                                )
-                              }
-                            >
-                              {materialListData?.length > 0 && (
-                                <>
-                                  {materialListData.map((name: any, i: any) => {
-                                    // Assuming setAbbrivationVal is a state updater function
-                                    return (
-                                      <option key={i} value={name?.material}>
-                                        {name?.material}
-                                      </option>
-                                    );
-                                  })}
-                                </>
-                              )}
-                            </select>
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={element.pcs}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'pcs',
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={element.piece_}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'piece_',
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={element.carat}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'carat',
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={element.carat_}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'carat_',
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={element.weight}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'weight',
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={element.gm_}
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'gm_',
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={`${styles.input_field}`}
-                              type="number"
-                              readOnly
-                              onChange={(e) =>
-                                handleModalFieldChange(
-                                  i,
-                                  'modalRow',
-                                  'amount',
-                                  +e.target.value
-                                )
-                              }
-                              ref={inputRef}
-                              value={calculateRowValue(i)}
-                            />
-                          </td>
-                          <td className="table_row">
-                            <button
-                              className="d-flex align-items-center delete-link p-1 border-0"
-                              onClick={() => handleDeleteChildTableRow(i)}
-                              onKeyDown={(e) => handleTabPress(e, item.id)}
-                            >
-                              <FontAwesomeIcon
-                                icon={faTrash}
-                                style={{ color: 'red', fontSize: 15 }}
-                              />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </Modal.Body> */}
             <ModalMaster
               handleModalFieldChange={handleModalFieldChange}
               handleAddRow={handleAddRow}

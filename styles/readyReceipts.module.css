@@ -2,25 +2,29 @@
     text-align: end;
 }
 .create_button{
-    margin-bottom: 10px;
-    padding: 5px 15px;
-    background: #d5aa66;
-    color: #000;
-    border: none;
+    margin-bottom: 7px;
+    padding: 3px 8px;
+    background: #FFF;
+    color: #0d6efd;
+    border: 1px solid #0d6efd;
+    border-radius: 5px;
+}
+.create_button:hover{
+    background-color: #0d6efd;
+    color: #FFF;
 }
 .input_field{
     margin-top: 2px;
     justify-content: center;
-    border: none;
     max-width: 100px;
     text-align: center;
 }
 .table_select{
+    margin-top: 2px;
     width: 150px;
-    border: none;
-    line-height: 7px;
+    line-height:20px;
 }
-.handle_modal_button{
+/* .handle_modal_button{
     padding: 3px;
     margin-left: 10px;
     margin-top: 3px;
@@ -28,7 +32,4 @@
     background-color: #d5aa66;;
     color: #000;
     font-size: 12px;
-}
-.delete_row_button{
-    border: none;
-}
+} */

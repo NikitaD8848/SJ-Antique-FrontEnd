@@ -1,33 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const SearchSelectInputField = ({
-  karigarData,
+const SelectInputMaterial = ({
+  materialListData,
   recipitData,
   setRecipitData,
-  kundanKarigarData,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedDropdownValue, setSelectedDropdownValue] = useState();
   const [noRecords, setNoRecordsFound] = useState(false);
   const [filterDropdownList, setFilterDropdownList] = useState([]);
-  //const [masterData, setMasterData] = useState<any>();
 
-  console.log('check karigar', karigarData);
-  console.log(typeof [karigarData], 'type ');
-  // useEffect(() => {
-  //   if (karigarData?.length > 0) {
-  //     setMasterData(karigarData);
-  //   }
-  // }, []);
-  // console.log('master state', masterData);
+  console.log('check karigar', materialListData);
+  console.log(typeof materialListData, 'type ');
+
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
     setShowDropdown(true);
     setSelectedDropdownValue(e.target.value);
     const query = e.target.value;
 
-    const UpdatedFilterList: any = karigarData?.filter((item: any) => {
+    const UpdatedFilterList: any = materialListData?.filter((item: any) => {
       return (
         item.karigar_name?.toLowerCase()?.indexOf(query?.toLowerCase()) !== -1
       );
@@ -83,7 +76,7 @@ const SearchSelectInputField = ({
         onChange={HandleSelectInputField}
         onClick={handleShowDropdown}
         value={selectedDropdownValue}
-        defaultValue={karigarData?.karigar_name}
+        defaultValue={materialListData?.karigar_name}
         onKeyDown={handleKeyDown}
         autoComplete="off"
         ref={inputRef}
@@ -92,7 +85,7 @@ const SearchSelectInputField = ({
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
-              {karigarData?.map((name: any, i: any) => (
+              {materialListData?.map((name: any, i: any) => (
                 <li
                   key={i}
                   onClick={() => handleSelectedOption(name.karigar_name)}
@@ -120,4 +113,4 @@ const SearchSelectInputField = ({
     </div>
   );
 };
-export default SearchSelectInputField;
+export default SelectInputMaterial;

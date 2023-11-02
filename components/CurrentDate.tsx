@@ -12,7 +12,12 @@ const CurrentDate = () => {
       const [currentDate, setCurrentDate] = useState(getDate());
 
   return (
-    currentDate
+    <input type="text" 
+    className="form-control input-sm"
+    value={currentDate}
+    readOnly
+    disabled
+    />
   )
 }
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import styles from '../../styles/readyReceipts.module.css';
 
-const SearchSelectInputField = ({
-  karigarData,
-  recipitData,
-  setRecipitData,
+const SelectInputKunKarigar = ({
   kundanKarigarData,
+  tableData,
+  setTableData,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -13,29 +13,25 @@ const SearchSelectInputField = ({
   const [filterDropdownList, setFilterDropdownList] = useState([]);
   //const [masterData, setMasterData] = useState<any>();
 
-  console.log('check karigar', karigarData);
-  console.log(typeof [karigarData], 'type ');
-  // useEffect(() => {
-  //   if (karigarData?.length > 0) {
-  //     setMasterData(karigarData);
-  //   }
-  // }, []);
-  // console.log('master state', masterData);
+  console.log('check karigar', kundanKarigarData);
+  console.log(typeof kundanKarigarData, 'type ');
+
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
     setShowDropdown(true);
     setSelectedDropdownValue(e.target.value);
     const query = e.target.value;
 
-    const UpdatedFilterList: any = karigarData?.filter((item: any) => {
+    const UpdatedFilterList: any = kundanKarigarData?.filter((item: any) => {
       return (
         item.karigar_name?.toLowerCase()?.indexOf(query?.toLowerCase()) !== -1
       );
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
-    setRecipitData({ ...recipitData, custom_karigar: selectedDropdownValue });
+    setTableData({ ...tableData, custom_kun_karigar: selectedDropdownValue });
   };
+  console.log(tableData,"tabledata kun karigar")
 
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -53,8 +49,9 @@ const SearchSelectInputField = ({
     console.log('dataa', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    setRecipitData({ ...recipitData, custom_karigar: data });
+    // setTableData({ ...tableData, custom_kun_karigar: data });
   };
+  console.log(tableData,"tabledata kun karigar")
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {
     const handleDocumentClick = (e: any) => {
@@ -77,13 +74,13 @@ const SearchSelectInputField = ({
       <input
         type="text"
         name="custom_karigar"
-        className="form-control input-sm"
+        className={` ${styles.table_select}`}
         id="exampleInputEmail1"
         placeholder="Karigar Name"
         onChange={HandleSelectInputField}
         onClick={handleShowDropdown}
         value={selectedDropdownValue}
-        defaultValue={karigarData?.karigar_name}
+        defaultValue={kundanKarigarData?.karigar_name}
         onKeyDown={handleKeyDown}
         autoComplete="off"
         ref={inputRef}
@@ -92,7 +89,7 @@ const SearchSelectInputField = ({
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
-              {karigarData?.map((name: any, i: any) => (
+              {kundanKarigarData?.map((name: any, i: any) => (
                 <li
                   key={i}
                   onClick={() => handleSelectedOption(name.karigar_name)}
@@ -120,4 +117,4 @@ const SearchSelectInputField = ({
     </div>
   );
 };
-export default SearchSelectInputField;
+export default SelectInputKunKarigar;
