@@ -165,12 +165,10 @@ button.btn.btn-primary.mx-5.px-5{
   max-height: 170px;
   overflow-y: auto;
 }
-
 .dropdown-ul-list li {
   padding: 2px 4px;
   font-size: 0.9rem;
 }
-
 .dropdown-ul-list li:hover {
   background-color: #a9b6ca;
   color: white;

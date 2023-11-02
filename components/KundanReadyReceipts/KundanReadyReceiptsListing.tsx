@@ -1,8 +1,20 @@
-import React, { useState } from 'react';
-import {KundanListingDataset} from '../../datasets/Ready-Receipts-kundan/KundanListing'
+import React, { useState, useEffect } from 'react';
+import { KundanListingDataset } from '../../datasets/Ready-Receipts-kundan/KundanListing';
+import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 
-const KundanListing = () => {
-  const [kundanListing, setKundanListing] = useState(KundanListingDataset.data)
+const KundanListing = ({ loginAcessToken, Fields }: any) => {
+  const [kundanListing, setKundanListing] = useState<any>([]);
+  console.log(loginAcessToken, 'loginAcessToken');
+  console.log(Fields, 'loginAcessToken');
+  useEffect(() => {
+    const getPurchaseList = async () => {
+      const listData = await getPurchasreceiptListApi(loginAcessToken, Fields);
+      setKundanListing(listData);
+    };
+
+    getPurchaseList();
+  }, []);
+  console.log(kundanListing, 'kundanListing');
 
   return (
     
@@ -19,29 +31,17 @@ const KundanListing = () => {
               <th className="thead" scope="col">
                 Kundan Karigar
               </th>
-              <th className="thead" scope="col">
-                A
-              </th>
-              <th className="thead" scope="col">
-                B
-              </th>
-              <th className="thead" scope="col">
-                C
-              </th>
             </tr>
           </thead>
           <tbody>
-          {kundanListing.length > 0 &&
-            kundanListing.map((item:any)=>(
-            <tr>
-                <td className='table_row' >{item.Receipt_no}</td>
-                <td className='table_row' >{item.transaction_date}</td>
-                <td className='table_row' >{item.karigar}</td>
-                <td className='table_row' >{item.A}</td>
-                <td className='table_row' >{item.B}</td>
-                <td className='table_row' >{item.C}</td>
-            </tr>
-            ))}
+            {kundanListing?.length > 0 &&
+              kundanListing?.map((item: any) => (
+                <tr>
+                  <td className="table_row">{item.name}</td>
+                  <td className="table_row">{item.posting_date}</td>
+                  <td className="table_row">{item.custom_karigar}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

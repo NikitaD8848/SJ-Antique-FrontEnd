@@ -6,15 +6,16 @@ import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { Link } from 'react-router-dom';
-import getKarigarApi from '@/services/api/karigar-list-api';
+import getKarigarApi from '@/services/api/get-karigar-list-api';
 import { get_access_token } from '@/store/slices/auth/login-slice';
-import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
-import materialApi from '@/services/api/material-list-api';
+import kundanKarigarApi from '@/services/api/get-kundan-karigar-list-api';
+import materialApi from '@/services/api/get-material-list-api';
 import { useSelector } from 'react-redux';
 import KundanListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
-import purchaseReceiptApi from '@/services/api/purchase-receipt-api';
-import SelectInputDropdown from '@/components/KundanReadyReceipts/SelectInputDropdown';
-import KunCreateReceiptForm from '@/components/KundanReadyReceipts/KunCreateReceiptForm';
+import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
+import postMaterialApi from '@/services/api/post-material-api';
+import SearchSelectInputField from '@/components/SearchSelectInputField/SearchSelectInputField';
+import CurrentDate from '@/components/CurrentDate';
 
 const readyReceiptKundanKarigar = () => {
   // api states
@@ -30,7 +31,7 @@ const readyReceiptKundanKarigar = () => {
     custom_ready_receipt_type: 'Kundan',
   });
   const [clickBtn, setClickBtn] = useState<boolean>(false);
-  const [karigarData, setKarigarData] = useState<any>([]);
+  const [karigarData, setKarigarData] = useState<any>();
   const [kundanKarigarData, setKundanKarigarData] = useState<any>();
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
@@ -70,20 +71,6 @@ const readyReceiptKundanKarigar = () => {
       ],
     },
   ]);
-
-  const [showDropdown, setShowDropdown] = useState<any>(false);
-  const [selectedDropdownValue, setSelectedDropdownValue] = useState<any>();
-  const [noRecords, setNoRecordsFound] = useState<any>(false);
-  const [filterDropdownList, setFilterDropdownList] = useState<any>([]);
-
-  const getDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    return `${month}/${date}/${year}`;
-  };
-  const [currentDate, setCurrentDate] = useState(getDate());
 
   const getKaragirlist = async () => {};
   useEffect(() => {
@@ -227,9 +214,19 @@ const readyReceiptKundanKarigar = () => {
     });
   };
 
-  const handleSaveModal = (id: any) => {
+  const handleSaveModal = async (id: any) => {
     const modalValue = materialWeight.map(
-      ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
+      ({
+        pcs,
+        piece_,
+        carat,
+        carat_,
+        weight,
+        gm_,
+        amount,
+        id,
+        ...rest
+      }: any) => ({
         ...rest,
       })
     );
@@ -320,7 +317,7 @@ const readyReceiptKundanKarigar = () => {
       setClickBtn(false);
     }
     console.log(updatedMaterialWeight, 'data45');
-
+    await postMaterialApi(loginAcessToken.token, modalValue);
     // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
@@ -333,29 +330,27 @@ const readyReceiptKundanKarigar = () => {
     setShowModal(false);
     setActiveModalId(null);
   };
-
   const handleRecipietChange = (e: any) => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
   };
   console.log(recipitData, 'recipitData');
 
   const handleCreate = async () => {
-    
     const modalValue = tableData.map(
       ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
         ...rest,
       })
-      );
-      const values = {
-        ...recipitData,
-        items: modalValue,
-      };
-      console.log(values, 'finalVal');
-      const purchaseReceipt: any = await purchaseReceiptApi(
-        loginAcessToken.token,
-        values
-        );
-      };
+    );
+    const values = {
+      ...recipitData,
+      items: modalValue,
+    };
+    console.log(values, 'finalVal');
+    const purchaseReceipt: any = await purchaseReceiptApi(
+      loginAcessToken.token,
+      values
+    );
+  };
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
@@ -363,7 +358,7 @@ const readyReceiptKundanKarigar = () => {
 
   return (
     <div className="container-lg">
-      <div>
+      <div className="container-lg">
         <div
           className="nav nav-pills mb-2 justify-content-center "
           id="pills-tab"
@@ -405,7 +400,10 @@ const readyReceiptKundanKarigar = () => {
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            <KundanListing />
+            <KundanListing
+              loginAcessToken={loginAcessToken}
+              Fields={'Kundan'}
+            />
           </div>
           <div
             className="tab-pane fade"
@@ -423,12 +421,7 @@ const readyReceiptKundanKarigar = () => {
                   Create
                 </button>
               </div>
-              <div className="table-responsive">
-                {/* < KunCreateReceiptForm 
-                karigarData={karigarData}
-                handleRecipietChange={handleRecipietChange}
-                recipitData={recipitData}
-                /> */}
+              <div className=" table-responsive">
                 <table className="table table-hover">
                   <thead>
                     <tr>
@@ -443,30 +436,21 @@ const readyReceiptKundanKarigar = () => {
                         Remarks
                       </th>
                       <th className="thead" scope="col">
-                        Ready Receipt Type
+                        Ready Raceipt Type
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="table_row">
                       <td scope="row" className="table_row">
-                        {currentDate}
+                        < CurrentDate/>
                       </td>
                       <td className="table_row">
-                        <SelectInputDropdown
-                        karigarData={karigarData}
-                        recipitData={recipitData}
-                        setRecipitData={setRecipitData}
-                        handleRecipietChange={handleRecipietChange}
-                        showDropdown={showDropdown}
-                        setShowDropdown={setShowDropdown}
-                        selectedDropdownValue={selectedDropdownValue}
-                        setSelectedDropdownValue={setSelectedDropdownValue}
-                        noRecords={noRecords}
-                        setNoRecordsFound={setNoRecordsFound}
-                        filterDropdownList={filterDropdownList}
-                        setFilterDropdownList={setFilterDropdownList}
-                        />
+                      <SearchSelectInputField
+                            karigarData={karigarData}
+                            recipitData={recipitData}
+                            setRecipitData={setRecipitData}
+                          />
                       </td>
                       <td className="table_row">
                         <input
@@ -759,69 +743,67 @@ const readyReceiptKundanKarigar = () => {
                         <tr key={i}>
                           <td className="table_row">{i + 1}</td>
                           <td className="table_row">
-                              <select
-                                className={`${styles.table_select}`}
-                                name="material_abbr"
-                                id="material_abbr"
-                                value={element.material_abbr}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'material_abbr',
-                                    e.target.value
-                                  )
-                                }
-                              >
-                                {materialListData?.length > 0 && (
-                                  <>
-                                    {materialListData?.map(
-                                      (names: any, i: any) => {
-                                        return (
-                                          <option key={i} value={names.material_abbr}>
-                                            {names.material_abbr}
-                                          </option>
-                                        );
-                                      }
-                                    )}
-                                  </>
-                                )}
-                              </select>
-                            </td>
-                            <td className="table_row">
-                              <select
-                                className={`${styles.table_select}`}
-                                name="material"
-                                id="material"
-                                value={element.material}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'material',
-                                    e.target.value
-                                  )
-                                }
-                              >
-                                {materialListData?.length > 0 && (
-                                  <>
-                                    {materialListData.map(
-                                      (name: any, i: any) => {
-                                        // Assuming setAbbrivationVal is a state updater function
-                                        return (
-                                          <option
-                                            key={i}
-                                            value={name.material}
-                                          >
-                                            {name.material}
-                                          </option>
-                                        );
-                                      }
-                                    )}
-                                  </>
-                                )}
-                              </select>
-                            </td>
+                            <select
+                              className={`${styles.table_select}`}
+                              name="material_abbr"
+                              id="material_abbr"
+                              value={element.material_abbr}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'material_abbr',
+                                  e.target.value
+                                )
+                              }
+                            >
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData?.map(
+                                    (names: any, i: any) => {
+                                      return (
+                                        <option
+                                          key={i}
+                                          value={names.material_abbrabbr}
+                                        >
+                                          {names.material_abbr}
+                                        </option>
+                                      );
+                                    }
+                                  )}
+                                </>
+                              )}
+                            </select>
+                          </td>
+                          <td className="table_row">
+                            <select
+                              className={`${styles.table_select}`}
+                              name="material"
+                              id="material"
+                              value={element.material}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'material',
+                                  e.target.value
+                                )
+                              }
+                            >
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData.map((name: any, i: any) => {
+                                    // Assuming setAbbrivationVal is a state updater function
+                                    return (
+                                      <option key={i} value={name.material}>
+                                        {name.material}
+                                      </option>
+                                    );
+                                  })}
+                                </>
+                              )}
+                            </select>
+                          </td>
                           <td className="table_row">
                             <input
                               className={` ${styles.input_field}`}

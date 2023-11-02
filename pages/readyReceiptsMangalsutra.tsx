@@ -3,13 +3,17 @@ import styles from '../styles/readyReceipts.module.css';
 import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import getKarigarApi from '@/services/api/karigar-list-api';
+import getKarigarApi from '@/services/api/get-karigar-list-api';
 import { get_access_token } from '@/store/slices/auth/login-slice';
 import { useSelector } from 'react-redux';
-import kundanKarigarApi from '@/services/api/kundan-karigar-list-api';
-import materialApi from '@/services/api/material-list-api';
-import purchaseReceiptApi from '@/services/api/purchase-receipt-api';
+import kundanKarigarApi from '@/services/api/get-kundan-karigar-list-api';
+import materialApi from '@/services/api/get-material-list-api';
+import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
 import { table } from 'console';
+import KundanListing from '@/components/KundanReadyReceipts/KundanReadyReceiptsListing';
+import postMaterialApi from '@/services/api/post-material-api';
+import SearchSelectInputField from '@/components/SearchSelectInputField/SearchSelectInputField';
+import CurrentDate from '@/components/CurrentDate';
 
 const readyReceiptsMangalsutra = () => {
   const inputRef = useRef<any>(null);
@@ -32,7 +36,6 @@ const readyReceiptsMangalsutra = () => {
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
-
   const [materialWeight, setMaterialWeight] = useState<any>();
   const [tableData, setTableData] = useState<any>([
     {
@@ -65,7 +68,6 @@ const readyReceiptsMangalsutra = () => {
     },
   ]);
 
-  const getKaragirlist = async () => {};
   useEffect(() => {
     const getStateData: any = async () => {
       const stateData: any = await getKarigarApi(loginAcessToken.token);
@@ -207,12 +209,23 @@ const readyReceiptsMangalsutra = () => {
     });
   };
 
-  const handleSaveModal = (id: any) => {
+  const handleSaveModal = async (id: any) => {
     const modalValue = materialWeight.map(
-      ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
+      ({
+        pcs,
+        piece_,
+        carat,
+        carat_,
+        weight,
+        gm_,
+        amount,
+        id,
+        ...rest
+      }: any) => ({
         ...rest,
       })
     );
+    console.log(modalValue, 'modalValue');
     if (inputRef.current) {
       disabledValue = inputRef.current.value;
     } else {
@@ -300,7 +313,7 @@ const readyReceiptsMangalsutra = () => {
       setClickBtn(false);
     }
     console.log(updatedMaterialWeight, 'data45');
-
+    await postMaterialApi(loginAcessToken.token, modalValue);
     // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
@@ -346,7 +359,7 @@ const readyReceiptsMangalsutra = () => {
   console.log(calculateRowValue, 'accu23');
   return (
     <div className="container-lg">
-      <div>
+      <div className="container-lg">
         <div
           className="nav nav-pills mb-3 justify-content-center "
           id="pills-tab"
@@ -383,12 +396,15 @@ const readyReceiptsMangalsutra = () => {
         </div>
         <div className="tab-content" id="pills-tabContent">
           <div
-            className="tab-pane fade show "
+            className="tab-pane fade show active"
             id="pills-home"
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            Ready receipts (Mangalsutra karigar)
+            <KundanListing
+              loginAcessToken={loginAcessToken}
+              Fields={'Mangalsutra'}
+            />
           </div>
           <div
             className="tab-pane fade"
@@ -429,28 +445,14 @@ const readyReceiptsMangalsutra = () => {
                     <tbody>
                       <tr>
                         <td scope="row" className="table_row">
-                          <input
-                            className="form-control input-sm"
-                            type="text"
-                          />
+                          < CurrentDate/>
                         </td>
                         <td className="table_row">
-                          <select
-                            className="form-select border-0"
-                            name="custom_karigar"
-                            id="custom_karigar"
-                            value={recipitData.custom_karigar}
-                            onChange={handleRecipietChange}
-                          >
-                            {karigarData?.length > 0 &&
-                              karigarData?.map((name: any, i: any) => (
-                                <>
-                                  <option key={i} value={name.karigar_name}>
-                                    {name.karigar_name}
-                                  </option>
-                                </>
-                              ))}
-                          </select>
+                          <SearchSelectInputField
+                            karigarData={karigarData}
+                            recipitData={recipitData}
+                            setRecipitData={setRecipitData}
+                          />
                         </td>
                         <td className="table_row">
                           <input
@@ -781,8 +783,11 @@ const readyReceiptsMangalsutra = () => {
                                   {materialListData?.map(
                                     (names: any, i: any) => {
                                       return (
-                                        <option key={i} value={names.abbr}>
-                                          {names.abbr}
+                                        <option
+                                          key={i}
+                                          value={names.material_abbr}
+                                        >
+                                          {names.material_abbr}
                                         </option>
                                       );
                                     }
@@ -811,11 +816,8 @@ const readyReceiptsMangalsutra = () => {
                                   {materialListData.map((name: any, i: any) => {
                                     // Assuming setAbbrivationVal is a state updater function
                                     return (
-                                      <option
-                                        key={i}
-                                        value={name.material_name}
-                                      >
-                                        {name.material_name}
+                                      <option key={i} value={name?.material}>
+                                        {name?.material}
                                       </option>
                                     );
                                   })}
