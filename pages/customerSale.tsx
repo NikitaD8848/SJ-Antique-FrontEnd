@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import styles from "../styles/readyReceipts.module.css";
-import { ImCross } from "react-icons/im";
-import { SiAddthis } from "react-icons/si";
+import React, { useState } from 'react';
+import styles from '../styles/readyReceipts.module.css';
+import { ImCross } from 'react-icons/im';
+import { SiAddthis } from 'react-icons/si';
 
-const customerSale = () => {
+const CustomerSale = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      item: "",
-      Gwt: "",
-      CsWt: "",
-      KunWt: "",
-      NetWt: "",
-      CS: "",
-      KunPc: "",
-      Other: "",
-      Total: "",
+      item: '',
+      Gwt: '',
+      CsWt: '',
+      KunWt: '',
+      NetWt: '',
+      CS: '',
+      KunPc: '',
+      Other: '',
+      Total: '',
     },
   ]);
   const handleFieldChange = (id: number, field: string, newValue: any) => {
@@ -30,15 +30,15 @@ const customerSale = () => {
   const handleAddRow = () => {
     const newRow = {
       id: tableData.length + 1,
-      item: "",
-      Gwt: "",
-      CsWt: "",
-      KunWt: "",
-      NetWt: "",
-      CS: "",
-      KunPc: "",
-      Other: "",
-      Total: "",
+      item: '',
+      Gwt: '',
+      CsWt: '',
+      KunWt: '',
+      NetWt: '',
+      CS: '',
+      KunPc: '',
+      Other: '',
+      Total: '',
     };
     setTableData([...tableData, newRow]);
   };
@@ -47,7 +47,7 @@ const customerSale = () => {
     setTableData(updatedData);
   };
   const handleTabPress = (event: any, id: any) => {
-    if (event.key === "Tab" && id === tableData[tableData.length - 1].id) {
+    if (event.key === 'Tab' && id === tableData[tableData.length - 1].id) {
       handleAddRow();
     }
   };
@@ -122,7 +122,7 @@ const customerSale = () => {
                     <tbody>
                       <tr>
                         <td scope="row">
-                          <input className="w-10  0"type="text" />
+                          <input className="w-10  0" type="text" />
                         </td>
                         <td>
                           <input className="w-100" type="number" />
@@ -162,7 +162,7 @@ const customerSale = () => {
                       <th scope="col">Kun Pc</th>
                       <th scope="col">Other</th>
                       <th scope="col">Total</th>
-                      </tr>
+                    </tr>
                   </thead>
                   <tbody>
                     {tableData.map((item: any) => (
@@ -174,17 +174,17 @@ const customerSale = () => {
                             type="text"
                             value={item.item}
                             onChange={(e) =>
-                              handleFieldChange(item.id,"item",e.target.value)
+                              handleFieldChange(item.id, 'item', e.target.value)
                             }
                           />
                         </td>
                         <td>
-                          <input 
+                          <input
                             className="w-50"
                             type="number"
                             value={item.Gwt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "Gwt" , e.target.value)
+                              handleFieldChange(item.id, 'Gwt', e.target.value)
                             }
                           />
                         </td>
@@ -194,7 +194,7 @@ const customerSale = () => {
                             type="number"
                             value={item.CsWt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "CsWt", e.target.value)
+                              handleFieldChange(item.id, 'CsWt', e.target.value)
                             }
                           />
                         </td>
@@ -204,7 +204,11 @@ const customerSale = () => {
                             type="number"
                             value={item.KunWt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "KunWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                'KunWt',
+                                e.target.value
+                              )
                             }
                             //onKeyDown={(e) => handleModal(e, item.id)}
                           />
@@ -215,47 +219,63 @@ const customerSale = () => {
                             type="number"
                             value={item.NetWt}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "NetWt", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                'NetWt',
+                                e.target.value
+                              )
                             }
                           />
                         </td>
                         <td>
-                            <input
+                          <input
                             className="w-50"
                             type="number"
                             value={item.CS}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "CS", e.target.value)
+                              handleFieldChange(item.id, 'CS', e.target.value)
                             }
                           />
-                          </td>
+                        </td>
                         <td>
-                            <input
+                          <input
                             className="w-50"
                             type="number"
                             value={item.KunPc}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "KunPc", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                'KunPc',
+                                e.target.value
+                              )
                             }
                           />
                         </td>
                         <td>
-                            <input
+                          <input
                             className="w-50"
                             type="text"
                             value={item.Other}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "Other", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                'Other',
+                                e.target.value
+                              )
                             }
                           />
                         </td>
                         <td className="w-5">
-                            <input
+                          <input
                             className="w-50"
                             type="text"
                             value={item.Total}
                             onChange={(e) =>
-                              handleFieldChange(item.id, "Total", e.target.value)
+                              handleFieldChange(
+                                item.id,
+                                'Total',
+                                e.target.value
+                              )
                             }
                           />
                         </td>
@@ -281,4 +301,4 @@ const customerSale = () => {
   );
 };
 
-export default customerSale;
+export default CustomerSale;

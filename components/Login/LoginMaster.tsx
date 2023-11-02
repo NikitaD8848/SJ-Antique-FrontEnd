@@ -27,9 +27,9 @@ const LoginMaster = () => {
   };
   useEffect(() => {
     if (loginAcessToken.token !== '') {
-      router.push('/');
+      router.push('/readyReceiptKundanKarigar');
     } else {
-      router.push('/login');
+      router.push('/');
     }
   }, [loginAcessToken]);
 

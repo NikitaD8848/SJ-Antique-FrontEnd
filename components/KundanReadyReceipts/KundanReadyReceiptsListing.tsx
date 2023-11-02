@@ -16,15 +16,27 @@ const KundanListing = ({ kundanListing }: any) => {
               <th className="thead" scope="col">
                 Kundan Karigar
               </th>
+              <th className="thead" scope="col">
+                Status
+              </th>
             </tr>
           </thead>
           <tbody>
             {kundanListing?.length > 0 &&
-              kundanListing?.map((item: any) => (
-                <tr>
+              kundanListing?.map((item: any, i: any) => (
+                <tr key={i}>
                   <td className="table_row">{item.name}</td>
                   <td className="table_row">{item.posting_date}</td>
                   <td className="table_row">{item.custom_karigar}</td>
+                  <td className="table_row">
+                    {item.docstatus === 0
+                      ? 'Draft'
+                      : item.docstatus === 1
+                      ? 'Submitted'
+                      : item.docstatus === 2
+                      ? 'Cancelled'
+                      : ''}
+                  </td>
                 </tr>
               ))}
           </tbody>

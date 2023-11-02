@@ -1,21 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../styles/readyReceipts.module.css';
 import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
-import { Link } from 'react-router-dom';
-import getKarigarApi from '@/services/api/get-karigar-list-api';
-import { get_access_token } from '@/store/slices/auth/login-slice';
-import kundanKarigarApi from '@/services/api/get-kundan-karigar-list-api';
-import materialApi from '@/services/api/get-material-list-api';
-import KundanListing from './KundanReadyReceiptsListing';
-import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
+
 import { useSelector } from 'react-redux';
 
-const KundanReadyReceiptMaster = () => {
+import { useRouter } from 'next/router';
+import { get_access_token } from '@/store/slices/auth/login-slice';
+import getKarigarApi from '@/services/api/get-karigar-list-api';
+import kundanKarigarApi from '@/services/api/get-kundan-karigar-list-api';
+import materialApi from '@/services/api/get-material-list-api';
+import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
+import postMaterialApi from '@/services/api/post-material-api';
+import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
+import KundanListing from './KundanReadyReceiptsListing';
+import SearchSelectInputField from '../SearchSelectInputField/SearchSelectInputField';
+
+const ReadyReceiptKundanKarigarMaster = () => {
+  // api states
+  const route = useRouter();
+  console.log(route, 'route');
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [abbrivationVal, setAbbrivationVal] = useState('');
@@ -211,9 +218,19 @@ const KundanReadyReceiptMaster = () => {
     });
   };
 
-  const handleSaveModal = (id: any) => {
+  const handleSaveModal = async (id: any) => {
     const modalValue = materialWeight.map(
-      ({ pcs, piece_, carat, carat_, weight, gm_, amount, ...rest }: any) => ({
+      ({
+        pcs,
+        piece_,
+        carat,
+        carat_,
+        weight,
+        gm_,
+        amount,
+        id,
+        ...rest
+      }: any) => ({
         ...rest,
       })
     );
@@ -304,7 +321,7 @@ const KundanReadyReceiptMaster = () => {
       setClickBtn(false);
     }
     console.log(updatedMaterialWeight, 'data45');
-
+    await postMaterialApi(loginAcessToken.token, modalValue);
     // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
@@ -323,8 +340,6 @@ const KundanReadyReceiptMaster = () => {
   console.log(recipitData, 'recipitData');
 
   const handleCreate = async () => {
-    alert('HI');
-
     const modalValue = tableData.map(
       ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
         ...rest,
@@ -344,235 +359,474 @@ const KundanReadyReceiptMaster = () => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
-  console.log(calculateRowValue, 'accu23');
+
+  // kundankarigar listing api
+  const [kundanListing, setKundanListing] = useState<any>([]);
+  console.log(loginAcessToken, 'loginAcessToken');
+
+  useEffect(() => {
+    const getPurchaseList = async () => {
+      const listData = await getPurchasreceiptListApi(
+        loginAcessToken,
+        'Kundan'
+      );
+      setKundanListing(listData);
+    };
+    getPurchaseList();
+  }, []);
+
   return (
-    <>
+    <div className="container-lg">
       <div className="container-lg">
-        <div className="container-lg">
-          <div
-            className="nav nav-pills mb-2 justify-content-center "
-            id="pills-tab"
-            role="tablist"
-          >
-            <div className="nav-tabs tabs-container w-50 " role="presentation">
-              <button
-                className="nav-link active w-100 p-1 border"
-                id="pills-home-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#pills-home"
-                type="button"
-                role="tab"
-                aria-controls="pills-home"
-                aria-selected="true"
-              >
-                Ready receipts (kundan karigar)
-              </button>
-            </div>
-            <div className="nav-tabs tabs-container w-50" role="presentation">
-              <button
-                className="nav-link  w-100 p-1 border"
-                id="pills-profile-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#pills-profile"
-                type="button"
-                role="tab"
-                aria-controls="pills-profile"
-                aria-selected="false"
-              >
-                Create new ready receipt
-              </button>
-            </div>
+        <div
+          className="nav nav-pills mb-2 justify-content-center "
+          id="pills-tab"
+          role="tablist"
+        >
+          <div className="nav-tabs tabs-container w-50 " role="presentation">
+            <button
+              className="nav-link active w-100 p-1 border"
+              id="pills-home-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-home"
+              type="button"
+              role="tab"
+              aria-controls="pills-home"
+              aria-selected="true"
+            >
+              Ready receipts (kundan karigar)
+            </button>
           </div>
-          <div className="tab-content" id="pills-tabContent">
-            <div
-              className="tab-pane fade show active"
-              id="pills-home"
-              role="tabpanel"
-              aria-labelledby="pills-home-tab"
+          <div className="nav-tabs tabs-container w-50" role="presentation">
+            <button
+              className="nav-link  w-100 p-1 border"
+              id="pills-profile-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-profile"
+              type="button"
+              role="tab"
+              aria-controls="pills-profile"
+              aria-selected="false"
             >
-              <KundanListing />
-            </div>
-            <div
-              className="tab-pane fade"
-              id="pills-profile"
-              role="tabpanel"
-              aria-labelledby="pills-profile-tab"
-            >
-              <div>
-                <div className={`${styles.button_field}`}>
-                  <button
-                    type="button"
-                    className={`${styles.create_button}`}
-                    onClick={handleCreate}
-                  >
-                    Create
-                  </button>
-                </div>
-                <div className=" table-responsive">
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th className="thead" scope="col">
-                          Date
-                        </th>
-                        <th className="thead" scope="col">
-                          Karigar(Supplier)
-                        </th>
-                        <th className="thead" scope="col">
-                          Remarks
-                        </th>
-                        <th className="thead" scope="col">
-                          Ready Raceipt Type
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="table_row">
-                        <td scope="row" className="table_row">
+              Create new ready receipt
+            </button>
+          </div>
+        </div>
+        <div className="tab-content" id="pills-tabContent">
+          <div
+            className="tab-pane fade show active"
+            id="pills-home"
+            role="tabpanel"
+            aria-labelledby="pills-home-tab"
+          >
+            <KundanListing kundanListing={kundanListing} />
+          </div>
+          <div
+            className="tab-pane fade"
+            id="pills-profile"
+            role="tabpanel"
+            aria-labelledby="pills-profile-tab"
+          >
+            <div>
+              <div className={`${styles.button_field}`}>
+                <button
+                  type="button"
+                  className={`${styles.create_button}`}
+                  onClick={handleCreate}
+                >
+                  Create
+                </button>
+              </div>
+              <div className=" table-responsive">
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th className="thead" scope="col">
+                        Date
+                      </th>
+
+                      <th className="thead" scope="col">
+                        Karigar(Supplier)
+                      </th>
+                      <th className="thead" scope="col">
+                        Remarks
+                      </th>
+                      <th className="thead" scope="col">
+                        Ready Raceipt Type
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="table_row">
+                      <td scope="row" className="table_row">
+                        <input className="form-control input-sm" type="text" />
+                      </td>
+                      <td className="table_row">
+                        <SearchSelectInputField
+                        />
+                      </td>
+                      <td className="table_row">
+                        <input
+                          className="form-control input-sm"
+                          type="text"
+                          name="remarks"
+                          value={recipitData.remarks}
+                          onChange={handleRecipietChange}
+                        />
+                      </td>
+                      <td className="table_row">
+                        <input
+                          className="form-control input-sm"
+                          type="text"
+                          readOnly
+                          value={'Kundan'}
+                          disabled
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="container d-flex justify-content-end">
+                <button
+                  className={`btn btn-link`}
+                  onClick={() => handleAddRow('tableRow')}
+                >
+                  Add Row
+                </button>
+              </div>
+
+              <div className="table-responsive">
+                <table className="table table-hover table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th className="thead" scope="col">
+                        Sr.no
+                      </th>
+                      <th className="thead" scope="col">
+                        Product Code (Item)
+                      </th>
+                      <th className="thead" scope="col">
+                        Kun Karigar
+                      </th>
+                      <th className="thead" scope="col">
+                        Net Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Few Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Gross Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Mat_Wt
+                      </th>
+                      <th className="thead" scope="col">
+                        Other
+                      </th>
+                      <th className="thead" scope="col">
+                        Total
+                      </th>
+                      <th className="thead" scope="col">
+                        Add Photo
+                      </th>
+                      <th className="thead" scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData.map((item: any, i: any) => (
+                      <tr key={item.id} className={`${styles.table_row}`}>
+                        <td className="table_row">{item.id}</td>
+                        <td className="table_row">
                           <input
-                            className="form-control input-sm"
+                            className={` ${styles.input_field}`}
                             type="text"
+                            value={item.product_code}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'item_code',
+                                e.target.value
+                              )
+                            }
                           />
                         </td>
-
                         <td className="table_row">
                           <select
-                            className="form-select border-0"
-                            name="custom_karigar"
-                            id="custom_karigar"
-                            value={recipitData.custom_karigar}
-                            onChange={handleRecipietChange}
+                            className={` ${styles.table_select}`}
+                            name="Karigar"
+                            id="karigar"
                           >
-                            {karigarData?.length > 0 &&
-                              karigarData?.map((name: any, i: any) => (
-                                <>
-                                  <option key={i} value={name.karigar_name}>
-                                    {name.karigar_name}
-                                  </option>
-                                </>
+                            {kundanKarigarData?.length > 0 &&
+                              kundanKarigarData.map((name: any, i: any) => (
+                                <option key={i} value={name.karigar_name}>
+                                  {name.karigar_name}
+                                </option>
                               ))}
                           </select>
                         </td>
                         <td className="table_row">
                           <input
-                            className="form-control input-sm"
-                            type="text"
-                            name="remarks"
-                            value={recipitData.remarks}
-                            onChange={handleRecipietChange}
+                            className={` ${styles.input_field}`}
+                            type="number"
+                            value={item.custom_net_wt}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'custom_net_wt',
+                                +e.target.value
+                              )
+                            }
                           />
                         </td>
                         <td className="table_row">
                           <input
-                            className="form-control input-sm"
-                            type="text"
-                            readOnly
-                            disabled
-                            value={'Mangalsutra'}
+                            className={` ${styles.input_field}`}
+                            type="number"
+                            value={item.custom_few_wt}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'custom_few_wt',
+                                +e.target.value
+                              )
+                            }
                           />
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="container d-flex justify-content-end">
-                  <button
-                    className={`btn btn-link`}
-                    onClick={() => handleAddRow('tableRow')}
-                  >
-                    Add Row
-                  </button>
-                </div>
+                        <td className="table_row">
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="text"
+                            readOnly
+                            name={`sum-${i + 1}`}
+                            value={
+                              tableData[i]?.totalModalWeight > 0
+                                ? tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt +
+                                  tableData[i]?.totalModalWeight
+                                : tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt
+                            }
+                          />
+                        </td>
+                        <td className="table_row">
+                          <input
+                            className={`${styles.input_field}`}
+                            type="number"
+                            value={tableData[i]?.totalModalWeight}
+                            readOnly
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'custom_mat_wt',
+                                +e.target.value
+                              )
+                            }
+                            onKeyDown={(e) => handleModal(e, item.id, item)}
+                          />
+                        </td>
+                        <td className="table_row">
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="number"
+                            value={item.custom_other}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'custom_other',
 
-                <div className="table-responsive">
-                  <table className="table table-hover table-striped table-bordered">
-                    <thead>
-                      <tr>
-                        <th className="thead" scope="col">
-                          Sr.no
-                        </th>
-                        <th className="thead" scope="col">
-                          Product Code (Item)
-                        </th>
-                        <th className="thead" scope="col">
-                          Kun Karigar
-                        </th>
-                        <th className="thead" scope="col">
-                          Net Wt
-                        </th>
-                        <th className="thead" scope="col">
-                          Few Wt
-                        </th>
-                        <th className="thead" scope="col">
-                          Gross Wt
-                        </th>
-                        <th className="thead" scope="col">
-                          Mat_Wt
-                        </th>
-                        <th className="thead" scope="col">
-                          Other
-                        </th>
-                        <th className="thead" scope="col">
-                          Total
-                        </th>
-                        <th className="thead" scope="col">
-                          Add Photo
-                        </th>
-                        <th className="thead" scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tableData.map((item: any, i: any) => (
-                        <tr key={item.id} className={`${styles.table_row}`}>
-                          <td className="table_row">{item.id}</td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="text"
-                              value={item.product_code}
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'item_code',
-                                  e.target.value
-                                )
-                              }
+                                +e.target.value
+                              )
+                            }
+                          />
+                        </td>
+                        <td className="table_row">
+                          {' '}
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="text"
+                            readOnly
+                            name={`sum-${i + 1}`}
+                            value={
+                              tableData[i]?.totalAmount > 0
+                                ? tableData[i].custom_other +
+                                  tableData[i]?.totalAmount
+                                : tableData[i].custom_other
+                            }
+                          />
+                        </td>
+                        <td className="table_row">
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="file"
+                            // value={item.custom_add_photo}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                item.id,
+                                'tableRow',
+                                'custom_add_photo',
+                                e.target.files?.[0].name
+                              )
+                            }
+                          />
+                        </td>
+                        <td className="table_row">
+                          <button
+                            className="d-flex align-items-center delete-link p-1 border-0"
+                            onClick={() => handleDeleteRow(item.id)}
+                            onKeyDown={(e) => handleTabPress(e, item.id)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: 'red', fontSize: 15 }}
                             />
-                          </td>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        {tableData.map((item: any, index: any) => (
+          <Modal size="xl" show={showModal} onHide={closeModal} key={index}>
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-lg">
+                Triggered by Key Press
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="container d-flex justify-content-end">
+                <button
+                  className="btn btn-link"
+                  onClick={() => handleAddRow('modalRow')}
+                >
+                  Add Row
+                </button>
+              </div>
+              <div className="container-lg table-responsive">
+                <table className="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th className="thead" scope="col">
+                        Sr. no
+                      </th>
+                      <th className="thead" scope="col">
+                        Material Abbr (Master)
+                      </th>
+                      <th className="thead" scope="col">
+                        Material (Master)
+                      </th>
+                      <th className="thead" scope="col">
+                        Pcs
+                      </th>
+                      <th className="thead" scope="col">
+                        Piece @
+                      </th>
+                      <th className="thead" scope="col">
+                        Carat
+                      </th>
+                      <th className="thead" scope="col">
+                        Carat @
+                      </th>
+                      <th className="thead" scope="col">
+                        Weight
+                      </th>
+                      <th className="thead" scope="col">
+                        Gm @
+                      </th>
+                      <th className="thead" scope="col">
+                        Total
+                      </th>
+                      <th className="thead" scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {materialWeight?.length > 0 &&
+                      materialWeight?.map((element: any, i: any) => (
+                        <tr key={i}>
+                          <td className="table_row">{i + 1}</td>
                           <td className="table_row">
                             <select
-                              className={` ${styles.table_select}`}
-                              name="custom_kun_karigar"
-                              id="karigar"
-                              value={item.custom_kun_karigar}
+                              className={`${styles.table_select}`}
+                              name="material_abbr"
+                              id="material_abbr"
+                              value={element.material_abbr}
                               onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'custom_kun_karigar',
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'material_abbr',
                                   e.target.value
                                 )
                               }
                             >
-                              {kundanKarigarData?.length > 0 &&
-                                kundanKarigarData.map((name: any, i: any) => (
-                                  <option value={name.karigar_name}>
-                                    {name.karigar_name}
-                                  </option>
-                                ))}
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData?.map(
+                                    (names: any, i: any) => {
+                                      return (
+                                        <option
+                                          key={i}
+                                          value={names.material_abbrabbr}
+                                        >
+                                          {names.material_abbr}
+                                        </option>
+                                      );
+                                    }
+                                  )}
+                                </>
+                              )}
+                            </select>
+                          </td>
+                          <td className="table_row">
+                            <select
+                              className={`${styles.table_select}`}
+                              name="material"
+                              id="material"
+                              value={element.material}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'material',
+                                  e.target.value
+                                )
+                              }
+                            >
+                              {materialListData?.length > 0 && (
+                                <>
+                                  {materialListData.map((name: any, i: any) => {
+                                    // Assuming setAbbrivationVal is a state updater function
+                                    return (
+                                      <option key={i} value={name.material}>
+                                        {name.material}
+                                      </option>
+                                    );
+                                  })}
+                                </>
+                              )}
                             </select>
                           </td>
                           <td className="table_row">
                             <input
                               className={` ${styles.input_field}`}
                               type="number"
-                              value={item.custom_net_wt}
+                              value={element.pcs}
                               onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'custom_net_wt',
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'pcs',
                                   +e.target.value
                                 )
                               }
@@ -582,12 +836,12 @@ const KundanReadyReceiptMaster = () => {
                             <input
                               className={` ${styles.input_field}`}
                               type="number"
-                              value={item.custom_few_wt}
+                              value={element.piece_}
                               onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'custom_few_wt',
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'piece_',
                                   +e.target.value
                                 )
                               }
@@ -596,16 +850,60 @@ const KundanReadyReceiptMaster = () => {
                           <td className="table_row">
                             <input
                               className={` ${styles.input_field}`}
-                              type="text"
-                              readOnly
-                              name={`sum-${i + 1}`}
-                              value={
-                                tableData[i]?.totalModalWeight > 0
-                                  ? tableData[i].custom_net_wt +
-                                    tableData[i].custom_few_wt +
-                                    tableData[i]?.totalModalWeight
-                                  : tableData[i].custom_net_wt +
-                                    tableData[i].custom_few_wt
+                              type="number"
+                              value={element.carat}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'carat',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.carat_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'carat_',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.weight}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'weight',
+                                  +e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td className="table_row">
+                            <input
+                              className={` ${styles.input_field}`}
+                              type="number"
+                              value={element.gm_}
+                              onChange={(e) =>
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'gm_',
+                                  +e.target.value
+                                )
                               }
                             />
                           </td>
@@ -613,349 +911,52 @@ const KundanReadyReceiptMaster = () => {
                             <input
                               className={`${styles.input_field}`}
                               type="number"
-                              value={tableData[i]?.totalModalWeight}
                               readOnly
                               onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'custom_mat_wt',
+                                handleModalFieldChange(
+                                  i,
+                                  'modalRow',
+                                  'amount',
                                   +e.target.value
                                 )
                               }
-                              onKeyDown={(e) => handleModal(e, item.id, item)}
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="number"
-                              value={item.custom_other}
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'custom_other',
-
-                                  +e.target.value
-                                )
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            {' '}
-                            <input
-                              className={` ${styles.input_field}`}
-                              type="text"
-                              readOnly
-                              name={`sum-${i + 1}`}
-                              value={
-                                tableData[i]?.totalAmount > 0
-                                  ? tableData[i].custom_other +
-                                    tableData[i]?.totalAmount
-                                  : tableData[i].custom_other
-                              }
-                            />
-                          </td>
-                          <td className="table_row">
-                            <input
-                              className={`${styles.input_field}`}
-                              type="file"
-                              onChange={(e) =>
-                                handleFieldChange(
-                                  item.id,
-                                  'tableRow',
-                                  'custom_add_photo',
-                                  e.target.files?.[0].name
-                                )
-                              }
+                              value={calculateRowValue(i)}
                             />
                           </td>
                           <td className="table_row">
                             <button
                               className="d-flex align-items-center delete-link p-1 border-0"
-                              onClick={() => handleDeleteRow(item.id)}
-                              onKeyDown={(e) => handleTabPress(e, item.id)}
+                              onClick={() => handleDeleteChildTableRow(i)}
+                              // onKeyDown={(e) => handleTabPress(e, element.id)}
                             >
                               <FontAwesomeIcon
                                 icon={faTrash}
-                                style={{ color: 'red', fontSize: 15 }}
+                                style={{ color: 'red', fontSize: 20 }}
                               />
                             </button>
                           </td>
                         </tr>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
+                  </tbody>
+                </table>
               </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          {tableData.map((item: any, index: any) => (
-            <Modal size="xl" show={showModal} onHide={closeModal}>
-              <Modal.Header closeButton>
-                <Modal.Title id="example-modal-sizes-title-lg">
-                  Triggered by Key Press
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <div className="container d-flex justify-content-end">
-                  <button
-                    className="btn btn-link"
-                    onClick={() => handleAddRow('modalRow')}
-                  >
-                    Add Row
-                  </button>
-                </div>
-                <div className="container-lg table-responsive">
-                  <table className="table table-striped table-hover">
-                    <thead>
-                      <tr>
-                        <th className="thead" scope="col">
-                          Sr. no
-                        </th>
-                        <th className="thead" scope="col">
-                          Material Abbr (Master)
-                        </th>
-                        <th className="thead" scope="col">
-                          Material (Master)
-                        </th>
-                        <th className="thead" scope="col">
-                          Pcs
-                        </th>
-                        <th className="thead" scope="col">
-                          Piece @
-                        </th>
-                        <th className="thead" scope="col">
-                          Carat
-                        </th>
-                        <th className="thead" scope="col">
-                          Carat @
-                        </th>
-                        <th className="thead" scope="col">
-                          Weight
-                        </th>
-                        <th className="thead" scope="col">
-                          Gm @
-                        </th>
-                        <th className="thead" scope="col">
-                          Total
-                        </th>
-                        <th className="thead" scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {materialWeight?.length > 0 &&
-                        materialWeight?.map((element: any, i: any) => (
-                          <tr key={i}>
-                            <td className="table_row">{i + 1}</td>
-                            <td className="table_row">
-                              <select
-                                className={`${styles.table_select}`}
-                                name="material_abbr"
-                                id="material_abbr"
-                                value={element.material_abbr}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'material_abbr',
-                                    e.target.value
-                                  )
-                                }
-                              >
-                                {materialListData?.length > 0 && (
-                                  <>
-                                    {materialListData?.map(
-                                      (names: any, i: any) => {
-                                        return (
-                                          <option key={i} value={names.abbr}>
-                                            {names.abbr}
-                                          </option>
-                                        );
-                                      }
-                                    )}
-                                  </>
-                                )}
-                              </select>
-                            </td>
-                            <td className="table_row">
-                              <select
-                                className={`${styles.table_select}`}
-                                name="material"
-                                id="material"
-                                value={element.material}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'material',
-                                    e.target.value
-                                  )
-                                }
-                              >
-                                {materialListData?.length > 0 && (
-                                  <>
-                                    {materialListData.map(
-                                      (name: any, i: any) => {
-                                        // Assuming setAbbrivationVal is a state updater function
-                                        return (
-                                          <option
-                                            key={i}
-                                            value={name.material_name}
-                                          >
-                                            {name.material_name}
-                                          </option>
-                                        );
-                                      }
-                                    )}
-                                  </>
-                                )}
-                              </select>
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={` ${styles.input_field}`}
-                                type="number"
-                                value={element.pcs}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'pcs',
-                                    +e.target.value
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={` ${styles.input_field}`}
-                                type="number"
-                                value={element.piece_}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'piece_',
-                                    +e.target.value
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={` ${styles.input_field}`}
-                                type="number"
-                                value={element.carat}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'carat',
-                                    +e.target.value
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={` ${styles.input_field}`}
-                                type="number"
-                                value={element.carat_}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'carat_',
-                                    +e.target.value
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={` ${styles.input_field}`}
-                                type="number"
-                                value={element.weight}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'weight',
-                                    +e.target.value
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={` ${styles.input_field}`}
-                                type="number"
-                                value={element.gm_}
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'gm_',
-                                    +e.target.value
-                                  )
-                                }
-                              />
-                            </td>
-                            <td className="table_row">
-                              <input
-                                className={`${styles.input_field}`}
-                                type="number"
-                                readOnly
-                                onChange={(e) =>
-                                  handleModalFieldChange(
-                                    i,
-                                    'modalRow',
-                                    'amount',
-                                    +e.target.value
-                                  )
-                                }
-                                value={calculateRowValue(i)}
-                              />
-                            </td>
-                            <td className="table_row">
-                              <button
-                                className="d-flex align-items-center delete-link p-1 border-0"
-                                onClick={() => handleDeleteChildTableRow(i)}
-                                // onKeyDown={(e) => handleTabPress(e, element.id)}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faTrash}
-                                  style={{ color: 'red', fontSize: 20 }}
-                                />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={closeModal}>
-                  Close
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => handleSaveModal(item.id)}
-                >
-                  Save
-                </Button>
-              </Modal.Footer>
-            </Modal>
-          ))}
-        </div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={closeModal}>
+                Close
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => handleSaveModal(item.id)}
+              >
+                Save
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
-export default KundanReadyReceiptMaster;
+export default ReadyReceiptKundanKarigarMaster;

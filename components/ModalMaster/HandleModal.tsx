@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { Modal, Button } from "react-bootstrap";
-
+import React, { useState } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
 const HandleModal = () => {
   const [showModal, setShowModal] = useState(false);
@@ -14,21 +13,19 @@ const HandleModal = () => {
   // };
   return (
     <div>
-        <Modal show={showModal} onHide={closeModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>Triggered by Key Press</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            This modal was triggered by pressing the 'f12' key.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
-  )
-}
+      <Modal show={showModal} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Triggered by Key Press</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>This modal was triggered</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+};
 
-export default HandleModal
+export default HandleModal;
