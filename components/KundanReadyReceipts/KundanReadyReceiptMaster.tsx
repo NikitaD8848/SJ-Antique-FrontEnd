@@ -201,7 +201,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
   const handleModal = (event: any, id: any, data: any) => {
     setIndexVal(id);
     console.log(tableData, 'materialWeight');
-    // console.log(materialWeight, "materialWeight");
     const dataVal = tableData?.filter((item: any) => {
       if (item.id === id) {
         if (event.key === 'F2') {
@@ -268,10 +267,20 @@ const ReadyReceiptKundanKarigarMaster = () => {
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
     // setTotalModalAmount(totalvalues);
-    console.log(totalvalues, 'totalvalues ');
+
+    let numbers: any;
+    if (Array.isArray(totalvalues) && totalvalues.length === 1) {
+      numbers = totalvalues[0];
+    } else {
+      numbers = totalvalues.reduce((accu: any, val: any) => {
+        return accu + val;
+      }, 0);
+    }
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
       return accu + val;
     }, 0);
+
+    console.log();
     console.log();
     const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
       console.log(i, 'ij');
@@ -287,11 +296,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
             parseInt(row.custom_net_wt, 10) +
             parseInt(row.custom_few_wt, 10) +
             weightAddition,
-          custom_total: parseInt(row.custom_other) + totalAmmountValues,
+          custom_total: numbers,
         };
       }
       return row;
     });
+
     const updatedDataVal = updatedMaterialWeight.map((row: any, i: any) => {
       if (row.id === indexVal) {
         return {
@@ -360,15 +370,23 @@ const ReadyReceiptKundanKarigarMaster = () => {
       ...recipitData,
       items: modalValue,
     };
-    console.log(values, 'finalVal');
-    const purchaseReceipt: any = await purchaseReceiptApi(
-      loginAcessToken.token,
-      values
+    const isEmptyEmailExists = values.items.some(
+      (obj: any) => obj.item_code === ''
     );
-    if (purchaseReceipt.status === 'success') {
-      toast.success('Purchase Receipt Created Sucessfully');
+    const productVal = values.custom_karigar;
+    console.log(values, 'finalVal');
+    if (isEmptyEmailExists || productVal === '') {
+      toast.error('Fill All Fields Item code Or Karigar');
     } else {
-      toast.error('Error in Creating Purchase Receipt');
+      const purchaseReceipt: any = await purchaseReceiptApi(
+        loginAcessToken.token,
+        values
+      );
+      if (purchaseReceipt.status === 'success') {
+        toast.success('Purchase Receipt Created Sucessfully');
+      } else {
+        toast.error('Error in Creating Purchase Receipt');
+      }
     }
   };
   const handleDeleteChildTableRow = (id: any) => {
@@ -393,7 +411,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
 
   return (
     <div className="container-lg">
-      <div >
+      <div>
         <div
           className="nav nav-pills mb-2 justify-content-center "
           id="pills-tab"
@@ -462,7 +480,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                       </th>
 
                       <th className="thead" scope="col">
-                        Karigar(Supplier)
+                        Karigar(Supplier) <span className="text-danger">*</span>
                       </th>
                       <th className="thead" scope="col">
                         Remarks
@@ -475,7 +493,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   <tbody>
                     <tr className="table_row">
                       <td scope="row" className="table_row">
-                        <CurrentDate/>
+                        <CurrentDate />
                       </td>
                       <td className="table_row">
                         <SearchSelectInputField
@@ -486,7 +504,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                       </td>
                       <td className="table_row">
                         <input
-                          className="form-control input-sm"
+                          className="form-control input-sm border border-secondary"
                           type="text"
                           name="remarks"
                           value={recipitData.remarks}
@@ -495,7 +513,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                       </td>
                       <td className="table_row">
                         <input
-                          className="form-control input-sm"
+                          className="form-control input-sm border border-secondary"
                           type="text"
                           readOnly
                           value={'Kundan'}
@@ -523,7 +541,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         Sr.no
                       </th>
                       <th className="thead" scope="col">
-                        Product Code (Item)
+                        Product Code (Item){' '}
+                        <span className="text-danger">*</span>
                       </th>
                       <th className="thead" scope="col">
                         Kun Karigar
@@ -535,11 +554,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         Few Wt
                       </th>
                       <th className="thead" scope="col">
-                        Gross Wt
-                      </th>
-                      <th className="thead" scope="col">
                         Mat_Wt
                       </th>
+                      <th className="thead" scope="col">
+                        Gross Wt
+                      </th>
+
                       <th className="thead" scope="col">
                         Other
                       </th>
@@ -577,6 +597,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                             tableData={tableData}
                             setTableData={setTableData}
                             item={item}
+                            id={item.id}
                           />
                         </td>
                         <td className="table_row">
@@ -612,23 +633,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
                         <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
-                            type="text"
-                            readOnly
-                            disabled
-                            name={`sum-${i + 1}`}
-                            value={
-                              tableData[i]?.totalModalWeight > 0
-                                ? tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt +
-                                  tableData[i]?.totalModalWeight
-                                : tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
                             type="number"
                             value={tableData[i]?.totalModalWeight}
                             readOnly
@@ -643,6 +647,24 @@ const ReadyReceiptKundanKarigarMaster = () => {
                             onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
+                        <td className="table_row">
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="text"
+                            readOnly
+                            disabled
+                            name={`sum-${i + 1}`}
+                            value={
+                              tableData[i]?.totalModalWeight > 0
+                                ? tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt +
+                                  tableData[i]?.totalModalWeight
+                                : tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt
+                            }
+                          />
+                        </td>
+
                         <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
@@ -723,12 +745,14 @@ const ReadyReceiptKundanKarigarMaster = () => {
               handleModalFieldChange={handleModalFieldChange}
               handleAddRow={handleAddRow}
               materialWeight={materialWeight}
+              setMaterialWeight={setMaterialWeight}
               materialListData={materialListData}
               calculateRowValue={calculateRowValue}
               handleDeleteChildTableRow={handleDeleteChildTableRow}
               setRecipitData={setRecipitData}
               recipitData={recipitData}
-            />
+              tableData={tableData}
+              />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>
                 Close

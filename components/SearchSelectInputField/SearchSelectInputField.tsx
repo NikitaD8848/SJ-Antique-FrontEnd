@@ -77,7 +77,7 @@ const SearchSelectInputField = ({
       <input
         type="text"
         name="custom_karigar"
-        className="form-control input-sm"
+        className="form-control input-sm border border-secondary"
         id="exampleInputEmail1"
         placeholder="Karigar Name"
         onChange={HandleSelectInputField}

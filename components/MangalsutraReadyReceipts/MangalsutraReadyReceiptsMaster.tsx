@@ -264,10 +264,19 @@ const MangalsutraReadyReceiptsMaster = () => {
         amount: disabledValue,
       };
     });
+
     const totalvalues = materialWeight.map(
       (row: any) =>
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
+    let numbers: any;
+    if (Array.isArray(totalvalues) && totalvalues.length === 1) {
+      numbers = totalvalues[0];
+    } else {
+      numbers = totalvalues.reduce((accu: any, val: any) => {
+        return accu + val;
+      }, 0);
+    }
     // setTotalModalAmount(totalvalues);
     console.log(totalvalues, 'totalvalues ');
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
@@ -288,7 +297,7 @@ const MangalsutraReadyReceiptsMaster = () => {
             parseInt(row.custom_net_wt, 10) +
             parseInt(row.custom_few_wt, 10) +
             weightAddition,
-          custom_total: parseInt(row.custom_other) + totalAmmountValues,
+          custom_total: parseInt(row.custom_other) + numbers,
         };
       }
       return row;
@@ -357,19 +366,28 @@ const MangalsutraReadyReceiptsMaster = () => {
         ...rest,
       })
     );
+
     const values = {
       ...recipitData,
       items: modalValue,
     };
-    console.log(values, 'finalVal');
-    const purchaseReceipt: any = await purchaseReceiptApi(
-      loginAcessToken.token,
-      values
+    const isEmptyEmailExists = values.items.some(
+      (obj: any) => obj.item_code === ''
     );
-    if (purchaseReceipt.status === 'success') {
-      toast.success('Purchase Receipt Created Sucessfully');
+    const productVal = values.custom_karigar;
+    console.log(values, 'finalVal');
+    if (isEmptyEmailExists || productVal === '') {
+      toast.error('add Item code Or Karigar');
     } else {
-      toast.error('Error in Creating Purchase Receipt');
+      const purchaseReceipt: any = await purchaseReceiptApi(
+        loginAcessToken.token,
+        values
+      );
+      if (purchaseReceipt.status === 'success') {
+        toast.success('Purchase Receipt Created Sucessfully');
+      } else {
+        toast.error('Error in Creating Purchase Receipt');
+      }
     }
   };
 
@@ -464,6 +482,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                         </th>
                         <th className="thead" scope="col">
                           Karigar(Supplier)
+                          <span className="text-danger">*</span>
                         </th>
                         <th className="thead" scope="col">
                           Remarks
@@ -487,7 +506,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                         </td>
                         <td className="table_row">
                           <input
-                            className="form-control input-sm"
+                            className="form-control input-sm border border-secondary"
                             type="text"
                             name="remarks"
                             value={recipitData.remarks}
@@ -496,7 +515,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                         </td>
                         <td className="table_row">
                           <input
-                            className="form-control input-sm"
+                            className="form-control input-sm border border-secondary"
                             type="text"
                             readOnly
                             disabled
@@ -525,7 +544,8 @@ const MangalsutraReadyReceiptsMaster = () => {
                         Sr. no
                       </th>
                       <th className="thead" scope="col">
-                        Product Code (Item)
+                        Product Code (Item){' '}
+                        <span className="text-danger">*</span>
                       </th>
                       <th className="thead" scope="col">
                         Kun Karigar
@@ -537,11 +557,12 @@ const MangalsutraReadyReceiptsMaster = () => {
                         Few Wt
                       </th>
                       <th className="thead" scope="col">
-                        Gross Wt
-                      </th>
-                      <th className="thead" scope="col">
                         Mat Wt
                       </th>
+                      <th className="thead" scope="col">
+                        Gross Wt
+                      </th>
+
                       <th className="thead" scope="col">
                         Other
                       </th>
@@ -576,9 +597,11 @@ const MangalsutraReadyReceiptsMaster = () => {
                         <td className="table_row">
                         <SelectInputKunKarigar
                             kundanKarigarData={kundanKarigarData}
-                            recipitData={recipitData}
-                            setRecipitData={setRecipitData}
-                          />
+                            tableData={tableData}
+                            setTableData={setTableData}
+                            item={item}
+                            id={item.id}
+                          />  
                         </td>
                         <td className="table_row">
                           <input
@@ -613,23 +636,6 @@ const MangalsutraReadyReceiptsMaster = () => {
                         <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
-                            type="text"
-                            readOnly
-                            disabled
-                            name={`sum-${i + 1}`}
-                            value={
-                              tableData[i]?.totalModalWeight > 0
-                                ? tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt +
-                                  tableData[i]?.totalModalWeight
-                                : tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
                             type="number"
                             value={tableData[i]?.totalModalWeight}
                             readOnly
@@ -644,6 +650,24 @@ const MangalsutraReadyReceiptsMaster = () => {
                             onKeyDown={(e) => handleModal(e, item.id, item)}
                           />
                         </td>
+                        <td className="table_row">
+                          <input
+                            className={` ${styles.input_field}`}
+                            type="text"
+                            readOnly
+                            disabled
+                            name={`sum-${i + 1}`}
+                            value={
+                              tableData[i]?.totalModalWeight > 0
+                                ? tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt +
+                                  tableData[i]?.totalModalWeight
+                                : tableData[i].custom_net_wt +
+                                  tableData[i].custom_few_wt
+                            }
+                          />
+                        </td>
+
                         <td className="table_row">
                           <input
                             className={` ${styles.input_field}`}
@@ -723,10 +747,14 @@ const MangalsutraReadyReceiptsMaster = () => {
               handleModalFieldChange={handleModalFieldChange}
               handleAddRow={handleAddRow}
               materialWeight={materialWeight}
+              setMaterialWeight={setMaterialWeight}
               materialListData={materialListData}
               calculateRowValue={calculateRowValue}
               handleDeleteChildTableRow={handleDeleteChildTableRow}
-            />
+              setRecipitData={setRecipitData}
+              recipitData={recipitData}
+              tableData={tableData}
+              />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>
                 Close

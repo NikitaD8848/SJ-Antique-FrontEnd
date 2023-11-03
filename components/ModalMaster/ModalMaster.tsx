@@ -3,11 +3,12 @@ import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '../../styles/readyReceipts.module.css';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
-import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
+import SelectInputMaterial from '../SearchSelectInputField/SelectInputMaterial';
 const ModalMaster = ({
   handleModalFieldChange,
   handleAddRow,
   materialWeight,
+  setMaterialWeight,
   materialListData,
   calculateRowValue,
   handleDeleteChildTableRow,
@@ -84,7 +85,7 @@ const ModalMaster = ({
                           <>
                             {materialListData?.map((names: any, i: any) => {
                               return (
-                                <option key={i} value={names.material_abbrabbr}>
+                                <option key={i} value={names.material_abbr}>
                                   {names.material_abbr}
                                 </option>
                               );
@@ -94,33 +95,12 @@ const ModalMaster = ({
                       </select>
                     </td>
                     <td className="table_row">
-                      <select
-                        className={`${styles.table_select}`}
-                        name="material"
-                        id="material"
-                        value={element.material}
-                        onChange={(e) =>
-                          handleModalFieldChange(
-                            i,
-                            'modalRow',
-                            'material',
-                            e.target.value
-                          )
-                        }
-                      >
-                        {materialListData?.length > 0 && (
-                          <>
-                            {materialListData.map((name: any, i: any) => {
-                              // Assuming setAbbrivationVal is a state updater function
-                              return (
-                                <option key={i} value={name.material}>
-                                  {name.material}
-                                </option>
-                              );
-                            })}
-                          </>
-                        )}
-                      </select>
+                      <SelectInputMaterial
+                      materialListData={materialListData}
+                      materialWeight={materialWeight}
+                      setMaterialWeight={setMaterialWeight}
+                      id={i}
+                      />
                     </td>
                     <td className="table_row">
                       <input

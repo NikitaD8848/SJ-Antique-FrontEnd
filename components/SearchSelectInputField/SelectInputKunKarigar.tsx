@@ -5,20 +5,18 @@ const SelectInputKunKarigar = ({
   kundanKarigarData,
   tableData,
   setTableData,
-  item
+  id,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedDropdownValue, setSelectedDropdownValue] = useState();
   const [noRecords, setNoRecordsFound] = useState(false);
   const [filterDropdownList, setFilterDropdownList] = useState([]);
-  const [kunKarigar, setKunKarigar] = useState()
   //const [masterData, setMasterData] = useState<any>();
 
   console.log('check karigar', kundanKarigarData);
   console.log(typeof kundanKarigarData, 'type ');
-  console.log(item, "item")
-
+  
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
     setShowDropdown(true);
@@ -32,14 +30,15 @@ const SelectInputKunKarigar = ({
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
-    const updatedData = ()=>{
-
-    }
-    console.log(updatedData, 'bbb');
+    const updatedData = tableData.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, custom_kun_karigar: 0 || selectedDropdownValue };
+      }
+      return item;
+    });
     setTableData(updatedData);
   };
-  console.log("tabledata kun karigar")
-
+  
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -53,12 +52,17 @@ const SelectInputKunKarigar = ({
   };
 
   const handleSelectedOption = (data: any) => {
-    console.log('dataa', data);
+    console.log('data', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    setKunKarigar(data)
+    const updatedData = tableData.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, custom_kun_karigar: 0 || data };
+      }
+      return item;
+    });
+    setTableData(updatedData);
   };
-  console.log(kunKarigar,"tabledata kun karigar")
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {
     const handleDocumentClick = (e: any) => {

@@ -188,3 +188,35 @@ button.btn.btn-primary.mx-5.px-5{
 input:disabled{
   background-color: #e9ecef;
 }
+hr {
+  margin: 0.4rem 0 !important;
+}
+#dropdown-basic {
+  padding: 3px 6px !important;
+}
+.login-page-container {
+  margin-top: 120px;
+  font-family: serif;
+}
+
+.login-input-field {
+  line-height: 26px !important;
+}
+
+.login-card {
+  width: 30rem !important;
+}
+
+@media screen and (max-width:768px) {
+
+  .login-card {
+      width: 20rem !important;
+  }
+}
+
+@media screen and (max-width:368px) {
+
+  .login-card {
+      width: 15rem !important;
+  }
+}

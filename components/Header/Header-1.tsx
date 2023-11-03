@@ -40,39 +40,42 @@ const Header1 = () => {
   return (
     <>
       <div className={styles.button_container}>
-        <button
-          className={`${styles.button}`}
-          onClick={() => handleReadyRecipt('Master')}
-        >
-          <FontAwesomeIcon
-            className="p-1 "
-            icon={faReceipt}
-            style={{ color: '#CDAB6E', fontSize: 20 }}
-          />
-          <span className='pt-1'>Master</span>
-        </button>
-        <button
-          className={`${styles.button}`}
-          onClick={() => handleReadyRecipt('Receipts')}
-        >
-          <FontAwesomeIcon
-            className="p-1"
-            icon={faReceipt}
-            style={{ color: '#CDAB6E', fontSize: 20 }}
-          />
-          <span className="pt-1">Ready Receipts</span>
-        </button>
-        <button
-          className={`${styles.button}`}
-          onClick={() => handleReadyRecipt('Sales')}
-        >
-          <FontAwesomeIcon
-            className="p-1"
-            icon={faReceipt}
-            style={{ color: '#CDAB6E', fontSize: 20 }}
-          />
-          <span className="pt-1">Sales</span>
-        </button>
+        <Link className="text-decoration-none btn-margin" href="/master">
+          <button
+            className={`${styles.button}`}
+            onClick={() => handleReadyRecipt('Master')}
+          >
+            <i
+              className="fa-regular fa-file icons-color mr-2"
+              style={{ color: '#CDAB6E', fontSize: 20, marginRight: '9px' }}
+            ></i>
+            Master
+          </button>
+        </Link>
+        <Link className="text-decoration-none btn-margin" href="/readyReceipt">
+          <button
+            className={`${styles.button}`}
+            onClick={() => handleReadyRecipt('Receipts')}
+          >
+            <i
+              className="fa-regular fa-file icons-color mr-2"
+              style={{ color: '#CDAB6E', fontSize: 20, marginRight: '9px' }}
+            ></i>
+            Ready Receipts
+          </button>
+        </Link>
+        <Link className="text-decoration-none btn-margin" href="/sales">
+          <button
+            className={`${styles.button}`}
+            onClick={() => handleReadyRecipt('Sales')}
+          >
+            <i
+              className="fa-regular fa-file icons-color mr-2"
+              style={{ color: '#CDAB6E', fontSize: 20, marginRight: '9px' }}
+            ></i>
+            Sales
+          </button>
+        </Link>
       </div>
       <div className="container-lg justify-content-center">
         <div className="navbar ">
@@ -100,7 +103,7 @@ const Header1 = () => {
               ''
             )}
             {showSales ? <Header2 /> : ''}
-            {showMaster ? <p>Master Loading</p> : ''}
+            {showMaster ? '' : ''}
           </div>
         </div>
       </div>
