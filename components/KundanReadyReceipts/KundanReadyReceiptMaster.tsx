@@ -576,6 +576,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                             kundanKarigarData={kundanKarigarData}
                             tableData={tableData}
                             setTableData={setTableData}
+                            item={item}
                           />
                         </td>
                         <td className="table_row">
