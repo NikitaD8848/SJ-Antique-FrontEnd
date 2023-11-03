@@ -35,6 +35,7 @@ const MangalsutraReadyReceiptsMaster = () => {
   const [kundanKarigarData, setKundanKarigarData] = useState<any>();
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
+  const [clicks, setClick] = useState<boolean>(false);
   const [activeModalId, setActiveModalId] = useState<any>(null);
   const [kundanListing, setKundanListing] = useState<any>([]);
   const loginAcessToken = useSelector(get_access_token);
@@ -395,7 +396,7 @@ const MangalsutraReadyReceiptsMaster = () => {
         loginAcessToken.token,
         values
       );
-      if (purchaseReceipt.status === 'success') {
+      if (purchaseReceipt.status === 200) {
         toast.success('Purchase Receipt Created Sucessfully');
       } else {
         toast.error('Error in Creating Purchase Receipt');
@@ -416,10 +417,12 @@ const MangalsutraReadyReceiptsMaster = () => {
         loginAcessToken,
         'Mangalsutra'
       );
+      console.log(listData, 'accu23');
       setKundanListing(listData);
     };
+
     getPurchaseList();
-  }, []);
+  }, [clicks]);
   console.log(calculateRowValue, 'accu23');
   return (
     <div className="container-lg">
@@ -439,6 +442,7 @@ const MangalsutraReadyReceiptsMaster = () => {
               role="tab"
               aria-controls="pills-home"
               aria-selected="true"
+              onClick={() => setClick(true)}
             >
               Ready receipts (Mangalsutra karigar)
             </button>
@@ -727,7 +731,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                                 item.id,
                                 'tableRow',
                                 'custom_add_photo',
-                                `files/${e.target.files?.[0]?.name}`
+                                `/files/${e.target.files?.[0]?.name}`
                               )
                             }
                           />
@@ -766,6 +770,7 @@ const MangalsutraReadyReceiptsMaster = () => {
               materialListData={materialListData}
               calculateRowValue={calculateRowValue}
               handleDeleteChildTableRow={handleDeleteChildTableRow}
+              setMaterialWeight={setMaterialWeight}
             />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>

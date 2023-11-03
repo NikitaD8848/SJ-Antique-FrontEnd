@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '../../styles/readyReceipts.module.css';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
+import SelectInputMaterial from '../SearchSelectInputField/SelectInputMaterial';
 const ModalMaster = ({
   handleModalFieldChange,
   handleAddRow,
@@ -13,6 +14,7 @@ const ModalMaster = ({
   handleDeleteChildTableRow,
   recipitData,
   setRecipitData,
+  setMaterialWeight,
 }: any) => {
   return (
     <>
@@ -96,7 +98,7 @@ const ModalMaster = ({
                       </select>
                     </td>
                     <td className="table_row">
-                      <select
+                      {/* <select
                         className={`${styles.table_select}`}
                         name="material"
                         id="material"
@@ -122,7 +124,13 @@ const ModalMaster = ({
                             })}
                           </>
                         )}
-                      </select>
+                      </select> */}
+                      <SelectInputMaterial
+                        materialListData={materialListData}
+                        materialWeight={materialWeight}
+                        setMaterialWeight={setMaterialWeight}
+                        id={i}
+                      />
                     </td>
                     <td className="table_row">
                       <input

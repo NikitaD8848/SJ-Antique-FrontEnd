@@ -20,6 +20,8 @@ import CurrentDate from '../CurrentDate';
 import ModalMaster from '../ModalMaster/ModalMaster';
 import { ToastContainer, toast } from 'react-toastify';
 import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
+import KundanReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
+import KundanKarigarReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
 
 const ReadyReceiptKundanKarigarMaster = () => {
   // api states
@@ -31,6 +33,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
     custom_ready_receipt_type: 'Kundan',
   });
   const [clickBtn, setClickBtn] = useState<boolean>(false);
+  const [clicks, setClick] = useState<boolean>(false);
   const [karigarData, setKarigarData] = useState<any>();
   const [kundanKarigarData, setKundanKarigarData] = useState<any>();
   const [materialListData, setMaterialListData] = useState<any>();
@@ -395,7 +398,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
         loginAcessToken.token,
         values
       );
-      if (purchaseReceipt.status === 'success') {
+      console.log(purchaseReceipt, 'purchase');
+      if (purchaseReceipt.status === 200) {
         toast.success('Purchase Receipt Created Sucessfully');
       } else {
         toast.error('Error in Creating Purchase Receipt');
@@ -414,12 +418,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
     const getPurchaseList = async () => {
       const listData = await getPurchasreceiptListApi(
         loginAcessToken,
-        'Mangalsutra'
+        'Kundan'
       );
       setKundanListing(listData);
     };
     getPurchaseList();
-  }, []);
+  }, [clicks]);
 
   return (
     <div className="container-lg">
@@ -439,6 +443,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
               role="tab"
               aria-controls="pills-home"
               aria-selected="true"
+              onClick={() => setClick(true)}
             >
               Ready receipts (kundan karigar)
             </button>
@@ -544,207 +549,16 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   Add Row
                 </button>
               </div>
-
               <div className="table-responsive">
-                <table className="table table-hover table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th className="thead" scope="col">
-                        Sr.no
-                      </th>
-                      <th className="thead" scope="col">
-                        Product Code (Item){' '}
-                        <span className="text-danger">*</span>
-                      </th>
-                      <th className="thead" scope="col">
-                        Kun Karigar
-                      </th>
-                      <th className="thead" scope="col">
-                        Net Wt
-                      </th>
-                      <th className="thead" scope="col">
-                        Few Wt
-                      </th>
-                      <th className="thead" scope="col">
-                        Mat_Wt
-                      </th>
-                      <th className="thead" scope="col">
-                        Gross Wt
-                      </th>
-
-                      <th className="thead" scope="col">
-                        Other
-                      </th>
-                      <th className="thead" scope="col">
-                        Total
-                      </th>
-                      <th className="thead" scope="col">
-                        Add Photo
-                      </th>
-                      <th className="thead" scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData?.map((item: any, i: any) => (
-                      <tr key={item.id} className={`${styles.table_row}`}>
-                        <td className="table_row">{item.id}</td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="text"
-                            value={item.product_code}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'product_code',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <SelectInputKunKarigar
-                            kundanKarigarData={kundanKarigarData}
-                            tableData={tableData}
-                            setTableData={setTableData}
-                            item={item}
-                            id={item.id}
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={item.custom_net_wt}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_net_wt',
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={item.custom_few_wt}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_few_wt',
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={tableData[i]?.totalModalWeight}
-                            readOnly
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_mat_wt',
-                                +e.target.value
-                              )
-                            }
-                            onKeyDown={(e) => handleModal(e, item.id, item)}
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="text"
-                            readOnly
-                            disabled
-                            name={`sum-${i + 1}`}
-                            value={
-                              tableData[i]?.totalModalWeight > 0
-                                ? tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt +
-                                  tableData[i]?.totalModalWeight
-                                : tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt
-                            }
-                          />
-                        </td>
-
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={item.custom_other}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_other',
-
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          {' '}
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="text"
-                            readOnly
-                            disabled
-                            name={`sum-${i + 1}`}
-                            value={
-                              tableData[i]?.totalAmount > 0
-                                ? tableData[i].custom_other +
-                                  tableData[i]?.totalAmount
-                                : tableData[i].custom_other
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          {tableData[i].custom_add_photo && (
-                            <span style={{ fontSize: '12px' }}>
-                              {tableData[i].custom_add_photo}
-                            </span>
-                          )}
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="file"
-                            // value={item.custom_add_photo}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_add_photo',
-                                `files/${e.target.files?.[0]?.name}`
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <button
-                            className="d-flex align-items-center delete-link p-1 border-0"
-                            onClick={() => handleDeleteRow(item.id)}
-                            onKeyDown={(e) => handleTabPress(e, item.id)}
-                          >
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              style={{ color: 'red', fontSize: 15 }}
-                            />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <KundanKarigarReadyReceiptMasterTable
+                  handleFieldChange={handleFieldChange}
+                  tableData={tableData}
+                  handleDeleteRow={handleDeleteRow}
+                  handleTabPress={handleTabPress}
+                  setTableData={setTableData}
+                  kundanKarigarData={kundanKarigarData}
+                  handleModal={handleModal}
+                />
               </div>
             </div>
           </div>
@@ -767,6 +581,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
               handleDeleteChildTableRow={handleDeleteChildTableRow}
               setRecipitData={setRecipitData}
               recipitData={recipitData}
+              setMaterialWeight={setMaterialWeight}
             />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>

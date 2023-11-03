@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import styles from '../../styles/readyReceipts.module.css';
 
 const SelectInputMaterial = ({
   materialListData,
-  recipitData,
-  setRecipitData,
+  materialWeight,
+  setMaterialWeight,
+  id,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -11,23 +13,30 @@ const SelectInputMaterial = ({
   const [noRecords, setNoRecordsFound] = useState(false);
   const [filterDropdownList, setFilterDropdownList] = useState([]);
 
-  console.log('check karigar', materialListData);
-  console.log(typeof materialListData, 'type ');
+  console.log('check material', materialListData);
 
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
     setShowDropdown(true);
     setSelectedDropdownValue(e.target.value);
+    console.log(selectedDropdownValue, 'selectedDropdownValue');
     const query = e.target.value;
 
     const UpdatedFilterList: any = materialListData?.filter((item: any) => {
-      return (
-        item.karigar_name?.toLowerCase()?.indexOf(query?.toLowerCase()) !== -1
-      );
+      return item.material?.toLowerCase()?.indexOf(query?.toLowerCase()) !== -1;
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
-    setRecipitData({ ...recipitData, custom_karigar: selectedDropdownValue });
+    const updatedModalData =
+      materialWeight?.length > 0 &&
+      materialWeight?.map((item: any, i: any) => {
+        if (i === id) {
+          return { ...item, material: 0 || selectedDropdownValue };
+        }
+        return item;
+      });
+    console.log(updatedModalData, 'modal data');
+    setMaterialWeight(updatedModalData);
   };
 
   const handleShowDropdown = () => {
@@ -46,7 +55,16 @@ const SelectInputMaterial = ({
     console.log('dataa', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    setRecipitData({ ...recipitData, custom_karigar: data });
+    const updatedModalData =
+      materialWeight?.length > 0 &&
+      materialWeight?.map((item: any, i: any) => {
+        if (i === id) {
+          return { ...item, material: 0 || data };
+        }
+        return item;
+      });
+    console.log(updatedModalData, 'modal data');
+    setMaterialWeight(updatedModalData);
   };
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {
@@ -70,7 +88,7 @@ const SelectInputMaterial = ({
       <input
         type="text"
         name="custom_karigar"
-        className="form-control input-sm"
+        className={` ${styles.table_select}`}
         id="exampleInputEmail1"
         placeholder="Karigar Name"
         onChange={HandleSelectInputField}
@@ -88,10 +106,10 @@ const SelectInputMaterial = ({
               {materialListData?.map((name: any, i: any) => (
                 <li
                   key={i}
-                  onClick={() => handleSelectedOption(name.karigar_name)}
+                  onClick={() => handleSelectedOption(name.material)}
                   className="dropdown-list"
                 >
-                  {name.karigar_name}
+                  {name.material}
                 </li>
               ))}
             </>
@@ -100,10 +118,10 @@ const SelectInputMaterial = ({
               {filterDropdownList.map((name: any, i: any) => (
                 <li
                   key={i}
-                  onClick={() => handleSelectedOption(name.karigar_name)}
+                  onClick={() => handleSelectedOption(name.material)}
                   className="dropdown-list"
                 >
-                  {name.karigar_name}
+                  {name.material}
                 </li>
               ))}
             </>

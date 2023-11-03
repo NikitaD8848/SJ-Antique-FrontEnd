@@ -45,7 +45,7 @@ const LoginMaster = () => {
         </a> */}
         <div className="container  d-flex justify-content-center login-page-container">
           <div className="row">
-            <div className="col-lg-12 card login-card">
+            <div className="col-lg-12 card shadow p-3 mb-5 bg-white rounded border-0 login-card">
               <div className="  p-lg-5 p-0">
                 <p className="text-uppercase fs-3 text-center">login </p>
                 <div className="card-body p-0">
