@@ -12,7 +12,7 @@ const ModalMaster = ({
   calculateRowValue,
   handleDeleteChildTableRow,
   recipitData,
-  setRecipitData
+  setRecipitData,
 }: any) => {
   return (
     <>
@@ -36,7 +36,7 @@ const ModalMaster = ({
                   Material Abbr (Master)
                 </th>
                 <th className="thead" scope="col">
-                  Material (Master)
+                  Material (Master)<span className="text-danger">*</span>
                 </th>
                 <th className="thead" scope="col">
                   Pcs
@@ -68,7 +68,7 @@ const ModalMaster = ({
                   <tr key={i}>
                     <td className="table_row">{i + 1}</td>
                     <td className="table_row">
-                    <select
+                      <select
                         className={`${styles.table_select}`}
                         name="material_abbr"
                         id="material_abbr"

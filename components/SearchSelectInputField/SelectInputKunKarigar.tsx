@@ -5,6 +5,7 @@ const SelectInputKunKarigar = ({
   kundanKarigarData,
   tableData,
   setTableData,
+  id,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -29,9 +30,14 @@ const SelectInputKunKarigar = ({
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
-    setTableData({ ...tableData, custom_kun_karigar: selectedDropdownValue });
+    const updatedData = tableData.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, custom_kun_karigar: 0 || selectedDropdownValue };
+      }
+      return item;
+    });
+    setTableData(updatedData);
   };
-  console.log(tableData,"tabledata kun karigar")
 
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -46,12 +52,17 @@ const SelectInputKunKarigar = ({
   };
 
   const handleSelectedOption = (data: any) => {
-    console.log('dataa', data);
+    console.log('data', data);
     setSelectedDropdownValue(data);
     setShowDropdown(false);
-    // setTableData({ ...tableData, custom_kun_karigar: data });
+    const updatedData = tableData.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, custom_kun_karigar: 0 || data };
+      }
+      return item;
+    });
+    setTableData(updatedData);
   };
-  console.log(tableData,"tabledata kun karigar")
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {
     const handleDocumentClick = (e: any) => {

@@ -23,13 +23,9 @@ import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarig
 
 const ReadyReceiptKundanKarigarMaster = () => {
   // api states
-
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [recipitData, setRecipitData] = useState({
-    version: 'v1',
-    method: 'create_purchase_receipt',
-    entity: 'purchase_receipt',
     custom_karigar: ' ',
     remarks: '',
     custom_ready_receipt_type: 'Kundan',
@@ -40,6 +36,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
+  const [kundanListing, setKundanListing] = useState<any>([]);
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
@@ -47,7 +44,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      item_code: '',
+      product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -132,21 +129,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
     );
     console.log(newVal, 'newVal');
     console.log(disabledValue, 'disabledValue');
-    // const updatedMaterialWeight = materialWeight?.map((row:any,i:any) => {
-    //   console.log(i,"ij")
-    //   console.log(id,"ij")
-    //   if (i === id) {
-    //     return { ...row, totalModalWeight: weightAddition, amount: totalAmmountValues };
-    //   }
-    //   return row;
-    // });
-
     setMaterialWeight(updatedModalData);
   };
   const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
-      item_code: '',
+      product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -232,6 +220,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
         ...rest,
       })
     );
+    console.log(modalValue, 'modalValue');
     if (inputRef.current) {
       disabledValue = inputRef.current.value;
     } else {
@@ -263,12 +252,11 @@ const ReadyReceiptKundanKarigarMaster = () => {
         amount: disabledValue,
       };
     });
+
     const totalvalues = materialWeight.map(
       (row: any) =>
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
-    // setTotalModalAmount(totalvalues);
-
     let numbers: any;
     if (Array.isArray(totalvalues) && totalvalues.length === 1) {
       numbers = totalvalues[0];
@@ -277,16 +265,17 @@ const ReadyReceiptKundanKarigarMaster = () => {
         return accu + val;
       }, 0);
     }
+    // setTotalModalAmount(totalvalues);
+    console.log(totalvalues, 'totalvalues ');
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
       return accu + val;
     }, 0);
-
-    console.log();
     console.log();
     const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
       console.log(i, 'ij');
       console.log(id, 'ij');
       if (row.id === indexVal) {
+        const numbersParsed = parseInt(numbers, 10);
         return {
           ...row,
           totalModalWeight: weightAddition,
@@ -297,12 +286,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
             parseInt(row.custom_net_wt, 10) +
             parseInt(row.custom_few_wt, 10) +
             weightAddition,
-          custom_total: numbers,
+          custom_total: numbersParsed,
         };
       }
       return row;
     });
-
+    console.log(updatedMaterialWeight, 'updatedMaterialWeight');
     const updatedDataVal = updatedMaterialWeight.map((row: any, i: any) => {
       if (row.id === indexVal) {
         return {
@@ -329,7 +318,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
     } else {
       setClickBtn(false);
     }
-    console.log(updatedMaterialWeight, 'data45');
     const values = {
       version: 'v1',
       method: 'create_material',
@@ -338,13 +326,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
     };
     console.log(updatedMaterialWeight, 'data45');
     const materialApiVal = await postMaterialApi(loginAcessToken.token, values);
-    if (materialApiVal.status === 'success') {
-      toast.success('Material Created Sucessfully');
-    } else {
-      toast.error('Error in Creating Material');
-    }
-
-    // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -360,24 +341,55 @@ const ReadyReceiptKundanKarigarMaster = () => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
   };
   console.log(recipitData, 'recipitData');
-
   const handleCreate = async () => {
-    const modalValue = tableData.map(
+    console.log(tableData, 'table56');
+    const updatedtableData = tableData?.map((row: any, i: any) => {
+      if (row.id === indexVal) {
+        if (row.custom_other !== '' && row.custom_total !== '') {
+          return {
+            ...row,
+            custom_total:
+              parseInt(row.totalAmount) + parseInt(row.custom_other),
+          };
+        } else if (row.custom_other !== '') {
+          return {
+            ...row,
+            custom_total: parseInt(row.custom_other),
+          };
+        } else {
+          return {
+            ...row,
+            custom_total: parseInt(row.totalAmount),
+          };
+        }
+      }
+      return row;
+    });
+
+    console.log(updatedtableData, 'updatedtableData');
+    const modalValue = updatedtableData?.map(
       ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
         ...rest,
       })
     );
+
     const values = {
       ...recipitData,
       items: modalValue,
     };
-    const isEmptyEmailExists = values.items.some(
-      (obj: any) => obj.item_code === ''
+    console.log(values, 'vals');
+    const isEmptyProductCode = values?.items?.some(
+      (obj: any) => obj.product_code === ''
+    );
+    const isEmptyMaterial = values?.items?.some((obj: any) =>
+      obj.table.some((vals: any) => vals.material === '')
     );
     const productVal = values.custom_karigar;
-    console.log(values, 'finalVal');
-    if (isEmptyEmailExists || productVal === '') {
-      toast.error('Fill All Fields Item code Or Karigar');
+    console.log(isEmptyMaterial, 'finalVal');
+    if (isEmptyProductCode || productVal === '') {
+      toast.error('add Item code Or Karigar');
+    } else if (isEmptyMaterial) {
+      toast.error('please Enter Material Name');
     } else {
       const purchaseReceipt: any = await purchaseReceiptApi(
         loginAcessToken.token,
@@ -390,20 +402,19 @@ const ReadyReceiptKundanKarigarMaster = () => {
       }
     }
   };
+
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
 
-  // kundankarigar listing api
-  const [kundanListing, setKundanListing] = useState<any>([]);
   console.log(loginAcessToken, 'loginAcessToken');
 
   useEffect(() => {
     const getPurchaseList = async () => {
       const listData = await getPurchasreceiptListApi(
         loginAcessToken,
-        'Kundan'
+        'Mangalsutra'
       );
       setKundanListing(listData);
     };
@@ -586,34 +597,20 @@ const ReadyReceiptKundanKarigarMaster = () => {
                               handleFieldChange(
                                 item.id,
                                 'tableRow',
-                                'item_code',
+                                'product_code',
                                 e.target.value
                               )
                             }
                           />
                         </td>
                         <td className="table_row">
-                          <select
-                            className={` ${styles.table_select}`}
-                            name="custom_kun_karigar"
-                            id="karigar"
-                            value={item.custom_kun_karigar}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_kun_karigar',
-                                e.target.value
-                              )
-                            }
-                          >
-                            {kundanKarigarData?.length > 0 &&
-                              kundanKarigarData.map((name: any, i: any) => (
-                                <option value={name.karigar_name}>
-                                  {name.karigar_name}
-                                </option>
-                              ))}
-                          </select>
+                          <SelectInputKunKarigar
+                            kundanKarigarData={kundanKarigarData}
+                            tableData={tableData}
+                            setTableData={setTableData}
+                            item={item}
+                            id={item.id}
+                          />
                         </td>
                         <td className="table_row">
                           <input
@@ -713,6 +710,11 @@ const ReadyReceiptKundanKarigarMaster = () => {
                           />
                         </td>
                         <td className="table_row">
+                          {tableData[i].custom_add_photo && (
+                            <span style={{ fontSize: '12px' }}>
+                              {tableData[i].custom_add_photo}
+                            </span>
+                          )}
                           <input
                             className={` ${styles.input_field}`}
                             type="file"
@@ -722,7 +724,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                                 item.id,
                                 'tableRow',
                                 'custom_add_photo',
-                                e.target.files?.[0].name
+                                `files/${e.target.files?.[0]?.name}`
                               )
                             }
                           />
