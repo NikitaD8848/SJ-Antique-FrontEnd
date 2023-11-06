@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { CONSTANTS, headerGenerator } from '../config/api-config';
 
-const postMaterialApi = async (get_access_token: any, val: any) => {
+const postUploadFile = async (get_access_token: any, val: any) => {
   let response: any;
   const getHeaders = headerGenerator(get_access_token);
+  const bodyFormData: any = new FormData();
+  bodyFormData.append('file', val);
   await axios
     .post(
-      `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=create_material&entity=material_post_api`,
-      val,
+      `${CONSTANTS.API_BASE_URL}/api/method/upload_file`,
+      bodyFormData,
       getHeaders
     )
     .then((res: any) => {
@@ -29,4 +31,4 @@ const postMaterialApi = async (get_access_token: any, val: any) => {
   return response;
 };
 
-export default postMaterialApi;
+export default postUploadFile;

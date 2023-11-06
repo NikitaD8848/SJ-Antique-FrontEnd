@@ -188,7 +188,8 @@ const KundanKarigarReadyReceiptMasterTable = ({
                       item.id,
                       'tableRow',
                       'custom_add_photo',
-                      `/files/${e.target.files?.[0]?.name}`
+                      `/files/${e.target.files?.[0]?.name}`,
+                      e.target.files?.[0]
                     )
                   }
                 />

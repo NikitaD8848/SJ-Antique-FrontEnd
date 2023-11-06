@@ -21,6 +21,7 @@ import ModalMaster from '../ModalMaster/ModalMaster';
 import KundanListing from '../KundanReadyReceipts/KundanReadyReceiptsListing';
 import { ToastContainer, toast } from 'react-toastify';
 import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
+import postUploadFile from '@/services/api/post-upload-file-api';
 
 const MangalsutraReadyReceiptsMaster = () => {
   const inputRef = useRef<any>(null);
@@ -99,7 +100,8 @@ const MangalsutraReadyReceiptsMaster = () => {
     id: number,
     val: any,
     field: string,
-    newValue: any
+    newValue: any,
+    fileVal?: any
   ) => {
     const updatedData = tableData.map((item: any, i: any) => {
       if (item.id === id) {
@@ -109,7 +111,13 @@ const MangalsutraReadyReceiptsMaster = () => {
     });
     console.log(updatedData, 'bbb');
     setTableData(updatedData);
+    handleFileUpload(fileVal);
   };
+
+  const handleFileUpload = async (fileVal: any) => {
+    await postUploadFile(loginAcessToken.token, fileVal);
+  };
+
   const handleModalFieldChange = (
     id: number,
     val: any,
@@ -132,6 +140,7 @@ const MangalsutraReadyReceiptsMaster = () => {
     console.log(disabledValue, 'disabledValue');
     setMaterialWeight(updatedModalData);
   };
+
   const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
@@ -731,7 +740,8 @@ const MangalsutraReadyReceiptsMaster = () => {
                                 item.id,
                                 'tableRow',
                                 'custom_add_photo',
-                                `/files/${e.target.files?.[0]?.name}`
+                                `/files/${e.target.files?.[0]?.name}`,
+                                e.target.files?.[0]
                               )
                             }
                           />
