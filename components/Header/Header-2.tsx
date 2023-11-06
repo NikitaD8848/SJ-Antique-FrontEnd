@@ -6,9 +6,9 @@ import styles from '../../styles/header.module.css';
 
 const Header2 = ({ showButtons2 }: any) => {
   return (
-    <div>
-      <Link className="text-decoration-none btn-margin" href="/saleReturns">
-        <button className={`btn btn-outline-primary`}>
+    <div className='nav-pills'>
+      <Link className="text-decoration-none btn-margin nav-tabs " href="/saleReturns">
+        <button className='btn btn-outline-primary nav-link active'>
           Sale -Returns(Customer)
         </button>
       </Link>

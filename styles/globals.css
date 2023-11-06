@@ -220,3 +220,10 @@ hr {
       width: 15rem !important;
   }
 }
+.logout-button{
+  padding: 5px 14px;
+  border: none;
+  border-radius: 3px;
+  background-color: #6b69df;
+  color: #FFF;
+}

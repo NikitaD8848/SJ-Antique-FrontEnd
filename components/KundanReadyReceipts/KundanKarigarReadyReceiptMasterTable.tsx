@@ -131,6 +131,7 @@ const KundanKarigarReadyReceiptMasterTable = ({
                   className={` ${styles.input_field}`}
                   type="text"
                   readOnly
+                  disabled
                   name={`sum-${i + 1}`}
                   value={
                     tableData[i]?.totalModalWeight > 0

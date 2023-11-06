@@ -26,7 +26,7 @@ const Navbar = () => {
   return (
     <div className="bg-light">
       <div className=" container-lg">
-        <nav className="navbar navbar-light p-0 mt-2 ">
+        <nav className="navbar navbar-light p-0 ">
           <div>
             {/* <button className="btn btn-primary mx-5 "
               onClick={()=>setShowButtons1(!showButtons1)}  
@@ -37,9 +37,9 @@ const Navbar = () => {
           </div>
           <Dropdown>
             <Dropdown.Toggle
-              variant="light"
+              variant="success-light"
               id="dropdown-basic"
-              className="border"
+              className="border bg-light"
             >
               <FontAwesomeIcon
                 icon={faCircleUser}
@@ -47,8 +47,11 @@ const Navbar = () => {
               />
             </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={handleClick}>Logout</Dropdown.Item>
+            <Dropdown.Menu className=''>
+              <Dropdown.Item className='d-flex justify-content-center' >Welcome!!</Dropdown.Item>
+              <Dropdown.Item className='d-flex justify-content-center'>
+                <button className='logout-button ' onClick={handleClick}>Logout</button>
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </nav>

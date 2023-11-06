@@ -39,10 +39,10 @@ const Header1 = () => {
 
   return (
     <>
-      <div className={styles.button_container}>
-        <Link className="text-decoration-none btn-margin" href="/master">
+      <div className={`${styles.button_container} `}>
+        <Link className="text-decoration-none btn-margin " href="/master">
           <button
-            className={`${styles.button}`}
+            className={` ${styles.button}`}
             onClick={() => handleReadyRecipt('Master')}
           >
             <i
@@ -52,7 +52,7 @@ const Header1 = () => {
             Master
           </button>
         </Link>
-        <Link className="text-decoration-none btn-margin" href="/readyReceipt">
+        <Link className="text-decoration-none btn-margin nav-link active " href="/readyReceipt">
           <button
             className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Receipts')}
@@ -64,7 +64,7 @@ const Header1 = () => {
             Ready Receipts
           </button>
         </Link>
-        <Link className="text-decoration-none btn-margin" href="/sales">
+        <Link className="text-decoration-none" href="/sales">
           <button
             className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Sales')}
