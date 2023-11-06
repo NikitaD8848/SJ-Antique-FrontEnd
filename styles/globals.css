@@ -235,3 +235,8 @@ hr {
   background-color: #6b69df;
   color: #FFF;
 }
+.activeColor{
+  background-color: #6164ef;
+  color: #FFF;
+  border: none;
+}

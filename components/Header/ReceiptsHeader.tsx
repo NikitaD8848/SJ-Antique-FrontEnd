@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import styles from '../../styles/header.module.css';
 import Link from 'next/link';
 import SalesHeader from './SalesHeader';
+import { useRouter } from 'next/router';
 const ReceiptsHeader = () => {
   const [showReceipt, setShowReceipts] = useState(false);
   const [showSales, setShowSales] = useState(false);
@@ -10,6 +11,8 @@ const ReceiptsHeader = () => {
   useEffect(() => {
     setShowReceipts(true);
   }, []);
+
+  const router = useRouter()
 
   const handleReadyRecipt = (val: any) => {
     switch (val) {
@@ -40,7 +43,7 @@ const ReceiptsHeader = () => {
       <div className={styles.button_container}>
         <Link className="text-decoration-none btn-margin" href="/master">
           <button
-            className={`${styles.button}`}
+            className={`${styles.button} ${showMaster ? 'activeColor':''}`}
             onClick={() => handleReadyRecipt('Master')}
           >
             <i
@@ -55,8 +58,8 @@ const ReceiptsHeader = () => {
           href="/readyReceipt/mangalsutra"
         >
           <button
-            className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Receipts')}
+            className={`${styles.button} ${showReceipt ? 'activeColor':''}`}
           >
             <i
               className="fa-regular fa-file icons-color mr-2"
@@ -67,7 +70,7 @@ const ReceiptsHeader = () => {
         </Link>
         <Link className="text-decoration-none btn-margin" href="/sales">
           <button
-            className={`${styles.button}`}
+           className={`${styles.button} ${showSales ? 'activeColor':''}`}
             onClick={() => handleReadyRecipt('Sales')}
           >
             <i

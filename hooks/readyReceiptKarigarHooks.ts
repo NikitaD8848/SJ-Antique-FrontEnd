@@ -15,7 +15,7 @@ const useReadyReceiptKarigar = () => {
   const router = useRouter();
   const pathParts = router.asPath.split('/');
   const lastPartOfURL = pathParts[pathParts.length - 1];
-  console.log(pathParts, 'router');
+  console.log(pathParts, 'router pathparts');
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [recipitData, setRecipitData] = useState({

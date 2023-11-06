@@ -16,12 +16,17 @@
     font-family: 'Times New Roman', Times, serif;
     text-decoration-line: none;
 }
-.button:hover{
-    color: #0D6EFD;
-}
-.button:active{
-    background-color: #6b69df;
+.button_active{
+    display: inline-flex;
+    justify-content: space-between ;
+    background-color: #6164ef;
     color: #FFF;
+    margin: 5px;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 9px;
+    font-family: 'Times New Roman', Times, serif;
+    text-decoration-line: none;
 }
 
 .button_container {

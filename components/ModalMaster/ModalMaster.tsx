@@ -13,8 +13,6 @@ const ModalMaster = ({
   materialListData,
   calculateRowValue,
   handleDeleteChildTableRow,
-  recipitData,
-  setRecipitData,
 }: any) => {
   return (
     <>
