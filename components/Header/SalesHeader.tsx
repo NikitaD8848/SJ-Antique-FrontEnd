@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styles from '../../styles/header.module.css';
 
-const Header2 = ({ showButtons2 }: any) => {
+const SalesHeader = ({ showButtons2 }: any) => {
   return (
     <div className='nav nav-pills d-flex '
         id="pills-tab"
         role="tablist"
     >
       <Link className="text-decoration-none nav-tabs tabs-container" href="/saleReturns">
-        <button className=' nav-link border '
+        <button className=' nav-link border active'
         id="pills-home-tab"
         data-bs-toggle="pill"
         data-bs-target="#pills-home"
@@ -40,4 +40,4 @@ const Header2 = ({ showButtons2 }: any) => {
   );
 };
 
-export default Header2;
+export default SalesHeader;

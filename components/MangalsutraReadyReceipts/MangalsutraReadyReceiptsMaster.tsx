@@ -801,3 +801,4 @@ const MangalsutraReadyReceiptsMaster = () => {
 };
 
 export default MangalsutraReadyReceiptsMaster;
+

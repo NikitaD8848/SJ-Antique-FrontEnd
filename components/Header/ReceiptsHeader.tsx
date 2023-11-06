@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from '../../styles/header.module.css';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReceipt } from '@fortawesome/free-solid-svg-icons';
-import Header2 from './Header-2';
-const Header1 = () => {
+import SalesHeader from './SalesHeader';
+const ReceiptsHeader = () => {
   const [showReceipt, setShowReceipts] = useState(false);
   const [showSales, setShowSales] = useState(false);
   const [showMaster, setShowMaster] = useState(false);
@@ -39,10 +37,10 @@ const Header1 = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-evenly">
-        <Link className="text-decoration-none btn-margin " href="/master">
+      <div className={styles.button_container}>
+        <Link className="text-decoration-none btn-margin" href="/master">
           <button
-            className={` ${styles.button} active`}
+            className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Master')}
           >
             <i
@@ -52,7 +50,10 @@ const Header1 = () => {
             Master
           </button>
         </Link>
-        <Link className="text-decoration-none btn-margin nav-link active " href="/readyReceipt">
+        <Link
+          className="text-decoration-none btn-margin"
+          href="/readyReceipt/mangalsutra"
+        >
           <button
             className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Receipts')}
@@ -64,7 +65,7 @@ const Header1 = () => {
             Ready Receipts
           </button>
         </Link>
-        <Link className="text-decoration-none" href="/sales">
+        <Link className="text-decoration-none btn-margin" href="/sales">
           <button
             className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Sales')}
@@ -77,44 +78,40 @@ const Header1 = () => {
           </button>
         </Link>
       </div>
-      <div className="justify-content-center">
+      <div className=" justify-content-center">
         <div className="navbar d-flex justify-content-center">
-          <div  >
+          <div >
             {showReceipt ? (
               <div className='nav nav-pills d-flex'
               id="pills-tab"
               role="tablist">
                 <Link
                   className="text-decoration-none nav-tabs tabs-container"
-                  href="/readyReceiptKundanKarigar"
+                  href="/readyReceipt/kundan"
                 >
-                  <button 
-                  className='nav-link border'
+                  <button className='nav-link border'
                   id="pills-home-tab"
                   data-bs-toggle="pill"
                   data-bs-target="#pills-home"
                   type="button"
                   role="tab"
                   aria-controls="pills-home"
-                  aria-selected="true"
-                  >
+                  aria-selected="true">
                     Ready Receipts(Kundan Karigar)
                   </button>
                 </Link>
                 <Link
                   className="text-decoration-none nav-tabs tabs-container"
-                  href="/readyReceiptsMangalsutra"
+                  href="/readyReceipt/mangalsutra"
                 >
-                  <button
-                  className='nav-link border'
-                   id="pills-home-tab"
-                   data-bs-toggle="pill"
-                   data-bs-target="#pills-home"
-                   type="button"
-                   role="tab"
-                   aria-controls="pills-home"
-                   aria-selected="true"
-                   >
+                  <button className='nav-link border'
+                  id="pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-home"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true">
                     Ready Receipts(Mangalsutra Karigar)
                   </button>
                 </Link>
@@ -122,7 +119,7 @@ const Header1 = () => {
             ) : (
               ''
             )}
-            {showSales ? <Header2 /> : ''}
+            {showSales ? <SalesHeader /> : ''}
             {showMaster ? '' : ''}
           </div>
         </div>
@@ -131,4 +128,4 @@ const Header1 = () => {
   );
 };
 
-export default Header1;
+export default ReceiptsHeader;
