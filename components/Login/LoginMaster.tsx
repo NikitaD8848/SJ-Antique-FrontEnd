@@ -23,16 +23,16 @@ const LoginMaster = () => {
   };
   console.log(userData, 'userData');
 
-  const HandleFormSubmit = () => {
-    const loginsucess = dispatch(getAccessToken(userData));
+  const HandleFormSubmit = async () => {
+    const loginsucess = await dispatch(getAccessToken(userData));
     console.log(loginsucess, 'loginsucess');
-    if (loginAcessToken.error === '' && loginAcessToken.token !== '') {
+    if (loginsucess.payload.msg == 'success') {
       toast.success('Login Sucessfully');
       setTimeout(() => {
         router.push('/readyReceiptKundanKarigar');
       }, 900);
     } else {
-      toast.error('invalid userName Or Password');
+      toast.error('Incorrect User or Password');
       router.push('/');
     }
   };

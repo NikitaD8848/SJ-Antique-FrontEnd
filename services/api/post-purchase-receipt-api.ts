@@ -15,13 +15,13 @@ const purchaseReceiptApi = async (get_access_token: any, val: any) => {
 
   await axios
     .post(
-      `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.sdk.api?version=v1&method=create_purchase_receipt&entity=purchase_receipt`,
+      `${CONSTANTS.API_BASE_URL}/api/method/sj_antique.api.purchase_receipt_post.create_purchase_receipt`,
       val,
       getHeaders
     )
     .then((res: any) => {
       console.log('post purchase receipt', res);
-      response = res?.data?.message;
+      response = res;
     })
     .catch((err: any) => {
       if (err.code === 'ECONNABORTED') {

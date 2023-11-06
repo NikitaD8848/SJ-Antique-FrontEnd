@@ -19,25 +19,23 @@ const SelectInputMaterial = ({
     console.log('input field', e.target.value);
     setShowDropdown(true);
     setSelectedDropdownValue(e.target.value);
-    console.log(selectedDropdownValue,"selectedDropdownValue")
+    console.log(selectedDropdownValue, 'selectedDropdownValue');
     const query = e.target.value;
 
     const UpdatedFilterList: any = materialListData?.filter((item: any) => {
-      return (
-        item.material?.toLowerCase()?.indexOf(query?.toLowerCase()) !== -1
-      );
+      return item.material?.toLowerCase()?.indexOf(query?.toLowerCase()) !== -1;
     });
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
     const updatedModalData =
       materialWeight?.length > 0 &&
-      materialWeight?.map((item: any, i:any) => {
+      materialWeight?.map((item: any, i: any) => {
         if (i === id) {
           return { ...item, material: 0 || selectedDropdownValue };
         }
         return item;
       });
-      console.log(updatedModalData,"modal data")
+    console.log(updatedModalData, 'modal data');
     setMaterialWeight(updatedModalData);
   };
 
@@ -59,13 +57,13 @@ const SelectInputMaterial = ({
     setShowDropdown(false);
     const updatedModalData =
       materialWeight?.length > 0 &&
-      materialWeight?.map((item: any, i:any) => {
+      materialWeight?.map((item: any, i: any) => {
         if (i === id) {
           return { ...item, material: 0 || data };
         }
         return item;
-      })
-      console.log(updatedModalData,"modal data")
+      });
+    console.log(updatedModalData, 'modal data');
     setMaterialWeight(updatedModalData);
   };
   console.log(selectedDropdownValue, 'selected value');

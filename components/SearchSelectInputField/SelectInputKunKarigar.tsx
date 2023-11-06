@@ -38,7 +38,6 @@ const SelectInputKunKarigar = ({
     });
     setTableData(updatedData);
   };
-  
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
   };

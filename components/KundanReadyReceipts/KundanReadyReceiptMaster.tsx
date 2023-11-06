@@ -20,26 +20,26 @@ import CurrentDate from '../CurrentDate';
 import ModalMaster from '../ModalMaster/ModalMaster';
 import { ToastContainer, toast } from 'react-toastify';
 import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
+import KundanReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
+import KundanKarigarReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
 
 const ReadyReceiptKundanKarigarMaster = () => {
   // api states
-
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [recipitData, setRecipitData] = useState({
-    version: 'v1',
-    method: 'create_purchase_receipt',
-    entity: 'purchase_receipt',
     custom_karigar: ' ',
     remarks: '',
     custom_ready_receipt_type: 'Kundan',
   });
   const [clickBtn, setClickBtn] = useState<boolean>(false);
+  const [clicks, setClick] = useState<boolean>(false);
   const [karigarData, setKarigarData] = useState<any>();
   const [kundanKarigarData, setKundanKarigarData] = useState<any>();
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
+  const [kundanListing, setKundanListing] = useState<any>([]);
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
@@ -47,7 +47,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
-      item_code: '',
+      product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -132,21 +132,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
     );
     console.log(newVal, 'newVal');
     console.log(disabledValue, 'disabledValue');
-    // const updatedMaterialWeight = materialWeight?.map((row:any,i:any) => {
-    //   console.log(i,"ij")
-    //   console.log(id,"ij")
-    //   if (i === id) {
-    //     return { ...row, totalModalWeight: weightAddition, amount: totalAmmountValues };
-    //   }
-    //   return row;
-    // });
-
     setMaterialWeight(updatedModalData);
   };
   const handleAddRow = (value: any) => {
     const newRow = {
       id: tableData.length + 1,
-      item_code: '',
+      product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
       custom_few_wt: '',
@@ -231,6 +222,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
         ...rest,
       })
     );
+    console.log(modalValue, 'modalValue');
     if (inputRef.current) {
       disabledValue = inputRef.current.value;
     } else {
@@ -262,12 +254,11 @@ const ReadyReceiptKundanKarigarMaster = () => {
         amount: disabledValue,
       };
     });
+
     const totalvalues = materialWeight.map(
       (row: any) =>
         row.pcs * row.piece_ + row.carat * row.carat_ + row.weight * row.gm_
     );
-    // setTotalModalAmount(totalvalues);
-
     let numbers: any;
     if (Array.isArray(totalvalues) && totalvalues.length === 1) {
       numbers = totalvalues[0];
@@ -276,16 +267,17 @@ const ReadyReceiptKundanKarigarMaster = () => {
         return accu + val;
       }, 0);
     }
+    // setTotalModalAmount(totalvalues);
+    console.log(totalvalues, 'totalvalues ');
     const totalAmmountValues = totalvalues.reduce((accu: any, val: any) => {
       return accu + val;
     }, 0);
-
-    console.log();
     console.log();
     const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
       console.log(i, 'ij');
       console.log(id, 'ij');
       if (row.id === indexVal) {
+        const numbersParsed = parseInt(numbers, 10);
         return {
           ...row,
           totalModalWeight: weightAddition,
@@ -296,12 +288,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
             parseInt(row.custom_net_wt, 10) +
             parseInt(row.custom_few_wt, 10) +
             weightAddition,
-          custom_total: numbers,
+          custom_total: numbersParsed,
         };
       }
       return row;
     });
-
+    console.log(updatedMaterialWeight, 'updatedMaterialWeight');
     const updatedDataVal = updatedMaterialWeight.map((row: any, i: any) => {
       if (row.id === indexVal) {
         return {
@@ -328,7 +320,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
     } else {
       setClickBtn(false);
     }
-    console.log(updatedMaterialWeight, 'data45');
     const values = {
       version: 'v1',
       method: 'create_material',
@@ -337,13 +328,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
     };
     console.log(updatedMaterialWeight, 'data45');
     const materialApiVal = await postMaterialApi(loginAcessToken.token, values);
-    if (materialApiVal.status === 'success') {
-      toast.success('Material Created Sucessfully');
-    } else {
-      toast.error('Error in Creating Material');
-    }
-
-    // setDublicateData([...materialWeight]);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
@@ -359,43 +343,74 @@ const ReadyReceiptKundanKarigarMaster = () => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
   };
   console.log(recipitData, 'recipitData');
-
   const handleCreate = async () => {
-    const modalValue = tableData.map(
+    console.log(tableData, 'table56');
+    const updatedtableData = tableData?.map((row: any, i: any) => {
+      if (row.id === indexVal) {
+        if (row.custom_other !== '' && row.custom_total !== '') {
+          return {
+            ...row,
+            custom_total:
+              parseInt(row.totalAmount) + parseInt(row.custom_other),
+          };
+        } else if (row.custom_other !== '') {
+          return {
+            ...row,
+            custom_total: parseInt(row.custom_other),
+          };
+        } else {
+          return {
+            ...row,
+            custom_total: parseInt(row.totalAmount),
+          };
+        }
+      }
+      return row;
+    });
+
+    console.log(updatedtableData, 'updatedtableData');
+    const modalValue = updatedtableData?.map(
       ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
         ...rest,
       })
     );
+
     const values = {
       ...recipitData,
       items: modalValue,
     };
-    const isEmptyEmailExists = values.items.some(
-      (obj: any) => obj.item_code === ''
+    console.log(values, 'vals');
+    const isEmptyProductCode = values?.items?.some(
+      (obj: any) => obj.product_code === ''
+    );
+    const isEmptyMaterial = values?.items?.some((obj: any) =>
+      obj.table.some((vals: any) => vals.material === '')
     );
     const productVal = values.custom_karigar;
-    console.log(values, 'finalVal');
-    if (isEmptyEmailExists || productVal === '') {
-      toast.error('Fill All Fields Item code Or Karigar');
+    console.log(isEmptyMaterial, 'finalVal');
+    if (isEmptyProductCode || productVal === '') {
+      toast.error('add Item code Or Karigar');
+    } else if (isEmptyMaterial) {
+      toast.error('please Enter Material Name');
     } else {
       const purchaseReceipt: any = await purchaseReceiptApi(
         loginAcessToken.token,
         values
       );
-      if (purchaseReceipt.status === 'success') {
+      console.log(purchaseReceipt, 'purchase');
+      if (purchaseReceipt.status === 200) {
         toast.success('Purchase Receipt Created Sucessfully');
       } else {
         toast.error('Error in Creating Purchase Receipt');
       }
     }
   };
+
   const handleDeleteChildTableRow = (id: any) => {
     const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
     setMaterialWeight(updatedData);
   };
 
-  // kundankarigar listing api
-  const [kundanListing, setKundanListing] = useState<any>([]);
   console.log(loginAcessToken, 'loginAcessToken');
 
   useEffect(() => {
@@ -407,7 +422,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
       setKundanListing(listData);
     };
     getPurchaseList();
-  }, []);
+  }, [clicks]);
 
   return (
     <div className="container-lg">
@@ -427,6 +442,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
               role="tab"
               aria-controls="pills-home"
               aria-selected="true"
+              onClick={() => setClick(true)}
             >
               Ready receipts (kundan karigar)
             </button>
@@ -532,202 +548,16 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   Add Row
                 </button>
               </div>
-
               <div className="table-responsive">
-                <table className="table table-hover table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th className="thead" scope="col">
-                        Sr.no
-                      </th>
-                      <th className="thead" scope="col">
-                        Product Code (Item){' '}
-                        <span className="text-danger">*</span>
-                      </th>
-                      <th className="thead" scope="col">
-                        Kun Karigar
-                      </th>
-                      <th className="thead" scope="col">
-                        Net Wt
-                      </th>
-                      <th className="thead" scope="col">
-                        Few Wt
-                      </th>
-                      <th className="thead" scope="col">
-                        Mat_Wt
-                      </th>
-                      <th className="thead" scope="col">
-                        Gross Wt
-                      </th>
-
-                      <th className="thead" scope="col">
-                        Other
-                      </th>
-                      <th className="thead" scope="col">
-                        Total
-                      </th>
-                      <th className="thead" scope="col">
-                        Add Photo
-                      </th>
-                      <th className="thead" scope="col"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData?.map((item: any, i: any) => (
-                      <tr key={item.id} className={`${styles.table_row}`}>
-                        <td className="table_row">{item.id}</td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="text"
-                            value={item.product_code}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'item_code',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                        <SelectInputKunKarigar
-                            kundanKarigarData={kundanKarigarData}
-                            tableData={tableData}
-                            setTableData={setTableData}
-                            item={item}
-                            id={item.id}
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={item.custom_net_wt}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_net_wt',
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={item.custom_few_wt}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_few_wt',
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={tableData[i]?.totalModalWeight}
-                            readOnly
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_mat_wt',
-                                +e.target.value
-                              )
-                            }
-                            onKeyDown={(e) => handleModal(e, item.id, item)}
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="text"
-                            readOnly
-                            disabled
-                            name={`sum-${i + 1}`}
-                            value={
-                              tableData[i]?.totalModalWeight > 0
-                                ? tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt +
-                                  tableData[i]?.totalModalWeight
-                                : tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt
-                            }
-                          />
-                        </td>
-
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="number"
-                            value={item.custom_other}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_other',
-
-                                +e.target.value
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          {' '}
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="text"
-                            readOnly
-                            disabled
-                            name={`sum-${i + 1}`}
-                            value={
-                              tableData[i]?.totalAmount > 0
-                                ? tableData[i].custom_other +
-                                  tableData[i]?.totalAmount
-                                : tableData[i].custom_other
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <input
-                            className={` ${styles.input_field}`}
-                            type="file"
-                            // value={item.custom_add_photo}
-                            onChange={(e) =>
-                              handleFieldChange(
-                                item.id,
-                                'tableRow',
-                                'custom_add_photo',
-                                e.target.files?.[0].name
-                              )
-                            }
-                          />
-                        </td>
-                        <td className="table_row">
-                          <button
-                            className="d-flex align-items-center delete-link p-1 border-0"
-                            onClick={() => handleDeleteRow(item.id)}
-                            onKeyDown={(e) => handleTabPress(e, item.id)}
-                          >
-                            <FontAwesomeIcon
-                              icon={faTrash}
-                              style={{ color: 'red', fontSize: 15 }}
-                            />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <KundanKarigarReadyReceiptMasterTable
+                  handleFieldChange={handleFieldChange}
+                  tableData={tableData}
+                  handleDeleteRow={handleDeleteRow}
+                  handleTabPress={handleTabPress}
+                  setTableData={setTableData}
+                  kundanKarigarData={kundanKarigarData}
+                  handleModal={handleModal}
+                />
               </div>
             </div>
           </div>
@@ -751,7 +581,6 @@ const ReadyReceiptKundanKarigarMaster = () => {
               handleDeleteChildTableRow={handleDeleteChildTableRow}
               setRecipitData={setRecipitData}
               recipitData={recipitData}
-              tableData={tableData}
               />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>
