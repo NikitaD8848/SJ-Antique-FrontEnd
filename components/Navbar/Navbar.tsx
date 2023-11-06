@@ -7,11 +7,10 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Header1 from '../Header/Header-1';
-import Header2 from '../Header/Header-2';
 import { useDispatch } from 'react-redux';
 import { ClearToken } from '@/store/slices/auth/login-slice';
 import { useRouter } from 'next/router';
+import ReceiptsHeader from '../Header/ReceiptsHeader';
 
 const Navbar = () => {
   const router = useRouter();
@@ -54,7 +53,7 @@ const Navbar = () => {
           </Dropdown>
         </nav>
         <hr />
-        <Header1 />
+        <ReceiptsHeader />
       </div>
     </div>
   );

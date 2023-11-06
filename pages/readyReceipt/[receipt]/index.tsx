@@ -1,7 +1,7 @@
 import ReadyReceiptKundanKarigarMaster from '@/components/KundanReadyReceipts/KundanReadyReceiptMaster';
 import React from 'react';
 
-const ReadyReceiptKundanKarigar = () => {
+const ReadyReceipt = () => {
   return (
     <div>
       <ReadyReceiptKundanKarigarMaster />
@@ -9,4 +9,4 @@ const ReadyReceiptKundanKarigar = () => {
   );
 };
 
-export default ReadyReceiptKundanKarigar;
+export default ReadyReceipt;

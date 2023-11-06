@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import styles from '../../styles/header.module.css';
 
-const Header2 = ({ showButtons2 }: any) => {
+const SalesHeader = ({ showButtons2 }: any) => {
   return (
     <div>
       <Link className="text-decoration-none btn-margin" href="/saleReturns">
@@ -21,4 +21,4 @@ const Header2 = ({ showButtons2 }: any) => {
   );
 };
 
-export default Header2;
+export default SalesHeader;

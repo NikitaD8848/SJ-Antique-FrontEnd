@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header/Header-1';
+import Header from './Header/ReceiptsHeader';
 import Navbar from './Navbar/Navbar';
 import { useRouter } from 'next/router';
 

@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from '../../styles/header.module.css';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faReceipt } from '@fortawesome/free-solid-svg-icons';
-import Header2 from './Header-2';
-const Header1 = () => {
+import SalesHeader from './SalesHeader';
+const ReceiptsHeader = () => {
   const [showReceipt, setShowReceipts] = useState(false);
   const [showSales, setShowSales] = useState(false);
   const [showMaster, setShowMaster] = useState(false);
@@ -52,7 +50,10 @@ const Header1 = () => {
             Master
           </button>
         </Link>
-        <Link className="text-decoration-none btn-margin" href="/readyReceipt">
+        <Link
+          className="text-decoration-none btn-margin"
+          href="/readyReceipt/mangalsutra"
+        >
           <button
             className={`${styles.button}`}
             onClick={() => handleReadyRecipt('Receipts')}
@@ -84,7 +85,7 @@ const Header1 = () => {
               <div>
                 <Link
                   className="text-decoration-none btn-margin"
-                  href="/readyReceiptKundanKarigar"
+                  href="/readyReceipt/kundan"
                 >
                   <button className={`text-dark btn btn-outline-primary`}>
                     Ready Receipts(Kundan Karigar)
@@ -92,7 +93,7 @@ const Header1 = () => {
                 </Link>
                 <Link
                   className="text-decoration-none btn-margin"
-                  href="/readyReceiptsMangalsutra"
+                  href="/readyReceipt/mangalsutra"
                 >
                   <button className={`text-dark btn btn-outline-primary`}>
                     Ready Receipts(Mangalsutra Karigar)
@@ -102,7 +103,7 @@ const Header1 = () => {
             ) : (
               ''
             )}
-            {showSales ? <Header2 /> : ''}
+            {showSales ? <SalesHeader /> : ''}
             {showMaster ? '' : ''}
           </div>
         </div>
@@ -111,4 +112,4 @@ const Header1 = () => {
   );
 };
 
-export default Header1;
+export default ReceiptsHeader;
