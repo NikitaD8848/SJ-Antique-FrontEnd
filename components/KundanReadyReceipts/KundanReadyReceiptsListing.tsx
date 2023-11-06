@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const KundanListing = ({ kundanListing }: any) => {
   return (
-    <div className=" table-responsive py-2">
+    <div className=" table py-2">
       <table className="table table-striped table-hover table-bordered">
         <thead>
           <tr>

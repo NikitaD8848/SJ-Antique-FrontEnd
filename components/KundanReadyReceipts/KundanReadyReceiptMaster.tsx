@@ -100,7 +100,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   Create
                 </button>
               </div>
-              <div className=" table-responsive">
+              <div className=" table">
                 <KundanTable
                   handleRecipietChange={handleRecipietChange}
                   recipitData={recipitData}
@@ -116,7 +116,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   Add Row
                 </button>
               </div>
-              <div className="table-responsive">
+              <div className="table">
                 <KundanKarigarReadyReceiptMasterTable
                   handleFieldChange={handleFieldChange}
                   tableData={tableData}

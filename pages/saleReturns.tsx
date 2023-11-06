@@ -110,7 +110,7 @@ const SaleReturns = () => {
                     Create
                   </button>
                 </div>
-                <div className="table-responsive">
+                <div className="table">
                   <table className="table table-hover">
                     <thead>
                       <tr>
@@ -167,7 +167,7 @@ const SaleReturns = () => {
                   Add Row
                 </button>
               </div>
-              <div className="table-responsive">
+              <div className="table">
                 <table className="table table-bordered table-hover table-striped ">
                   <thead>
                     <tr>

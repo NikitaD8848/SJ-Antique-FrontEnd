@@ -148,7 +148,7 @@ const CustomerSale = () => {
                 <SiAddthis />
                 Add row
               </button>
-              <div className="container-fluid table-responsive">
+              <div className="container-fluid table">
                 <table className="table table-bordered table-hover ">
                   <thead>
                     <tr>
