@@ -22,6 +22,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import SelectInputKunKarigar from '../SearchSelectInputField/SelectInputKunKarigar';
 import KundanReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
 import KundanKarigarReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
+import KundanTable from './KundanTable';
+import postUploadFile from '@/services/api/post-upload-file-api';
 
 const ReadyReceiptKundanKarigarMaster = () => {
   // api states
@@ -101,7 +103,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
     id: number,
     val: any,
     field: string,
-    newValue: any
+    newValue: any,
+    fileVal?: any
   ) => {
     const updatedData = tableData.map((item: any, i: any) => {
       if (item.id === id) {
@@ -111,6 +114,14 @@ const ReadyReceiptKundanKarigarMaster = () => {
     });
     console.log(updatedData, 'bbb');
     setTableData(updatedData);
+    if (field === 'custom_add_photo') {
+      console.log(fileVal, 'fileVal');
+      handleFileUpload(fileVal);
+    }
+  };
+
+  const handleFileUpload = async (fileVal: any) => {
+    await postUploadFile(loginAcessToken.token, fileVal);
   };
   const handleModalFieldChange = (
     id: number,
@@ -488,57 +499,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
                 </button>
               </div>
               <div className=" table-responsive">
-                <table className="table table-hover table-bordered">
-                  <thead>
-                    <tr>
-                      <th className="thead" scope="col">
-                        Date
-                      </th>
-
-                      <th className="thead" scope="col">
-                        Karigar(Supplier) <span className="text-danger">*</span>
-                      </th>
-                      <th className="thead" scope="col">
-                        Remarks
-                      </th>
-                      <th className="thead" scope="col">
-                        Ready Receipt Type
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="table_row">
-                      <td scope="row" className="table_row">
-                        <CurrentDate />
-                      </td>
-                      <td className="table_row">
-                        <SearchSelectInputField
-                          karigarData={karigarData}
-                          recipitData={recipitData}
-                          setRecipitData={setRecipitData}
-                        />
-                      </td>
-                      <td className="table_row">
-                        <input
-                          className="form-control input-sm border border-secondary"
-                          type="text"
-                          name="remarks"
-                          value={recipitData.remarks}
-                          onChange={handleRecipietChange}
-                        />
-                      </td>
-                      <td className="table_row">
-                        <input
-                          className="form-control input-sm border border-secondary"
-                          type="text"
-                          readOnly
-                          value={'Kundan'}
-                          disabled
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <KundanTable
+                  handleRecipietChange={handleRecipietChange}
+                  recipitData={recipitData}
+                  karigarData={karigarData}
+                  setRecipitData={setRecipitData}
+                />
               </div>
               <div className="container d-flex justify-content-end p-o">
                 <button
