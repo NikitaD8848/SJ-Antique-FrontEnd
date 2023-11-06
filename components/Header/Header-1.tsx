@@ -39,10 +39,10 @@ const Header1 = () => {
 
   return (
     <>
-      <div className={`${styles.button_container} `}>
+      <div className="d-flex justify-content-evenly">
         <Link className="text-decoration-none btn-margin " href="/master">
           <button
-            className={` ${styles.button}`}
+            className={` ${styles.button} active`}
             onClick={() => handleReadyRecipt('Master')}
           >
             <i
@@ -77,24 +77,44 @@ const Header1 = () => {
           </button>
         </Link>
       </div>
-      <div className="container-lg justify-content-center">
-        <div className="navbar ">
-          <div className={`${styles.nav}`}>
+      <div className="justify-content-center">
+        <div className="navbar d-flex justify-content-center">
+          <div  >
             {showReceipt ? (
-              <div>
+              <div className='nav nav-pills d-flex'
+              id="pills-tab"
+              role="tablist">
                 <Link
-                  className="text-decoration-none btn-margin"
+                  className="text-decoration-none nav-tabs tabs-container"
                   href="/readyReceiptKundanKarigar"
                 >
-                  <button className={` btn btn-outline-primary`}>
+                  <button 
+                  className='nav-link border'
+                  id="pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-home"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                  >
                     Ready Receipts(Kundan Karigar)
                   </button>
                 </Link>
                 <Link
-                  className="text-decoration-none btn-margin"
+                  className="text-decoration-none nav-tabs tabs-container"
                   href="/readyReceiptsMangalsutra"
                 >
-                  <button className={` btn btn-outline-primary`}>
+                  <button
+                  className='nav-link border'
+                   id="pills-home-tab"
+                   data-bs-toggle="pill"
+                   data-bs-target="#pills-home"
+                   type="button"
+                   role="tab"
+                   aria-controls="pills-home"
+                   aria-selected="true"
+                   >
                     Ready Receipts(Mangalsutra Karigar)
                   </button>
                 </Link>

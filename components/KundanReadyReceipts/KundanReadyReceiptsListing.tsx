@@ -29,11 +29,11 @@ const KundanListing = ({ kundanListing }: any) => {
                 <td className="table_row">{item.custom_karigar}</td>
                 <td className="table_row">
                   {item.docstatus === 0
-                    ? 'Draft'
+                    ? <span style={{color:'blue'}}>Draft</span>
                     : item.docstatus === 1
-                    ? 'Submitted'
+                    ? <span style={{color:'green'}}>Submitted</span>
                     : item.docstatus === 2
-                    ? 'Cancelled'
+                    ? <span style={{color:'red'}}>Cancelled</span>
                     : ''}
                 </td>
               </tr>

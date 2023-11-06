@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styles from '../styles/readyReceipts.module.css';
 import { ImCross } from 'react-icons/im';
 import { SiAddthis } from 'react-icons/si';
+import CurrentDate from '@/components/CurrentDate';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const SaleReturns = () => {
   const [tableData, setTableData] = useState<any>([
@@ -53,7 +56,7 @@ const SaleReturns = () => {
   };
   return (
     <div className="container-lg">
-      <div className="container-lg">
+      <div>
         <div
           className="nav nav-pills mb-3 justify-content-center"
           id="pills-tab"
@@ -131,10 +134,7 @@ const SaleReturns = () => {
                     <tbody>
                       <tr>
                         <td className="table_row" scope="row">
-                          <input
-                            className="form-control input-sm"
-                            type="text"
-                          />
+                          <CurrentDate />
                         </td>
                         <td className="table_row">
                           <input
@@ -201,15 +201,16 @@ const SaleReturns = () => {
                       <th className="thead" scope="col">
                         Total
                       </th>
+                      <th className="thead" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {tableData.map((item: any) => (
                       <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>
+                        <td className="table_row">{item.id}</td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="text"
                             value={item.item}
                             onChange={(e) =>
@@ -217,9 +218,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.Gwt}
                             onChange={(e) =>
@@ -227,9 +228,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.CsWt}
                             onChange={(e) =>
@@ -237,9 +238,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.KunWt}
                             onChange={(e) =>
@@ -252,9 +253,9 @@ const SaleReturns = () => {
                             //onKeyDown={(e) => handleModal(e, item.id)}
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.NetWt}
                             onChange={(e) =>
@@ -266,9 +267,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.CS}
                             onChange={(e) =>
@@ -276,9 +277,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="number"
                             value={item.KunPc}
                             onChange={(e) =>
@@ -290,9 +291,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="text"
                             value={item.Other}
                             onChange={(e) =>
@@ -304,9 +305,9 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td className="w-5">
+                        <td className="table_row">
                           <input
-                            className="w-50"
+                            className={` ${styles.input_field}`}
                             type="text"
                             value={item.Total}
                             onChange={(e) =>
@@ -318,13 +319,16 @@ const SaleReturns = () => {
                             }
                           />
                         </td>
-                        <td>
+                        <td className="table_row">
                           <button
                             onKeyDown={(e) => handleTabPress(e, item.id)}
-                            className="d-flex align-items-center delete-link p-1"
+                            className="d-flex align-items-center delete-link p-1 border-0"
                             onClick={() => handleDeleteRow(item.id)}
                           >
-                            <ImCross />
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              style={{ color: 'red', fontSize: 15 }}
+                            />
                           </button>
                         </td>
                       </tr>

@@ -37,6 +37,12 @@ const LoginMaster = () => {
     }
   };
 
+  const HandleEnterPress =(e:any)=>{
+    if(e.key == "Enter"){
+      HandleFormSubmit()
+    }
+  }
+
   return (
     <>
       <div className="container mt-5">
@@ -69,6 +75,7 @@ const LoginMaster = () => {
                           id="password"
                           name="password"
                           onChange={HandleInputChange}
+                          onKeyDown={(e)=>{HandleEnterPress(e)}}
                           className="form-control login-input-field px-2 "
                           placeholder="Password"
                           required

@@ -53,7 +53,7 @@ const Sales = () => {
   };
   return (
     <div className="container-lg">
-      <div className="container-lg">
+      <div>
         <div
           className="nav nav-pills mb-3 justify-content-center"
           id="pills-tab"

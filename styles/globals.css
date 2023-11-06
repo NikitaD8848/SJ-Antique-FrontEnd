@@ -133,9 +133,13 @@ input.form-control.input-sm {
   font-size: 15px;
   text-align: center;
 }
+input, input::placeholder{
+  font-size: 13px;
+}
 .input :disabled{
  background-color: #ced3d7;
 }
+
 select.form-select.border-0{
   line-height: 20px ;
   font-size: 15px;
