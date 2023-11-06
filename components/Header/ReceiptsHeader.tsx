@@ -89,7 +89,7 @@ const ReceiptsHeader = () => {
                   className="text-decoration-none nav-tabs tabs-container"
                   href="/readyReceipt/kundan"
                 >
-                  <button className='nav-link border'
+                  <button className='nav-link border active'
                   id="pills-home-tab"
                   data-bs-toggle="pill"
                   data-bs-target="#pills-home"
