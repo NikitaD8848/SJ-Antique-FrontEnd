@@ -1,7 +1,10 @@
+import MasterComponent from '@/components/Master/MasterComponent';
 import React from 'react';
 
 const Master = () => {
-  return <div>Master Work in progress ...</div>;
+  return (
+    <MasterComponent/>
+  );
 };
 
 export default Master;
