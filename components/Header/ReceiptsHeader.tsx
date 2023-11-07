@@ -12,8 +12,7 @@ const ReceiptsHeader = () => {
     setShowReceipts(true);
   }, []);
 
-  const router = useRouter()
-
+ 
   const handleReadyRecipt = (val: any) => {
     switch (val) {
       case 'Receipts':
@@ -55,7 +54,7 @@ const ReceiptsHeader = () => {
         </Link>
         <Link
           className="text-decoration-none btn-margin"
-          href="/readyReceipt/mangalsutra"
+          href="/readyReceipt/kundan"
         >
           <button
             onClick={() => handleReadyRecipt('Receipts')}
@@ -68,7 +67,7 @@ const ReceiptsHeader = () => {
             Ready Receipts
           </button>
         </Link>
-        <Link className="text-decoration-none btn-margin" href="/sales">
+        <Link className="text-decoration-none btn-margin" href="/saleReturns">
           <button
            className={`${styles.button} ${showSales ? 'activeColor':''}`}
             onClick={() => handleReadyRecipt('Sales')}

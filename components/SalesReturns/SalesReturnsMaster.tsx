@@ -159,7 +159,7 @@ const SaleReturnsMaster = () => {
               </div>
               <div className="container d-flex justify-content-end">
                 <button
-                  className={`btn btn-link`}
+                  className={`btn btn-link p-0`}
                   onClick={() => handleAddRow()}
                 >
                   Add Row
