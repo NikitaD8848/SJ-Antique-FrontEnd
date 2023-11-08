@@ -1,5 +1,5 @@
 import UseKundanKarigarDetailHook from '@/hooks/KundanKarigarHook/kundan-karigar-hook';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../../styles/readyReceipts.module.css';
 import KundanTable from '../KundanReadyReceipts/KundanTable';
 import KundanKarigarReadyReceiptMasterTable from '../KundanReadyReceipts/KundanKarigarReadyReceiptMasterTable';
@@ -36,6 +36,14 @@ const DetailPageReadyReceipt = () => {
     HandleDeleteReceipt,
   } = useReadyReceiptKarigar();
   console.log('default dataa', defaultKarigarData);
+  useEffect(() => {
+    if (defaultKarigarData?.length > 0 && defaultKarigarData !== null) {
+      defaultKarigarData.map((data: any) => {
+        setTableData(data?.items);
+        setRecipitData(data);
+      });
+    }
+  }, [defaultKarigarData]);
   return (
     <div className="container">
       <div>

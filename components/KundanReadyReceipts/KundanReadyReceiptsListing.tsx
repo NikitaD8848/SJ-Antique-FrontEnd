@@ -16,7 +16,12 @@ const KundanListing = ({ kundanListing, HandleDeleteReceipt }: any) => {
   const loginAcessToken = useSelector(get_access_token);
 
   const HandleCancelReceipt: any = async (name: any) => {
-    let cancelReceipt: any = await UpdateDocStatusApi(name);
+    console.log('name', name);
+    let cancelReceipt: any = await UpdateDocStatusApi(
+      loginAcessToken?.token,
+      '2',
+      name
+    );
     console.log('cancel receipt', cancelReceipt);
   };
 
@@ -107,21 +112,21 @@ const KundanListing = ({ kundanListing, HandleDeleteReceipt }: any) => {
                     >
                       <div className="row justify-content-center gx-0">
                         <div className="col-lg-3">
-                          <Link
-                            href=""
+                          <a
+                            // href="#"
                             className="button-section-text text-info "
                           >
                             print
-                          </Link>
+                          </a>
                         </div>
                         <div className="col-lg-3">
-                          <Link
-                            href=""
+                          <a
+                            // href="#"
                             onClick={() => HandleCancelReceipt(item.name)}
-                            className="button-section-text text-danger "
+                            className={`button-section-text text-danger ${styles.cursor_pointer}`}
                           >
                             Cancel
-                          </Link>
+                          </a>
                         </div>
                       </div>
                     </td>

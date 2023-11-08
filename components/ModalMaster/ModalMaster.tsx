@@ -14,6 +14,7 @@ const ModalMaster = ({
   calculateRowValue,
   handleDeleteChildTableRow,
 }: any) => {
+  console.log('material in modal', materialWeight);
   return (
     <>
       <Modal.Body>
