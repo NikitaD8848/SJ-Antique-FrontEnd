@@ -111,17 +111,18 @@ const HandleSave = async ()=>{
     data: [nameValue]
   }
   console.log(values,"valuesname")
-  if (nameValue === null || nameValue === undefined) {
+  if (nameValue.material === "" || nameValue.material === undefined ||
+    nameValue.material_abbr === "" || nameValue.material_abbr === undefined) {
     setError('Input field cannot be empty');
     console.log(error)
   } else {
     let apiRes: any = await postMaterialMasterApi(loginAcessToken?.token, values);
     console.log('apires', apiRes);
     if (apiRes?.status === 'success'  ) {
-      toast.success('Karigar Name Created');
+      toast.success('Material Name Created');
       
     } else {
-      toast.error('Karigar Name already exist');
+      toast.error('Material Name already exist');
     }
     setError('');
     setNameValue({
@@ -142,7 +143,8 @@ const HandleSave = async ()=>{
     HandleKunInputValue,
     HandleKunSubmit,
     HandleNameChange,
-    HandleSave
+    HandleSave,
+    error
   };
 };
 

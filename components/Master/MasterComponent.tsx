@@ -12,6 +12,7 @@ const MasterComponent = () => {
       materialList,
       inputValue,
       nameValue,
+      error,
       HandleInputValue,
       HandleSubmit,
       HandleKunInputValue,
@@ -19,23 +20,24 @@ const MasterComponent = () => {
       HandleNameChange,
       HandleSave
     } = useMasterHooks()
-    console.log(karigarList,'karigarlist masterCompo')
   return (
    
       <div className="container-lg ">
         {/* <MasterListing/> */}
-        <MasterKarigar 
+        {/* <MasterKarigar 
         karigarData={kunKarigarList}
         inputValue={inputValue}
         HandleInputValue={HandleKunInputValue}
         HandleSubmit={HandleKunSubmit}
-        />
-        {/* < MasterMaterial
+        error={error}
+        /> */}
+        < MasterMaterial
         materialList={materialList}
         nameValue={nameValue}
         HandleNameChange={HandleNameChange}
         HandleSave={HandleSave}
-        /> */}
+        error={error}
+        />
       </div>
 
   )

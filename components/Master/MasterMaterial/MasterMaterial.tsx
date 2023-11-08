@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MasterMaterialListing from './MasterMaterialListing';
 
 
@@ -6,50 +6,28 @@ const MasterMaterial: any = ({
   materialList,
   HandleNameChange,
   HandleSave,
-  nameValue
+  nameValue,
+  error
 }:any) => {
-  //   const { materialListData}=useReadyReceiptKarigar()
-  //   const [error, setError] = useState('');
-  //   const [nameValue, setNameValue]=useState({
-  //     material: "",
-  //     material_abbr: ""
-  //   })
-  // const loginAcessToken = useSelector(get_access_token);
+  const [inputName, setInputName] = useState('');
+  const [inputGroup, setInputGroup] = useState('');
 
-  // const HandleNameChange =(e:any)=>{
-  //  const {name ,value} = e.target
-  //  setNameValue({...nameValue,[name]:value})
-    
-  // }
-  // console.log(nameValue,"namevalue")
-  // const HandleSave = async ()=>{
-  //   console.log(nameValue,'material saved')
-  //   const values ={
-  //     version: "v1",
-  //     method: "create_karigar",
-  //     entity: "post_karigar_api",
-  //     data: [nameValue]
-  //   }
-  //   console.log(values,"valuesname")
-  //   if (nameValue === null || nameValue === undefined) {
-  //     setError('Input field cannot be empty');
-  //     console.log(error)
-  //   } else {
-  //     let apiRes: any = await postMaterialMasterApi(loginAcessToken?.token, values);
-  //     console.log('apires', apiRes);
-  //     if (apiRes?.status === 'success'  ) {
-  //       toast.success('Karigar Name Created');
-        
-  //     } else {
-  //       toast.error('Karigar Name already exist');
-  //     }
-  //     setError('');
-  //     setNameValue({
-  //       material: "",
-  //     material_abbr: ""
-  //     });
-  //   }
-  // }
+  const handleInputChange1 = (event: any) => {
+    setInputName(event.target.value);
+  };
+
+  const handleInputChange2 = (event: any) => {
+    setInputGroup(event.target.value);
+  };
+
+  const filteredList: any =
+    materialList?.length > 0 &&
+    materialList !== null &&
+    materialList.filter(
+      (client: any) =>
+        client.material.toLowerCase().includes(inputName.toLowerCase()) &&
+        client.material_abbr.toLowerCase().includes(inputGroup.toLowerCase())
+    );
   return (
     <div >
       <div
@@ -93,7 +71,11 @@ const MasterMaterial: any = ({
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <MasterMaterialListing materialList={materialList} />
+          <MasterMaterialListing 
+          materialList={filteredList} 
+          handleInputChange1={handleInputChange1}
+          handleInputChange2={handleInputChange2}
+          />
         </div>
         <div
           className="tab-pane fade"
@@ -127,6 +109,7 @@ const MasterMaterial: any = ({
                 required
                 />
             </div>
+            <div > {error && <p className="text-danger">{error}</p>}</div>
             <div className='d-flex justify-content-start'>
                 <button type='submit'
                  className=" btn btn-outline-primary py-1 mt-2 form-submit-button"
