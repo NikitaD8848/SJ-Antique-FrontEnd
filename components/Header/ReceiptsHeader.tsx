@@ -8,32 +8,33 @@ const ReceiptsHeader = () => {
   const [showReceipt, setShowReceipts] = useState(false);
   const [showSales, setShowSales] = useState(false);
   const [showMaster, setShowMaster] = useState(false);
+
   useEffect(() => {
-    setShowReceipts(true);
+    // setShowReceipts(false);
+    setShowMaster(true);
   }, []);
 
- 
   const handleReadyRecipt = (val: any) => {
     switch (val) {
       case 'Receipts':
-        setShowReceipts(!showReceipt);
+        setShowReceipts(true);
         setShowSales(false);
         setShowMaster(false);
         break;
       case 'Sales':
-        setShowSales(!showSales);
+        setShowSales(true);
         setShowReceipts(false);
         setShowMaster(false);
         break;
       case 'Master':
-        setShowMaster(!showMaster);
+        setShowMaster(true);
         setShowReceipts(false);
         setShowSales(false);
         break;
       default:
-        setShowReceipts(!showReceipt);
+        setShowMaster(true);
+        setShowReceipts(false);
         setShowSales(false);
-        setShowMaster(false);
     }
   };
 
@@ -42,7 +43,7 @@ const ReceiptsHeader = () => {
       <div className={styles.button_container}>
         <Link className="text-decoration-none btn-margin" href="/master">
           <button
-            className={`${styles.button} ${showMaster ? 'activeColor':''}`}
+            className={`${styles.button} ${showMaster ? 'activeColor' : ''}`}
             onClick={() => handleReadyRecipt('Master')}
           >
             <i
@@ -58,7 +59,7 @@ const ReceiptsHeader = () => {
         >
           <button
             onClick={() => handleReadyRecipt('Receipts')}
-            className={`${styles.button} ${showReceipt ? 'activeColor':''}`}
+            className={`${styles.button} ${showReceipt ? 'activeColor' : ''}`}
           >
             <i
               className="fa-regular fa-file icons-color mr-2"
@@ -69,7 +70,7 @@ const ReceiptsHeader = () => {
         </Link>
         <Link className="text-decoration-none btn-margin" href="/saleReturns">
           <button
-           className={`${styles.button} ${showSales ? 'activeColor':''}`}
+            className={`${styles.button} ${showSales ? 'activeColor' : ''}`}
             onClick={() => handleReadyRecipt('Sales')}
           >
             <i
@@ -82,23 +83,27 @@ const ReceiptsHeader = () => {
       </div>
       <div className=" justify-content-center">
         <div className="navbar d-flex justify-content-center">
-          <div >
+          <div>
             {showReceipt ? (
-              <div className='nav nav-pills d-flex'
-              id="pills-tab"
-              role="tablist">
+              <div
+                className="nav nav-pills d-flex"
+                id="pills-tab"
+                role="tablist"
+              >
                 <Link
                   className="text-decoration-none nav-tabs tabs-container"
                   href="/readyReceipt/kundan"
                 >
-                  <button className='nav-link border active'
-                  id="pills-home-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-home"
-                  type="button"
-                  role="tab"
-                  aria-controls="pills-home"
-                  aria-selected="true">
+                  <button
+                    className="nav-link border active"
+                    id="pills-home-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-home"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-home"
+                    aria-selected="true"
+                  >
                     Ready Receipts(Kundan Karigar)
                   </button>
                 </Link>
@@ -106,14 +111,16 @@ const ReceiptsHeader = () => {
                   className="text-decoration-none nav-tabs tabs-container"
                   href="/readyReceipt/mangalsutra"
                 >
-                  <button className='nav-link border'
-                  id="pills-home-tab"
-                  data-bs-toggle="pill"
-                  data-bs-target="#pills-home"
-                  type="button"
-                  role="tab"
-                  aria-controls="pills-home"
-                  aria-selected="true">
+                  <button
+                    className="nav-link border"
+                    id="pills-home-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#pills-home"
+                    type="button"
+                    role="tab"
+                    aria-controls="pills-home"
+                    aria-selected="true"
+                  >
                     Ready Receipts(Mangalsutra Karigar)
                   </button>
                 </Link>

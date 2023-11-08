@@ -1,7 +1,12 @@
+import MasterListing from '@/components/Master/MasterListing';
 import React from 'react';
 
-const Master = () => {
-  return <div>Master Work in progress ...</div>;
+const master = () => {
+  return (
+    <div>
+      <MasterListing />
+    </div>
+  );
 };
 
-export default Master;
+export default master;
