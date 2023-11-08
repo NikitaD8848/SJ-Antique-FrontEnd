@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MasterKarigarListing from './MasterKarigarListing';
 
 const MasterKarigar: any = ({
@@ -6,7 +6,21 @@ const MasterKarigar: any = ({
   inputValue,
   HandleInputValue,
   HandleSubmit,
+  error,
 }: any) => {
+  const [searchField, setSearchField] = useState<any>('');
+
+  const HandleSearchInput: any = (e: any) => {
+    setSearchField(e.target.value);
+  };
+  const filterList: any =
+    karigarData?.length > 0 &&
+    karigarData !== null &&
+    karigarData.filter((value: any) => {
+      return value.karigar_name
+        ?.toLowerCase()
+        .includes(searchField?.toLowerCase());
+    });
   console.log(karigarData, 'kun karigar master');
   return (
     <div>
@@ -51,7 +65,10 @@ const MasterKarigar: any = ({
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <MasterKarigarListing masterData={karigarData} />
+          <MasterKarigarListing
+            karigarData={filterList}
+            HandleSearchInput={HandleSearchInput}
+          />
         </div>
         <div
           className="tab-pane fade"
@@ -74,6 +91,10 @@ const MasterKarigar: any = ({
                 }}
                 required
               />
+            </div>
+            <div className="">
+              {' '}
+              {error && <p className="text-danger">{error}</p>}
             </div>
             <div className="d-flex justify-content-start">
               <button

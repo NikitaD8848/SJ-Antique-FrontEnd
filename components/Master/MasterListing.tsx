@@ -53,13 +53,20 @@ const MasterListing = () => {
 
       {selectedComponent === 'karigar' && (
         <MasterKarigar
+          karigarData={karigarList}
+          inputValue={inputValue}
+          HandleInputValue={HandleKunInputValue}
+          HandleSubmit={HandleKunSubmit}
+        />
+      )}
+      {selectedComponent === 'kundankarigar' && (
+        <MasterKarigar
           karigarData={kunKarigarList}
           inputValue={inputValue}
           HandleInputValue={HandleKunInputValue}
           HandleSubmit={HandleKunSubmit}
         />
       )}
-      {/* {selectedComponent === 'kundankarigar' && } */}
       {selectedComponent === 'material' && (
         <MasterMaterial
           materialList={materialList}

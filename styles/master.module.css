@@ -1,3 +1,4 @@
 .activetabs {
-    background-color: #6164ef;
+    background-color: #6164ef !important;
+    color: white !important;
 }
