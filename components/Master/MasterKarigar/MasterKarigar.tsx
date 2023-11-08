@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import MasterKarigarListing from './MasterKarigarListing';
 
-const MasterKarigar: any = ({ 
+const MasterKarigar: any = ({
   karigarData,
   inputValue,
   HandleInputValue,
   HandleSubmit,
-  error
+  error,
 }: any) => {
   const [searchField, setSearchField] = useState<any>('');
 
@@ -17,9 +17,11 @@ const MasterKarigar: any = ({
     karigarData?.length > 0 &&
     karigarData !== null &&
     karigarData.filter((value: any) => {
-      return value.karigar_name?.toLowerCase().includes(searchField?.toLowerCase());
-  });
-  console.log(karigarData,'kun karigar master')
+      return value.karigar_name
+        ?.toLowerCase()
+        .includes(searchField?.toLowerCase());
+    });
+  console.log(karigarData, 'kun karigar master');
   return (
     <div>
       <div
@@ -63,9 +65,9 @@ const MasterKarigar: any = ({
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <MasterKarigarListing 
-          karigarData={filterList}
-          HandleSearchInput={HandleSearchInput}
+          <MasterKarigarListing
+            karigarData={filterList}
+            HandleSearchInput={HandleSearchInput}
           />
         </div>
         <div
@@ -74,26 +76,32 @@ const MasterKarigar: any = ({
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <div className='container'>
-            <div className=' m-1'>
-            <label htmlFor="" >Karigar Name</label>
-            <span className='text-danger'>*</span>
+          <div className="container">
+            <div className=" m-1">
+              <label>Karigar Name</label>
+              <span className="text-danger">*</span>
             </div>
-            <div className='p-1'>
-                <input type="text" 
-                className='form-control w-50 border p-1' 
+            <div className="p-1">
+              <input
+                type="text"
+                className="form-control w-50 border p-1"
                 value={inputValue}
-                onChange={(e)=>{HandleInputValue(e)}}
-                required />
+                onChange={(e) => {
+                  HandleInputValue(e);
+                }}
+                required
+              />
             </div>
-            <div className=""> {error && <p className="text-danger">{error}</p>}</div>
-            <div className='d-flex justify-content-start'>
-                <button type='submit'
-                 className=" btn btn-outline-primary py-1 mt-2 form-submit-button"
-                 onClick={HandleSubmit}
-                 >
-                  Save
-                </button>
+            <div>{error && <p className="text-danger">{error}</p>}
+            </div>
+            <div className="d-flex justify-content-start">
+              <button
+                type="submit"
+                className=" btn btn-outline-primary py-1 mt-2 form-submit-button"
+                onClick={HandleSubmit}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

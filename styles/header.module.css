@@ -16,6 +16,9 @@
     font-family: 'Times New Roman', Times, serif;
     text-decoration-line: none;
 }
+.button:hover{
+    color: #6164ef ;
+}
 .button_active{
     display: inline-flex;
     justify-content: space-between ;

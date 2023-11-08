@@ -240,6 +240,9 @@ hr {
   color: #FFF;
   border: none;
 }
+.activeColor:hover{
+  color: #FFF;
+}
 .table-body-row {
   line-height: 17px !important;
   padding: 4px !important;

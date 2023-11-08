@@ -1,47 +1,84 @@
-import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+import MasterKarigar from './MasterKarigar/MasterKarigar';
+import MasterMaterial from './MasterMaterial/MasterMaterial';
+import useMasterHooks from '@/hooks/masterHooks';
+import styles from '../../styles/header.module.css';
 
 const MasterListing = () => {
-  console.log('idd1', window.location.pathname);
+  const {
+    karigarList,
+    kunKarigarList,
+    materialList,
+    inputValue,
+    nameValue,
+    HandleInputValue,
+    HandleSubmit,
+    HandleKunInputValue,
+    HandleKunSubmit,
+    HandleNameChange,
+    HandleSave,
+    error
+  } = useMasterHooks();
+  const masterlist: any = ['Karigar', 'Kundan Karigar', 'Material'];
 
-  const masterlist: any = [
-    'Karigar',
-    'Kundan Karigar',
-    'Material'
-  ];
+  const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(null);
+
+  const handleButtonClick = (data: any, index: any) => {
+    setSelectedButtonIndex(index);
+    const processedStr = data.replace(/\s+/g, '').toLowerCase();
+
+    setSelectedComponent(processedStr);
+  };
 
   return (
     <div className="container mt-3">
-      <div className="d-flex justify-content-center align-items-center flex-wrap">
+      <div className="row d-flex justify-content-center mb-2">
         {masterlist?.length > 0 &&
           masterlist !== null &&
           masterlist.map((data: any, index: any) => {
-            const processedStr = data.replace(/\s+/g, '').toLowerCase();
-            const linkTo: any = `/master/${processedStr}`;
-            const isActive: any = window?.location?.pathname === linkTo;
             return (
-              <div
-                className={`mx-lg-3 mx-1 my-1 master-heading p-1 px-2 ${
-                  isActive ? 'activePage border-0' : ''
-                }`}
-                key={index}
-              >
-                <NavLink
-                  to={`/master/${processedStr}`}
-                  className={`text-decoration-none navlink-class ${
-                    isActive ? 'text-white ' : ''
+              <div key={index} className="col-lg-2 text-center">
+                <button
+                  className={`${styles.button} ${
+                    selectedButtonIndex === index ? "activeColor" : ''
                   }`}
+                  onClick={() => handleButtonClick(data, index)}
                 >
-                  <div className="rounded-4">
-                    <div className="d-flex justify-content-center align-items-center master-listing-card-body">
-                      <h6 className="card-title me-1 m-0">{data}</h6>
-                      <i className="fa-solid fa-arrow-turn-down d-flex align-items-center master-head-icon"></i>
-                    </div>
-                  </div>
-                </NavLink>
+                  {data}
+                </button>
               </div>
             );
           })}
       </div>
+
+      {selectedComponent === 'karigar' && (
+        <MasterKarigar
+          karigarData={karigarList}
+          inputValue={inputValue}
+          HandleInputValue={HandleInputValue}
+          HandleSubmit={HandleSubmit}
+          error={error}
+        />
+      )}
+      {selectedComponent === 'kundankarigar' && (
+        <MasterKarigar
+          karigarData={kunKarigarList}
+          inputValue={inputValue}
+          HandleInputValue={HandleKunInputValue}
+          HandleSubmit={HandleKunSubmit}
+          error={error}
+        />
+      )}
+      {selectedComponent === 'material' && (
+        <MasterMaterial
+          materialList={materialList}
+          nameValue={nameValue}
+          HandleNameChange={HandleNameChange}
+          HandleSave={HandleSave}
+          error={error}
+        />
+      )}
     </div>
   );
 };

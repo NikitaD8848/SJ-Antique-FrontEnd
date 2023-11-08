@@ -37,18 +37,15 @@ const LoginMaster = () => {
     }
   };
 
-  const HandleEnterPress =(e:any)=>{
-    if(e.key == "Enter"){
-      HandleFormSubmit()
+  const HandleEnterPress = (e: any) => {
+    if (e.key == 'Enter') {
+      HandleFormSubmit();
     }
-  }
+  };
 
   return (
     <>
       <div className="container mt-5">
-        {/* <a className="navbar-brand">
-          <img src={logo} alt="" height="55px" width="auto" />
-        </a> */}
         <div className="container  d-flex justify-content-center login-page-container">
           <div className="row">
             <div className="col-lg-12 card shadow p-3 mb-5 bg-white rounded border-0 login-card">
@@ -75,7 +72,9 @@ const LoginMaster = () => {
                           id="password"
                           name="password"
                           onChange={HandleInputChange}
-                          onKeyDown={(e)=>{HandleEnterPress(e)}}
+                          onKeyDown={(e) => {
+                            HandleEnterPress(e);
+                          }}
                           className="form-control login-input-field px-2 "
                           placeholder="Password"
                           required
