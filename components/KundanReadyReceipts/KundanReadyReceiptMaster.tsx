@@ -36,7 +36,9 @@ const ReadyReceiptKundanKarigarMaster = () => {
     handleSaveModal,
     showModal,
     lastPartOfURL,
+    HandleDeleteReceipt,
   } = useReadyReceiptKarigar();
+
   return (
     <div className="container-lg">
       <div>
@@ -82,7 +84,10 @@ const ReadyReceiptKundanKarigarMaster = () => {
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            <KundanListing kundanListing={kundanListing} />
+            <KundanListing
+              kundanListing={kundanListing}
+              HandleDeleteReceipt={HandleDeleteReceipt}
+            />
           </div>
           <div
             className="tab-pane fade"
@@ -149,7 +154,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
               handleDeleteChildTableRow={handleDeleteChildTableRow}
               setRecipitData={setRecipitData}
               recipitData={recipitData}
-              />
+            />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>
                 Close

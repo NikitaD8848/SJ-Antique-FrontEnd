@@ -10,12 +10,14 @@ import postUploadFile from '@/services/api/post-upload-file-api';
 import postMaterialApi from '@/services/api/post-material-api';
 import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
 import { ToastContainer, toast } from 'react-toastify';
+import DeletePurchaseReceiptApi from '@/services/api/PurchaseReceipt/delete-purchase-receipt';
 const useReadyReceiptKarigar = () => {
   // api states
   const router = useRouter();
   const pathParts = router.asPath.split('/');
   const lastPartOfURL = pathParts[pathParts.length - 1];
-  console.log(pathParts, 'router pathparts');
+  console.log('last part', lastPartOfURL);
+
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [recipitData, setRecipitData] = useState({
@@ -65,6 +67,23 @@ const useReadyReceiptKarigar = () => {
       ],
     },
   ]);
+
+  useEffect(() => {
+    console.log('lastt', lastPartOfURL);
+
+    const getPurchaseList = async () => {
+      const capitalizeFirstLetter = (str: any) => {
+        return str?.charAt(0)?.toUpperCase() + str?.slice(1);
+      };
+      const listData = await getPurchasreceiptListApi(
+        loginAcessToken,
+        capitalizeFirstLetter(lastPartOfURL)
+      );
+
+      setKundanListing(listData);
+    };
+    getPurchaseList();
+  }, [clicks, router]);
 
   useEffect(() => {
     const getStateData: any = async () => {
@@ -431,18 +450,30 @@ const useReadyReceiptKarigar = () => {
     setMaterialWeight(updatedData);
   };
 
-  console.log(loginAcessToken, 'loginAcessToken');
+  console.log(kundanListing, 'kundanlisting');
 
-  useEffect(() => {
-    const getPurchaseList = async () => {
-      const listData = await getPurchasreceiptListApi(
+  const HandleDeleteReceipt: any = async (name: any) => {
+    let deletePurchaseReceiptApi: any = await DeletePurchaseReceiptApi(
+      loginAcessToken?.token,
+      name
+    );
+    console.log('deletereciept api', deletePurchaseReceiptApi);
+    if (deletePurchaseReceiptApi?.message?.status === 'success') {
+      toast.success(deletePurchaseReceiptApi?.message?.message);
+      const capitalizeFirstLetter = (str: any) => {
+        return str?.charAt(0)?.toUpperCase() + str?.slice(1);
+      };
+
+      let updatedData: any = await getPurchasreceiptListApi(
         loginAcessToken,
-        lastPartOfURL
+        capitalizeFirstLetter(lastPartOfURL)
       );
-      setKundanListing(listData);
-    };
-    getPurchaseList();
-  }, [clicks]);
+
+      setKundanListing(updatedData);
+    } else {
+      toast.error('Failed to Delete purchase Receipt');
+    }
+  };
 
   return {
     setClick,
@@ -470,6 +501,7 @@ const useReadyReceiptKarigar = () => {
     handleSaveModal,
     showModal,
     lastPartOfURL,
+    HandleDeleteReceipt,
   };
 };
 
