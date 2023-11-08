@@ -48,7 +48,8 @@ const useMasterHooks = () => {
       console.log('apires', apiRes);
       if (apiRes?.status === 'success' && apiRes?.hasOwnProperty('data') ) {
         toast.success('Karigar Name Created');
-        
+        const karigarApi:any = getKarigarApi(loginAcessToken.token)
+        setKarigarList(karigarApi)
       } else {
         toast.error('Karigar Name already exist');
       }
@@ -77,7 +78,9 @@ const useMasterHooks = () => {
         let apiRes: any = await postKunKarigarApi(loginAcessToken?.token, values);
         console.log('apires', apiRes);
         if (apiRes?.status === 'success' && apiRes?.hasOwnProperty('data') ) {
-          toast.success('Kundan Karigar Name Created');  
+          toast.success('Kundan Karigar Name Created'); 
+          const karigarApi:any =  kundanKarigarApi(loginAcessToken.token)
+          setKunKarigarList(karigarApi)
         } else {
           toast.error('Kundan Karigar Name already exist');
         }
@@ -90,7 +93,7 @@ const useMasterHooks = () => {
     setInputValue(e.target.value);
     console.log(inputValue,"input value")
   };
-  // post material name
+  // post material name api
   const [nameValue, setNameValue]=useState({
     material: "",
     material_abbr: ""

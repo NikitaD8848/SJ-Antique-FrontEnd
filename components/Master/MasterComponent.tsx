@@ -24,20 +24,20 @@ const MasterComponent = () => {
    
       <div className="container-lg ">
         {/* <MasterListing/> */}
-        {/* <MasterKarigar 
+        <MasterKarigar 
         karigarData={kunKarigarList}
         inputValue={inputValue}
         HandleInputValue={HandleKunInputValue}
         HandleSubmit={HandleKunSubmit}
         error={error}
-        /> */}
-        < MasterMaterial
+        />
+        {/* < MasterMaterial
         materialList={materialList}
         nameValue={nameValue}
         HandleNameChange={HandleNameChange}
         HandleSave={HandleSave}
         error={error}
-        />
+        /> */}
       </div>
 
   )

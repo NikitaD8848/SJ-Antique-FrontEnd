@@ -13,7 +13,7 @@ const KundanKarigarReadyReceiptMasterTable = ({
   handleModal,
 }: any) => {
   return (
-    <>
+    <div className='table-responsive'>
       <table className="table table-hover table-striped table-bordered">
         <thead>
           <tr>
@@ -211,7 +211,7 @@ const KundanKarigarReadyReceiptMasterTable = ({
           ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 
