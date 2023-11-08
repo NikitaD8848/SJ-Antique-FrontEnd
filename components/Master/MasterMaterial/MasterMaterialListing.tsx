@@ -1,7 +1,7 @@
 import React from 'react'
 
-const MasterMaterialListing = ({materialListData}:any) => {
-    console.log(materialListData,'master ,material')
+const MasterMaterialListing = ({materialList}:any) => {
+    console.log(materialList,'master ,material')
   return (
     <div >
         <div className='mx-4'>
@@ -21,7 +21,7 @@ const MasterMaterialListing = ({materialListData}:any) => {
                 </tr>
             </thead>
             <tbody>
-                {materialListData?.map((item:any, i:any)=>(
+                {materialList?.map((item:any, i:any)=>(
                     <tr key={i} className=''>
                     <td className='table-body-row'>{item.material}</td>
                     <td className='table-body-row'>{item.material_abbr}</td>

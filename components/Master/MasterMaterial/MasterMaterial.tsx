@@ -1,43 +1,55 @@
-import React, {useState} from 'react';
-import useReadyReceiptKarigar from '@/hooks/readyReceiptKarigarHooks';
+import React from 'react';
 import MasterMaterialListing from './MasterMaterialListing';
-import { useSelector } from 'react-redux';
-import { get_access_token } from '@/store/slices/auth/login-slice';
-import postMaterialApi from '@/services/api/post-material-api';
 
-const MasterMaterial: any = () => {
-    const { materialListData}=useReadyReceiptKarigar()
-    const [nameValue, setNameValue]=useState({
-      material: "",
-      material_abbr: ""
-    })
-  const loginAcessToken = useSelector(get_access_token);
 
-  const HandleNameChange =(
-    newVal:any,
-    field:string)=>{
+const MasterMaterial: any = ({
+  materialList,
+  HandleNameChange,
+  HandleSave,
+  nameValue
+}:any) => {
+  //   const { materialListData}=useReadyReceiptKarigar()
+  //   const [error, setError] = useState('');
+  //   const [nameValue, setNameValue]=useState({
+  //     material: "",
+  //     material_abbr: ""
+  //   })
+  // const loginAcessToken = useSelector(get_access_token);
 
-    console.log(newVal,"name name")
-    setNameValue(
-      nameValue.material = newVal
-
-    )
-  }
-  const HandleSave =()=>{
-    console.log(nameValue,'material saved')
-    const values ={
-      version: "v1",
-      method: "create_karigar",
-      entity: "post_karigar_api",
-      data: [nameValue]
-    }
-    console.log(values,"valuesname")
-    // const postMaterial:any = postMaterialApi(
-    //   loginAcessToken.token,
-    //   values
-    // )
-    // console.log(postMaterial,"post karigar name")
-  }
+  // const HandleNameChange =(e:any)=>{
+  //  const {name ,value} = e.target
+  //  setNameValue({...nameValue,[name]:value})
+    
+  // }
+  // console.log(nameValue,"namevalue")
+  // const HandleSave = async ()=>{
+  //   console.log(nameValue,'material saved')
+  //   const values ={
+  //     version: "v1",
+  //     method: "create_karigar",
+  //     entity: "post_karigar_api",
+  //     data: [nameValue]
+  //   }
+  //   console.log(values,"valuesname")
+  //   if (nameValue === null || nameValue === undefined) {
+  //     setError('Input field cannot be empty');
+  //     console.log(error)
+  //   } else {
+  //     let apiRes: any = await postMaterialMasterApi(loginAcessToken?.token, values);
+  //     console.log('apires', apiRes);
+  //     if (apiRes?.status === 'success'  ) {
+  //       toast.success('Karigar Name Created');
+        
+  //     } else {
+  //       toast.error('Karigar Name already exist');
+  //     }
+  //     setError('');
+  //     setNameValue({
+  //       material: "",
+  //     material_abbr: ""
+  //     });
+  //   }
+  // }
   return (
     <div >
       <div
@@ -81,7 +93,7 @@ const MasterMaterial: any = () => {
           role="tabpanel"
           aria-labelledby="pills-home-tab"
         >
-          <MasterMaterialListing materialListData={materialListData} />
+          <MasterMaterialListing materialList={materialList} />
         </div>
         <div
           className="tab-pane fade"
@@ -99,7 +111,7 @@ const MasterMaterial: any = () => {
                 className='form-control w-50 border p-1'
                 name='material'
                 value={nameValue.material}
-                onChange={(e)=>{HandleNameChange('material',e.target.value)}}
+                onChange={(e)=>{HandleNameChange(e)}}
                 required />
             </div>
             <div className=' m-1'>
@@ -111,7 +123,7 @@ const MasterMaterial: any = () => {
                 className='form-control w-50 border p-1'
                 name='material_abbr'
                 value={nameValue.material_abbr}
-                onChange={(e)=>{HandleNameChange('material_abbr',e.target.value)}}
+                onChange={(e)=>{HandleNameChange(e)}}
                 required
                 />
             </div>

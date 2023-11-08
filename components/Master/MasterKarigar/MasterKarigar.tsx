@@ -1,44 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MasterKarigarListing from './MasterKarigarListing';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { get_access_token } from '@/store/slices/auth/login-slice';
-import postKarigarApi from '@/services/api/post-karigar-name';
 
-const MasterKarigar: any = ({ karigarData }: any) => {
-  const AccessToken: any = useSelector(get_access_token);
-  const [inputValue, setInputValue] = useState('');
-  const [error, setError] = useState('');
-  const HandleSubmit = async () => {
-    const values ={
-          version: "v1",
-          method: "create_karigar",
-          entity: "post_karigar_api",
-          karigar_name: inputValue
-        }
-        console.log(values,'values')
-    if (inputValue.trim() === '') {
-      setError('Input field cannot be empty');
-      console.log(error)
-    } else {
-      let apiRes: any = await postKarigarApi(AccessToken?.token, values);
-      console.log('apires', apiRes);
-      if (apiRes?.status === 'success' && apiRes?.hasOwnProperty('data') ) {
-        toast.success('Karigar Name Created');
-        
-      } else {
-        toast.error('Karigar Name already exist');
-      }
-      setError('');
-      setInputValue('');
-    }
-  };
-  const HandleInputValue = (e: any) => {
-    setError('');
-    setInputValue(e.target.value);
-    console.log(inputValue,"input value")
-  };
-  
+const MasterKarigar: any = ({ 
+  karigarData,
+  inputValue,
+  HandleInputValue,
+  HandleSubmit 
+}: any) => {
+  console.log(karigarData,'kun karigar master')
   return (
     <div>
       <div
