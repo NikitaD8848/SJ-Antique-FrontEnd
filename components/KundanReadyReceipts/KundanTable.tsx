@@ -4,7 +4,7 @@ import SearchSelectInputField from '../SearchSelectInputField/SearchSelectInputF
 
 const KundanTable = ({
   handleRecipietChange,
-  recipitData,
+  recieptData,
   karigarData,
   setRecipitData,
 }: any) => {
@@ -37,7 +37,7 @@ const KundanTable = ({
             <td className="table_row">
               <SearchSelectInputField
                 karigarData={karigarData}
-                recipitData={recipitData}
+                recipitData={recieptData}
                 setRecipitData={setRecipitData}
               />
             </td>
@@ -46,7 +46,7 @@ const KundanTable = ({
                 className="form-control input-sm border border-secondary"
                 type="text"
                 name="remarks"
-                value={recipitData.remarks}
+                value={recieptData?.remarks}
                 onChange={handleRecipietChange}
               />
             </td>

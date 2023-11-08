@@ -19,7 +19,7 @@ const GetSpecificPurchaseReceiptData = async (request: any) => {
   await axios
     .get(`${CONSTANTS.API_BASE_URL}${params}`, config)
     .then((res: any) => {
-      response = res.data;
+      response = res;
     })
     .catch((err: any) => {
       console.log(err);

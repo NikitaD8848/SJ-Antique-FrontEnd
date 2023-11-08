@@ -39,6 +39,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
     HandleDeleteReceipt,
   } = useReadyReceiptKarigar();
 
+  console.log('table data', tableData);
+
   return (
     <div className="container-lg">
       <div>
@@ -108,7 +110,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
               <div className=" table">
                 <KundanTable
                   handleRecipietChange={handleRecipietChange}
-                  recipitData={recipitData}
+                  recieptData={recipitData}
                   karigarData={karigarData}
                   setRecipitData={setRecipitData}
                 />
@@ -137,37 +139,39 @@ const ReadyReceiptKundanKarigarMaster = () => {
         </div>
       </div>
       <div>
-        {tableData.map((item: any, index: any) => (
-          <Modal size="xl" show={showModal} onHide={closeModal} key={index}>
-            <Modal.Header closeButton>
-              <Modal.Title id="example-modal-sizes-title-lg">
-                Triggered by Key Press
-              </Modal.Title>
-            </Modal.Header>
-            <ModalMaster
-              handleModalFieldChange={handleModalFieldChange}
-              handleAddRow={handleAddRow}
-              materialWeight={materialWeight}
-              setMaterialWeight={setMaterialWeight}
-              materialListData={materialListData}
-              calculateRowValue={calculateRowValue}
-              handleDeleteChildTableRow={handleDeleteChildTableRow}
-              setRecipitData={setRecipitData}
-              recipitData={recipitData}
-            />
-            <Modal.Footer>
-              <Button variant="secondary" onClick={closeModal}>
-                Close
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => handleSaveModal(item.id)}
-              >
-                Save
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        ))}
+        {tableData?.length > 0 &&
+          tableData !== null &&
+          tableData.map((item: any, index: any) => (
+            <Modal size="xl" show={showModal} onHide={closeModal} key={index}>
+              <Modal.Header closeButton>
+                <Modal.Title id="example-modal-sizes-title-lg">
+                  Triggered by Key Press
+                </Modal.Title>
+              </Modal.Header>
+              <ModalMaster
+                handleModalFieldChange={handleModalFieldChange}
+                handleAddRow={handleAddRow}
+                materialWeight={materialWeight}
+                setMaterialWeight={setMaterialWeight}
+                materialListData={materialListData}
+                calculateRowValue={calculateRowValue}
+                handleDeleteChildTableRow={handleDeleteChildTableRow}
+                setRecipitData={setRecipitData}
+                recipitData={recipitData}
+              />
+              <Modal.Footer>
+                <Button variant="secondary" onClick={closeModal}>
+                  Close
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => handleSaveModal(item.id)}
+                >
+                  Save
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          ))}
       </div>
     </div>
   );

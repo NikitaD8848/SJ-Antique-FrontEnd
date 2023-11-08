@@ -68,6 +68,41 @@ const useReadyReceiptKarigar = () => {
     },
   ]);
 
+  // useEffect(() => {
+  //   setTableData([
+  //     {
+  //       id: 1,
+  //       product_code: '212',
+  //       custom_kun_karigar: 'dsad',
+  //       custom_net_wt: '212',
+  //       custom_few_wt: '43',
+  //       custom_gross_wt: '54',
+  //       custom_mat_wt: '65',
+  //       custom_other: '',
+  //       custom_total: '',
+  //       custom_add_photo: '',
+  //       totalModalWeight: 0,
+  //       totalAmount: 0,
+  //       table: [
+  //         {
+  //           id: '1',
+  //           material_abbr: '',
+  //           material: 'f',
+  //           pcs: '54',
+  //           piece_: '54',
+  //           carat: '',
+  //           carat_: '54',
+  //           weight: '',
+  //           gm_: '',
+  //           amount: '',
+  //         },
+  //       ],
+  //     },
+  //   ]);
+  // }, []);
+
+  console.log('table data updated', tableData);
+
   useEffect(() => {
     console.log('lastt', lastPartOfURL);
 
@@ -114,12 +149,15 @@ const useReadyReceiptKarigar = () => {
     newValue: any,
     fileVal?: any
   ) => {
-    const updatedData = tableData.map((item: any, i: any) => {
-      if (item.id === id) {
-        return { ...item, [field]: 0 || newValue };
-      }
-      return item;
-    });
+    const updatedData =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData.map((item: any, i: any) => {
+        if (item.id === id) {
+          return { ...item, [field]: 0 || newValue };
+        }
+        return item;
+      });
     console.log(updatedData, 'bbb');
     setTableData(updatedData);
     if (field === 'custom_add_photo') {
@@ -146,16 +184,19 @@ const useReadyReceiptKarigar = () => {
         return item;
       });
 
-    const newVal = tableData?.table?.filter(
-      (item: any) => materialListData?.includes(item.material)
-    );
+    const newVal =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData?.table?.filter(
+        (item: any) => materialListData?.includes(item.material)
+      );
     console.log(newVal, 'newVal');
     console.log(disabledValue, 'disabledValue');
     setMaterialWeight(updatedModalData);
   };
   const handleAddRow = (value: any) => {
     const newRow = {
-      id: tableData.length + 1,
+      id: tableData?.length + 1,
       product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
@@ -196,18 +237,21 @@ const useReadyReceiptKarigar = () => {
     setIndexVal(id);
     console.log(tableData, 'materialWeight');
     // console.log(materialWeight, "materialWeight");
-    const dataVal = tableData?.filter((item: any) => {
-      if (item.id === id) {
-        if (event.key === 'F2') {
-          if (item.totalAmount > 0) {
-            setMaterialWeight(item.table);
-          } else {
-            setMaterialWeight(data.table);
+    const dataVal =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData?.filter((item: any) => {
+        if (item.id === id) {
+          if (event.key === 'F2') {
+            if (item.totalAmount > 0) {
+              setMaterialWeight(item.table);
+            } else {
+              setMaterialWeight(data.table);
+            }
+            setShowModal(true);
           }
-          setShowModal(true);
         }
-      }
-    });
+      });
   };
 
   const handleSaveModal = async (id: any) => {
@@ -277,26 +321,29 @@ const useReadyReceiptKarigar = () => {
       return accu + val;
     }, 0);
     console.log();
-    const updatedMaterialWeight = tableData?.map((row: any, i: any) => {
-      console.log(i, 'ij');
-      console.log(id, 'ij');
-      if (row.id === indexVal) {
-        const numbersParsed = parseInt(numbers, 10);
-        return {
-          ...row,
-          totalModalWeight: weightAddition,
-          totalAmount: totalAmmountValues,
-          table: materialWeight.map(({ id, ...rest }: any) => ({ ...rest })),
-          custom_mat_wt: weightAddition,
-          custom_gross_wt:
-            parseInt(row.custom_net_wt, 10) +
-            parseInt(row.custom_few_wt, 10) +
-            weightAddition,
-          custom_total: numbersParsed,
-        };
-      }
-      return row;
-    });
+    const updatedMaterialWeight =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData?.map((row: any, i: any) => {
+        console.log(i, 'ij');
+        console.log(id, 'ij');
+        if (row.id === indexVal) {
+          const numbersParsed = parseInt(numbers, 10);
+          return {
+            ...row,
+            totalModalWeight: weightAddition,
+            totalAmount: totalAmmountValues,
+            table: materialWeight.map(({ id, ...rest }: any) => ({ ...rest })),
+            custom_mat_wt: weightAddition,
+            custom_gross_wt:
+              parseInt(row.custom_net_wt, 10) +
+              parseInt(row.custom_few_wt, 10) +
+              weightAddition,
+            custom_total: numbersParsed,
+          };
+        }
+        return row;
+      });
     console.log(updatedMaterialWeight, 'updatedMaterialWeight');
     const updatedDataVal = updatedMaterialWeight.map((row: any, i: any) => {
       if (row.id === indexVal) {
@@ -328,14 +375,17 @@ const useReadyReceiptKarigar = () => {
       version: 'v1',
       method: 'create_material',
       entity: 'material_post_api',
-      items: modalValue,
+      data: modalValue,
     };
     console.log(updatedMaterialWeight, 'data45');
     const materialApiVal = await postMaterialApi(loginAcessToken.token, values);
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
-    const updatedData = tableData.filter((item: any) => item.id !== id);
+    const updatedData =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData.filter((item: any) => item.id !== id);
     setTableData(updatedData);
   };
 
@@ -347,30 +397,34 @@ const useReadyReceiptKarigar = () => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
   };
   console.log(recipitData, 'recipitData');
+
   const handleCreate = async () => {
     console.log(tableData, 'table56');
-    const updatedtableData = tableData?.map((row: any, i: any) => {
-      if (row.id === indexVal) {
-        if (row.custom_other !== '' && row.custom_total !== '') {
-          return {
-            ...row,
-            custom_total:
-              parseInt(row.totalAmount) + parseInt(row.custom_other),
-          };
-        } else if (row.custom_other !== '') {
-          return {
-            ...row,
-            custom_total: parseInt(row.custom_other),
-          };
-        } else {
-          return {
-            ...row,
-            custom_total: parseInt(row.totalAmount),
-          };
+    const updatedtableData =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData?.map((row: any, i: any) => {
+        if (row.id === indexVal) {
+          if (row.custom_other !== '' && row.custom_total !== '') {
+            return {
+              ...row,
+              custom_total:
+                parseInt(row.totalAmount) + parseInt(row.custom_other),
+            };
+          } else if (row.custom_other !== '') {
+            return {
+              ...row,
+              custom_total: parseInt(row.custom_other),
+            };
+          } else {
+            return {
+              ...row,
+              custom_total: parseInt(row.totalAmount),
+            };
+          }
         }
-      }
-      return row;
-    });
+        return row;
+      });
 
     console.log(updatedtableData, 'updatedtableData');
     const modalValue = updatedtableData?.map(
@@ -383,6 +437,7 @@ const useReadyReceiptKarigar = () => {
       ...recipitData,
       items: modalValue,
     };
+
     console.log(values, 'vals');
     const isEmptyProductCode = values?.items?.some(
       (obj: any) => obj.product_code === ''
