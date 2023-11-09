@@ -68,15 +68,7 @@ const DetailPageReadyReceipt = () => {
               handleUpdateReceipt={handleUpdateReceipt}
             />
           ))}
-        {/* <div className={`${styles.button_field}`}>
-          <button
-            type="button"
-            className={`${styles.create_button}`}
-            onClick={handleCreate}
-          >
-            Create
-          </button>
-        </div> */}
+
         <div className=" table">
           <KundanTable
             handleRecipietChange={handleRecipietChange}

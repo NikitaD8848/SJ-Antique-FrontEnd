@@ -2,19 +2,26 @@ import DeletePurchaseReceiptApi from '@/services/api/PurchaseReceipt/delete-purc
 import GetSpecificPurchaseReceiptData from '@/services/api/PurchaseReceipt/get-specific-purchase-receipt-api';
 import UpdateDocStatusApi from '@/services/api/general/update-docStatus-api';
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
+import {
+  getSpecificReceipt,
+  get_specific_receipt_data,
+} from '@/store/PurchaseReceipt/getSpecificPurchaseReceipt-slice';
 import { get_access_token } from '@/store/slices/auth/login-slice';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 const UseCustomReceiptHook: any = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { query } = useRouter();
   const pathParts = router.asPath.split('/');
   const lastPartOfURL = pathParts[pathParts.length - 1];
 
   const loginAcessToken = useSelector(get_access_token);
+  const SpecificDataFromStore: any = useSelector(get_specific_receipt_data);
+  console.log('specific data in custom', SpecificDataFromStore);
 
   const [kundanListing, setKundanListing] = useState<any>([]);
   const [defaultKarigarData, setDefaultKarigarData] = useState<any>([]);
@@ -40,6 +47,7 @@ const UseCustomReceiptHook: any = () => {
 
       setKundanListing(updatedData);
     } else {
+      // router.back();
       toast.error('Failed to Delete purchase Receipt');
     }
   };
@@ -58,11 +66,7 @@ const UseCustomReceiptHook: any = () => {
         token: loginAcessToken?.token,
         name: query?.receiptId,
       };
-      let detailPageApi: any = await GetSpecificPurchaseReceiptData(params);
-      console.log('detaaail page', detailPageApi);
-      if (detailPageApi?.data?.message?.status === 'success') {
-        setDefaultKarigarData([...detailPageApi?.data?.message?.data]);
-      }
+      dispatch(getSpecificReceipt(params));
     }
   };
   console.log('set default karigar data', defaultKarigarData);
