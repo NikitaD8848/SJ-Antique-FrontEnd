@@ -11,6 +11,8 @@ import postMaterialApi from '@/services/api/post-material-api';
 import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
 import { ToastContainer, toast } from 'react-toastify';
 import DeletePurchaseReceiptApi from '@/services/api/PurchaseReceipt/delete-purchase-receipt';
+import UseCustomReceiptHook from './custom-receipt-hook';
+import UseKundanKarigarDetailHook from './KundanKarigarHook/kundan-karigar-hook';
 const useReadyReceiptKarigar = () => {
   // api states
   const router = useRouter();
@@ -32,7 +34,7 @@ const useReadyReceiptKarigar = () => {
   const [materialListData, setMaterialListData] = useState<any>();
   const [indexVal, setIndexVal] = useState<any>();
   const [activeModalId, setActiveModalId] = useState<any>(null);
-  const [kundanListing, setKundanListing] = useState<any>([]);
+
   const loginAcessToken = useSelector(get_access_token);
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
@@ -67,6 +69,9 @@ const useReadyReceiptKarigar = () => {
       ],
     },
   ]);
+
+  const { HandleDeleteReceipt, setKundanListing, kundanListing }: any =
+    UseCustomReceiptHook();
 
   // useEffect(() => {
   //   setTableData([
@@ -382,11 +387,15 @@ const useReadyReceiptKarigar = () => {
     setShowModal(false);
   };
   const handleDeleteRow = (id: any) => {
-    const updatedData =
-      tableData?.length > 0 &&
-      tableData !== null &&
-      tableData.filter((item: any) => item.id !== id);
-    setTableData(updatedData);
+    if (tableData?.length > 1) {
+      const updatedData =
+        tableData?.length > 0 &&
+        tableData !== null &&
+        tableData
+          .filter((item: any) => item.id !== id)
+          .map((row: any, index: number) => ({ ...row, id: index + 1 }));
+      setTableData(updatedData);
+    }
   };
 
   const closeModal = () => {
@@ -501,34 +510,38 @@ const useReadyReceiptKarigar = () => {
   };
 
   const handleDeleteChildTableRow = (id: any) => {
-    const updatedData = materialWeight?.filter((item: any, i: any) => i !== id);
-    setMaterialWeight(updatedData);
+    if (materialWeight?.length > 1) {
+      const updatedData = materialWeight?.filter(
+        (item: any, i: any) => i !== id
+      );
+      setMaterialWeight(updatedData);
+    }
   };
 
   console.log(kundanListing, 'kundanlisting');
 
-  const HandleDeleteReceipt: any = async (name: any) => {
-    let deletePurchaseReceiptApi: any = await DeletePurchaseReceiptApi(
-      loginAcessToken?.token,
-      name
-    );
-    console.log('deletereciept api', deletePurchaseReceiptApi);
-    if (deletePurchaseReceiptApi?.message?.status === 'success') {
-      toast.success(deletePurchaseReceiptApi?.message?.message);
-      const capitalizeFirstLetter = (str: any) => {
-        return str?.charAt(0)?.toUpperCase() + str?.slice(1);
-      };
+  // const HandleDeleteReceipt: any = async (name: any) => {
+  //   let deletePurchaseReceiptApi: any = await DeletePurchaseReceiptApi(
+  //     loginAcessToken?.token,
+  //     name
+  //   );
+  //   console.log('deletereciept api', deletePurchaseReceiptApi);
+  //   if (deletePurchaseReceiptApi?.message?.status === 'success') {
+  //     toast.success(deletePurchaseReceiptApi?.message?.message);
+  //     const capitalizeFirstLetter = (str: any) => {
+  //       return str?.charAt(0)?.toUpperCase() + str?.slice(1);
+  //     };
 
-      let updatedData: any = await getPurchasreceiptListApi(
-        loginAcessToken,
-        capitalizeFirstLetter(lastPartOfURL)
-      );
+  //     let updatedData: any = await getPurchasreceiptListApi(
+  //       loginAcessToken,
+  //       capitalizeFirstLetter(lastPartOfURL)
+  //     );
 
-      setKundanListing(updatedData);
-    } else {
-      toast.error('Failed to Delete purchase Receipt');
-    }
-  };
+  //     setKundanListing(updatedData);
+  //   } else {
+  //     toast.error('Failed to Delete purchase Receipt');
+  //   }
+  // };
 
   return {
     setClick,

@@ -4,17 +4,11 @@ import { get_access_token } from '@/store/slices/auth/login-slice';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import useReadyReceiptKarigar from '../readyReceiptKarigarHooks';
 
 const UseKundanKarigarDetailHook = () => {
   const loginAcessToken = useSelector(get_access_token);
   const { query } = useRouter();
-
-  console.log('routerr detaaaa', query);
-
-  // const specificReceiptDataFromStore: any = useSelector(
-  //   get_specific_receipt_data
-  // );
-  // console.log('specificReceiptData', specificReceiptDataFromStore);
 
   const [defaultKarigarData, setDefaultKarigarData] = useState<any>([]);
 
