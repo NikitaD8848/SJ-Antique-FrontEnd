@@ -18,7 +18,7 @@ const getPurchasreceiptListApi = async (
       getHeaders
     )
     .then((res: any) => {
-      response = res?.data?.message?.data;
+      response = res;
       console.log('purchase receipt response', response);
     })
     .catch((err: any) => {

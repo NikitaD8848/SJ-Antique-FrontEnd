@@ -9,24 +9,36 @@ import materialApi from '@/services/api/get-material-list-api';
 import postUploadFile from '@/services/api/post-upload-file-api';
 import postMaterialApi from '@/services/api/post-material-api';
 import purchaseReceiptApi from '@/services/api/post-purchase-receipt-api';
-import { ToastContainer, toast } from 'react-toastify';
-import DeletePurchaseReceiptApi from '@/services/api/PurchaseReceipt/delete-purchase-receipt';
-import UseCustomReceiptHook from './custom-receipt-hook';
-import UseKundanKarigarDetailHook from './KundanKarigarHook/kundan-karigar-hook';
-const useReadyReceiptKarigar = () => {
-  // api states
-  const router = useRouter();
-  const pathParts = router.asPath.split('/');
-  const lastPartOfURL = pathParts[pathParts.length - 1];
-  console.log('last part', lastPartOfURL);
+import { toast } from 'react-toastify';
 
+import UseCustomReceiptHook from './custom-receipt-hook';
+import UpdatePurchaseReceiptApi from '@/services/api/PurchaseReceipt/update-purchase-receipt-api';
+
+const useReadyReceiptKarigar = () => {
+  const { query } = useRouter();
+  const router: any = useRouter();
+  const pathParts: any = router?.asPath?.split('/');
+  const lastPartOfURL: any = pathParts[pathParts?.length - 1];
+  console.log('receipt type', lastPartOfURL);
   const inputRef = useRef<any>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [readyReceiptType, setReadyReceiptType] = useState<any>('');
+
   const [recipitData, setRecipitData] = useState({
     custom_karigar: ' ',
     remarks: '',
-    custom_ready_receipt_type: lastPartOfURL,
+    custom_ready_receipt_type: readyReceiptType,
   });
+  useEffect(() => {
+    setRecipitData({
+      ...recipitData,
+      custom_ready_receipt_type: readyReceiptType,
+    });
+  }, [readyReceiptType]);
+  console.log('readyreceiptt', readyReceiptType);
+
+  console.log('ready receipt type', readyReceiptType);
+
   const [clickBtn, setClickBtn] = useState<boolean>(false);
   const [clicks, setClick] = useState<boolean>(false);
   const [karigarData, setKarigarData] = useState<any>();
@@ -39,6 +51,7 @@ const useReadyReceiptKarigar = () => {
   console.log(loginAcessToken, 'loginAcessToken');
   let disabledValue: any;
   const [materialWeight, setMaterialWeight] = useState<any>();
+  const [selectedDropdownValue, setSelectedDropdownValue] = useState<any>('');
   const [tableData, setTableData] = useState<any>([
     {
       id: 1,
@@ -70,41 +83,13 @@ const useReadyReceiptKarigar = () => {
     },
   ]);
 
-  const { HandleDeleteReceipt, setKundanListing, kundanListing }: any =
-    UseCustomReceiptHook();
-
-  // useEffect(() => {
-  //   setTableData([
-  //     {
-  //       id: 1,
-  //       product_code: '212',
-  //       custom_kun_karigar: 'dsad',
-  //       custom_net_wt: '212',
-  //       custom_few_wt: '43',
-  //       custom_gross_wt: '54',
-  //       custom_mat_wt: '65',
-  //       custom_other: '',
-  //       custom_total: '',
-  //       custom_add_photo: '',
-  //       totalModalWeight: 0,
-  //       totalAmount: 0,
-  //       table: [
-  //         {
-  //           id: '1',
-  //           material_abbr: '',
-  //           material: 'f',
-  //           pcs: '54',
-  //           piece_: '54',
-  //           carat: '',
-  //           carat_: '54',
-  //           weight: '',
-  //           gm_: '',
-  //           amount: '',
-  //         },
-  //       ],
-  //     },
-  //   ]);
-  // }, []);
+  const {
+    HandleDeleteReceipt,
+    setKundanListing,
+    kundanListing,
+    stateForDocStatus,
+    setStateForDocStatus,
+  }: any = UseCustomReceiptHook();
 
   console.log('table data updated', tableData);
 
@@ -119,8 +104,10 @@ const useReadyReceiptKarigar = () => {
         loginAcessToken,
         capitalizeFirstLetter(lastPartOfURL)
       );
-
-      setKundanListing(listData);
+      console.log('listdataa', listData);
+      if (listData?.data?.message?.status === 'success') {
+        setKundanListing(listData?.data?.message?.data);
+      }
     };
     getPurchaseList();
   }, [clicks, router]);
@@ -169,10 +156,13 @@ const useReadyReceiptKarigar = () => {
       console.log(fileVal, 'fileVal');
       handleFileUpload(fileVal);
     }
+
+    setStateForDocStatus(true);
   };
 
   const handleFileUpload = async (fileVal: any) => {
     await postUploadFile(loginAcessToken.token, fileVal);
+    setStateForDocStatus(true);
   };
   const handleModalFieldChange = (
     id: number,
@@ -198,6 +188,7 @@ const useReadyReceiptKarigar = () => {
     console.log(newVal, 'newVal');
     console.log(disabledValue, 'disabledValue');
     setMaterialWeight(updatedModalData);
+    setStateForDocStatus(true);
   };
   const handleAddRow = (value: any) => {
     const newRow = {
@@ -231,32 +222,35 @@ const useReadyReceiptKarigar = () => {
     } else {
       setMaterialWeight([...materialWeight, ...newRow?.table]);
     }
+    setStateForDocStatus(true);
   };
   const handleTabPress = (event: any, id: any) => {
     if (event.key === 'Tab' && id === tableData[tableData.length - 1].id) {
       handleAddRow('tableRow');
     }
+    setStateForDocStatus(true);
   };
 
   const handleModal = (event: any, id: any, data: any) => {
     setIndexVal(id);
-    console.log(tableData, 'materialWeight');
+    console.log(id, tableData, event.key, data, 'materialWeight');
     // console.log(materialWeight, "materialWeight");
     const dataVal =
       tableData?.length > 0 &&
       tableData !== null &&
       tableData?.filter((item: any) => {
-        if (item.id === id) {
-          if (event.key === 'F2') {
-            if (item.totalAmount > 0) {
-              setMaterialWeight(item.table);
-            } else {
-              setMaterialWeight(data.table);
-            }
-            setShowModal(true);
-          }
+        if (item.id === id && event.key === 'F2') {
+          console.log('modal tr', item.id, id, event.key);
+
+          setShowModal(true);
+          // if (item.totalAmount > 0) {
+          setMaterialWeight(item.table);
+          // } else {
+          // setMaterialWeight(data.table);
+          // }
         }
       });
+    setStateForDocStatus(true);
   };
 
   const handleSaveModal = async (id: any) => {
@@ -385,6 +379,7 @@ const useReadyReceiptKarigar = () => {
     console.log(updatedMaterialWeight, 'data45');
     const materialApiVal = await postMaterialApi(loginAcessToken.token, values);
     setShowModal(false);
+    setStateForDocStatus(true);
   };
   const handleDeleteRow = (id: any) => {
     if (tableData?.length > 1) {
@@ -396,6 +391,7 @@ const useReadyReceiptKarigar = () => {
           .map((row: any, index: number) => ({ ...row, id: index + 1 }));
       setTableData(updatedData);
     }
+    setStateForDocStatus(true);
   };
 
   const closeModal = () => {
@@ -404,11 +400,12 @@ const useReadyReceiptKarigar = () => {
   };
   const handleRecipietChange = (e: any) => {
     setRecipitData({ ...recipitData, [e.target.name]: e.target.value });
+    setStateForDocStatus(true);
   };
   console.log(recipitData, 'recipitData');
 
   const handleCreate = async () => {
-    console.log(tableData, 'table56');
+    console.log(tableData, 'table56', recipitData);
     const updatedtableData =
       tableData?.length > 0 &&
       tableData !== null &&
@@ -467,46 +464,94 @@ const useReadyReceiptKarigar = () => {
       );
       console.log(purchaseReceipt, 'purchase');
       if (purchaseReceipt.status === 200) {
-        setRecipitData({
-          custom_karigar: ' ',
-          remarks: '',
-          custom_ready_receipt_type: lastPartOfURL,
-        });
-        setTableData([
-          {
-            id: 1,
-            product_code: '',
-            custom_kun_karigar: '',
-            custom_net_wt: '',
-            custom_few_wt: '',
-            custom_gross_wt: '',
-            custom_mat_wt: '',
-            custom_other: '',
-            custom_total: '',
-            custom_add_photo: '',
-            totalModalWeight: 0,
-            totalAmount: 0,
-            table: [
-              {
-                id: materialWeight?.length + 1,
-                material_abbr: '',
-                material: '',
-                pcs: '',
-                piece_: '',
-                carat: '',
-                carat_: '',
-                weight: '',
-                gm_: '',
-                amount: '',
-              },
-            ],
-          },
-        ]);
+        // setRecipitData({
+        //   custom_karigar: ' ',
+        //   remarks: '',
+        //   custom_ready_receipt_type: lastPartOfURL,
+        // });
+        // setTableData([
+        //   {
+        //     id: 1,
+        //     product_code: '',
+        //     custom_kun_karigar: '',
+        //     custom_net_wt: '',
+        //     custom_few_wt: '',
+        //     custom_gross_wt: '',
+        //     custom_mat_wt: '',
+        //     custom_other: '',
+        //     custom_total: '',
+        //     custom_add_photo: '',
+        //     totalModalWeight: 0,
+        //     totalAmount: 0,
+        //     table: [
+        //       {
+        //         id: materialWeight?.length + 1,
+        //         material_abbr: '',
+        //         material: '',
+        //         pcs: '',
+        //         piece_: '',
+        //         carat: '',
+        //         carat_: '',
+        //         weight: '',
+        //         gm_: '',
+        //         amount: '',
+        //       },
+        //     ],
+        //   },
+        // ]);
+
+        // setSelectedDropdownValue('');
         toast.success('Purchase Receipt Created Sucessfully');
       } else {
         toast.error('Error in Creating Purchase Receipt');
       }
     }
+  };
+
+  const handleUpdateReceipt: any = async () => {
+    console.log('update receipt');
+    const updatedtableData =
+      tableData?.length > 0 &&
+      tableData !== null &&
+      tableData?.map((row: any, i: any) => {
+        if (row.id === indexVal) {
+          if (row.custom_other !== '' && row.custom_total !== '') {
+            return {
+              ...row,
+              custom_total:
+                parseInt(row.totalAmount) + parseInt(row.custom_other),
+            };
+          } else if (row.custom_other !== '') {
+            return {
+              ...row,
+              custom_total: parseInt(row.custom_other),
+            };
+          } else {
+            return {
+              ...row,
+              custom_total: parseInt(row.totalAmount),
+            };
+          }
+        }
+        return row;
+      });
+
+    const modalValue = updatedtableData?.map(
+      ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
+        ...rest,
+      })
+    );
+    const values = {
+      ...recipitData,
+      items: modalValue,
+    };
+
+    let updateReceiptApi: any = await UpdatePurchaseReceiptApi(
+      loginAcessToken.token,
+      values,
+      query?.receiptId
+    );
+    console.log('updated purchase receipt api res', updateReceiptApi);
   };
 
   const handleDeleteChildTableRow = (id: any) => {
@@ -516,33 +561,11 @@ const useReadyReceiptKarigar = () => {
       );
       setMaterialWeight(updatedData);
     }
+    setStateForDocStatus(true);
   };
 
-  console.log(kundanListing, 'kundanlisting');
-
-  // const HandleDeleteReceipt: any = async (name: any) => {
-  //   let deletePurchaseReceiptApi: any = await DeletePurchaseReceiptApi(
-  //     loginAcessToken?.token,
-  //     name
-  //   );
-  //   console.log('deletereciept api', deletePurchaseReceiptApi);
-  //   if (deletePurchaseReceiptApi?.message?.status === 'success') {
-  //     toast.success(deletePurchaseReceiptApi?.message?.message);
-  //     const capitalizeFirstLetter = (str: any) => {
-  //       return str?.charAt(0)?.toUpperCase() + str?.slice(1);
-  //     };
-
-  //     let updatedData: any = await getPurchasreceiptListApi(
-  //       loginAcessToken,
-  //       capitalizeFirstLetter(lastPartOfURL)
-  //     );
-
-  //     setKundanListing(updatedData);
-  //   } else {
-  //     toast.error('Failed to Delete purchase Receipt');
-  //   }
-  // };
-
+  console.log(tableData, 'table data kundanlisting');
+  console.log('modal state', showModal);
   return {
     setClick,
     kundanListing,
@@ -570,6 +593,14 @@ const useReadyReceiptKarigar = () => {
     showModal,
     lastPartOfURL,
     HandleDeleteReceipt,
+    selectedDropdownValue,
+    setSelectedDropdownValue,
+    readyReceiptType,
+    setReadyReceiptType,
+    stateForDocStatus,
+    setStateForDocStatus,
+    indexVal,
+    handleUpdateReceipt,
   };
 };
 

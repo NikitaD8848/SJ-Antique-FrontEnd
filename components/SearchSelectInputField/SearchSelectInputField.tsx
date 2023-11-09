@@ -5,10 +5,13 @@ const SearchSelectInputField = ({
   recipitData,
   setRecipitData,
   kundanKarigarData,
+  selectedDropdownValue,
+  setSelectedDropdownValue,
+  setStateForDocStatus,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedDropdownValue, setSelectedDropdownValue] = useState();
+  // const [selectedDropdownValue, setSelectedDropdownValue] = useState();
   const [noRecords, setNoRecordsFound] = useState(false);
   const [filterDropdownList, setFilterDropdownList] = useState([]);
   //const [masterData, setMasterData] = useState<any>();
@@ -35,6 +38,7 @@ const SearchSelectInputField = ({
     setFilterDropdownList(UpdatedFilterList);
     setNoRecordsFound(true);
     setRecipitData({ ...recipitData, custom_karigar: selectedDropdownValue });
+    setStateForDocStatus(true);
   };
 
   const handleShowDropdown = () => {
@@ -54,6 +58,7 @@ const SearchSelectInputField = ({
     setSelectedDropdownValue(data);
     setShowDropdown(false);
     setRecipitData({ ...recipitData, custom_karigar: data });
+    setStateForDocStatus(true);
   };
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {

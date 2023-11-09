@@ -5,13 +5,16 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import useReadyReceiptKarigar from '../readyReceiptKarigarHooks';
+import UseCustomReceiptHook from '../custom-receipt-hook';
 
 const UseKundanKarigarDetailHook = () => {
   const loginAcessToken = useSelector(get_access_token);
   const { query } = useRouter();
+  const { tableData, recipitData, indexVal } = useReadyReceiptKarigar();
+  const { defaultKarigarData, setDefaultKarigarData }: any =
+    UseCustomReceiptHook();
 
-  const [defaultKarigarData, setDefaultKarigarData] = useState<any>([]);
-
+  console.log('tabledata', tableData);
   useEffect(() => {
     DetailPageDataApi();
   }, [query]);
@@ -28,7 +31,7 @@ const UseKundanKarigarDetailHook = () => {
         detailPageApi?.status === 200 &&
         detailPageApi?.data?.message?.status === 'success'
       ) {
-        setDefaultKarigarData([...detailPageApi?.data?.message?.data?.data]);
+        setDefaultKarigarData([...detailPageApi?.data?.message?.data]);
       }
     }
   };
