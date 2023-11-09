@@ -103,7 +103,9 @@ const SelectInputMaterial = ({
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
-              {materialListData?.map((name: any, i: any) => (
+              {materialListData?.length > 0 &&
+              materialListData !== null &&
+              materialListData.map((name: any, i: any) => (
                 <li
                   key={i}
                   onClick={() => handleSelectedOption(name.material)}

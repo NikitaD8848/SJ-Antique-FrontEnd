@@ -1,12 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 import SalesHeader from '../Header/SalesHeader'
+import { useRouter } from 'next/router'
 
 const ReadyReceiptsTabs:any = ({
     showMaster,
     showSales,
     showReceipt
 }:any) => {
+  const router = useRouter()
+  console.log(router,'receipt header router')
   return (
     <div className=" justify-content-center">
         <div className="navbar d-flex justify-content-center p-0">
@@ -25,7 +28,6 @@ const ReadyReceiptsTabs:any = ({
                     className="nav-link border active"
                     id="pills-home-tab"
                     data-bs-toggle="pill"
-                    data-bs-target="#pills-home"
                     type="button"
                     role="tab"
                     aria-controls="pills-home"
@@ -40,9 +42,8 @@ const ReadyReceiptsTabs:any = ({
                 >
                   <button
                     className="nav-link border"
-                    id="pills-home-tab"
+                    id="pills-mangal-tab"
                     data-bs-toggle="pill"
-                    data-bs-target="#pills-home"
                     type="button"
                     role="tab"
                     aria-controls="pills-home"

@@ -19,45 +19,46 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-light">
-      <div className=" container-lg">
-        <nav className="navbar p-0 ">
-          <div>
-            {/* <button className="btn btn-primary mx-5 "
+    <div>
+      <div className="bg-light">
+        <div className=" container-lg">
+          <nav className="navbar p-0 ">
+            <div>
+              {/* <button className="btn btn-primary mx-5 "
               onClick={()=>setShowButtons1(!showButtons1)}  
                 >
                 Ready Receipts</button>
       <button className="btn btn-primary mx-5 px-5" 
        onClick={()=>setShowButtons2(!showButtons2)} >Sales</button> */}
-          </div>
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="success-light"
-              id="dropdown-basic"
-              className="border bg-light"
-            >
-              <FontAwesomeIcon
-                icon={faCircleUser}
-                style={{ color: '#CDAB6E', fontSize: 30 }}
-              />
-            </Dropdown.Toggle>
+            </div>
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="success-light"
+                id="dropdown-basic"
+                className="border bg-light"
+              >
+                <FontAwesomeIcon
+                  icon={faCircleUser}
+                  style={{ color: '#CDAB6E', fontSize: 30 }}
+                />
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu className="">
-              <Dropdown.Item className="d-flex justify-content-center">
-                Welcome!!
-              </Dropdown.Item>
-              <Dropdown.Item className="d-flex justify-content-center">
-                <button className="logout-button " onClick={handleClick}>
-                  Logout
-                </button>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </nav>
-        <hr />
-        <ReceiptsHeader/>
+              <Dropdown.Menu className="">
+                <Dropdown.Item className="d-flex justify-content-center">
+                  Welcome!!
+                </Dropdown.Item>
+                <Dropdown.Item className="d-flex justify-content-center">
+                  <button className="logout-button " onClick={handleClick}>
+                    Logout
+                  </button>
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </nav>
+          <hr />
+        </div>
       </div>
-     
+      <ReceiptsHeader />
     </div>
   );
 };

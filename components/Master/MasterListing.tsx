@@ -17,7 +17,8 @@ const MasterListing = () => {
     HandleKunSubmit,
     HandleNameChange,
     HandleSave,
-    error
+    error,
+    setError
   } = useMasterHooks();
   const masterlist: any = ['Karigar', 'Kundan Karigar', 'Material'];
 
@@ -59,6 +60,7 @@ const MasterListing = () => {
           HandleInputValue={HandleInputValue}
           HandleSubmit={HandleSubmit}
           error={error}
+          setError={setError}
         />
       )}
       {selectedComponent === 'kundankarigar' && (
@@ -68,6 +70,7 @@ const MasterListing = () => {
           HandleInputValue={HandleKunInputValue}
           HandleSubmit={HandleKunSubmit}
           error={error}
+          setError={setError}
         />
       )}
       {selectedComponent === 'material' && (
@@ -77,6 +80,7 @@ const MasterListing = () => {
           HandleNameChange={HandleNameChange}
           HandleSave={HandleSave}
           error={error}
+          setError={setError}
         />
       )}
     </div>

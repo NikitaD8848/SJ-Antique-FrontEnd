@@ -6,6 +6,7 @@ const ReadyReceipt = () => {
     <div>
       <ReadyReceiptKundanKarigarMaster />
     </div>
+    
   );
 };
 

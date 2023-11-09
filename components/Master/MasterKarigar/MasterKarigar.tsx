@@ -7,9 +7,9 @@ const MasterKarigar: any = ({
   HandleInputValue,
   HandleSubmit,
   error,
+  setError
 }: any) => {
   const [searchField, setSearchField] = useState<any>('');
-
   const HandleSearchInput: any = (e: any) => {
     setSearchField(e.target.value);
   };

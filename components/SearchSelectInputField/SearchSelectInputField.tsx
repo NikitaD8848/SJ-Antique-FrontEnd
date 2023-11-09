@@ -92,7 +92,9 @@ const SearchSelectInputField = ({
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
-              {karigarData?.map((name: any, i: any) => (
+              {karigarData?.length > 0 &&
+              karigarData !== null &&
+              karigarData.map((name: any, i: any) => (
                 <li
                   key={i}
                   onClick={() => handleSelectedOption(name.karigar_name)}

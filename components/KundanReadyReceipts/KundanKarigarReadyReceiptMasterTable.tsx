@@ -14,7 +14,7 @@ const KundanKarigarReadyReceiptMasterTable = ({
 }: any) => {
   console.log('table data receipt', tableData);
   return (
-    <div className='table-responsive'>
+    
       <table className="table table-hover table-striped table-bordered">
         <thead>
           <tr>
@@ -220,7 +220,7 @@ const KundanKarigarReadyReceiptMasterTable = ({
             ))}
         </tbody>
       </table>
-    </div>
+   
   );
 };
 

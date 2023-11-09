@@ -12,7 +12,7 @@ const ReceiptsHeader = () => {
 
   useEffect(() => {
     // setShowReceipts(false);
-    setShowMaster(true);
+    setShowReceipts(true);
   }, []);
 
   const handleReadyRecipt = (val: any) => {
@@ -45,7 +45,7 @@ const ReceiptsHeader = () => {
         <Link className="text-decoration-none btn-margin" href="/master">
           <button
             className={`${styles.button} ${showMaster ? 'activeColor' : ''}`}
-            onClick={() => handleReadyRecipt('Master')}
+            onClick={() => handleReadyRecipt('Master')} 
           >
             <i
               className="fa-regular fa-file icons-color mr-2"
@@ -60,7 +60,8 @@ const ReceiptsHeader = () => {
         >
           <button
             onClick={() => handleReadyRecipt('Receipts')}
-            className={`${styles.button} ${showReceipt ? 'activeColor' : ''}`}
+            className={`${styles.button} ${showReceipt ? 'activeColor' : ''} `}
+            
           >
             <i
               className="fa-regular fa-file icons-color mr-2"

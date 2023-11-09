@@ -99,7 +99,9 @@ const SelectInputKunKarigar = ({
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
-              {kundanKarigarData?.map((name: any, i: any) => (
+              {kundanKarigarData?.length > 0 &&
+              kundanKarigarData !== null &&
+              kundanKarigarData.map((name: any, i: any) => (
                 <li
                   key={i}
                   onClick={() => handleSelectedOption(name.karigar_name)}

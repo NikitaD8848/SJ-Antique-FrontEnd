@@ -45,13 +45,13 @@ const ReadyReceiptKundanKarigarMaster = () => {
     <div className="container-lg">
       <div>
         <div
-          className="nav nav-pills mb-2 justify-content-center "
+          className="nav nav-pills my-2 justify-content-center "
           id="pills-tab"
           role="tablist"
         >
           <div className="nav-tabs tabs-container w-50 " role="presentation">
             <button
-              className="nav-link active w-100 p-1 border"
+              className="nav-link active w-100 p-1 border "
               id="pills-home-tab"
               data-bs-toggle="pill"
               data-bs-target="#pills-home"
@@ -59,7 +59,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
               role="tab"
               aria-controls="pills-home"
               aria-selected="true"
-              onClick={() => setClick(true)}
+              // onClick={() => setClick(true)}
             >
               Ready receipts {lastPartOfURL} karigar
             </button>

@@ -24,7 +24,7 @@ const MasterMaterialListing = ({
           id="input2"
           aria-describedby="emailHelp"
           className="form-control w-25 mx-2"
-          placeholder="Enter Material Name"
+          placeholder="Enter Material abbreviation"
           onChange={handleInputChange2}
         />
       </div>
@@ -32,8 +32,8 @@ const MasterMaterialListing = ({
         <table className="table table-hover table-striped w-100 ">
           <thead>
             <tr className="table_row">
-              <th className="thead">Material Name</th>
-              <th className="thead">Material Abbrevation</th>
+              <th className="thead text-start">Material Name</th>
+              <th className="thead text-start">Material Abbrevation</th>
             </tr>
           </thead>
           <tbody>

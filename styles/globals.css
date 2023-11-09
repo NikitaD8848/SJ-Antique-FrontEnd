@@ -239,6 +239,7 @@ hr {
   background-color: #6164ef;
   color: #FFF;
   border: none;
+  cursor: not-allowed !important;
 }
 .activeColor:hover{
   color: #FFF;

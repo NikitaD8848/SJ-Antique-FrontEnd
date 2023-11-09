@@ -157,6 +157,7 @@ const useMasterHooks = () => {
     HandleNameChange,
     HandleSave,
     error,
+    setError
   };
 };
 
