@@ -103,27 +103,31 @@ const SelectInputMaterial = ({
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
-              {materialListData?.map((name: any, i: any) => (
-                <li
-                  key={i}
-                  onClick={() => handleSelectedOption(name.material)}
-                  className="dropdown-list"
-                >
-                  {name.material}
-                </li>
-              ))}
+              {materialListData?.length > 0 &&
+                materialListData !== null &&
+                materialListData?.map((name: any, i: any) => (
+                  <li
+                    key={i}
+                    onClick={() => handleSelectedOption(name.material)}
+                    className="dropdown-list"
+                  >
+                    {name.material}
+                  </li>
+                ))}
             </>
           ) : (
             <>
-              {filterDropdownList.map((name: any, i: any) => (
-                <li
-                  key={i}
-                  onClick={() => handleSelectedOption(name.material)}
-                  className="dropdown-list"
-                >
-                  {name.material}
-                </li>
-              ))}
+              {filterDropdownList?.length > 0 &&
+                filterDropdownList !== null &&
+                filterDropdownList.map((name: any, i: any) => (
+                  <li
+                    key={i}
+                    onClick={() => handleSelectedOption(name.material)}
+                    className="dropdown-list"
+                  >
+                    {name.material}
+                  </li>
+                ))}
             </>
           )}
         </ul>

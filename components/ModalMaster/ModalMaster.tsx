@@ -13,6 +13,8 @@ const ModalMaster = ({
   materialListData,
   calculateRowValue,
   handleDeleteChildTableRow,
+  selectedDropdownValue,
+  setSelectedDropdownValue,
 }: any) => {
   console.log('material in modal', materialWeight);
   return (

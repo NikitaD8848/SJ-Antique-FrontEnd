@@ -11,6 +11,9 @@ const KundanKarigarReadyReceiptMasterTable = ({
   setTableData,
   kundanKarigarData,
   handleModal,
+  selectedDropdownValue,
+  setSelectedDropdownValue,
+  setStateForDocStatus,
 }: any) => {
   console.log('table data receipt', tableData);
   return (
@@ -81,6 +84,7 @@ const KundanKarigarReadyReceiptMasterTable = ({
                     setTableData={setTableData}
                     item={item}
                     id={item.id}
+                    setStateForDocStatus={setStateForDocStatus}
                   />
                 </td>
                 <td className="table_row">

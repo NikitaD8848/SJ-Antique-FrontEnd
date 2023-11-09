@@ -6,6 +6,7 @@ const SelectInputKunKarigar = ({
   tableData,
   setTableData,
   id,
+  setStateForDocStatus,
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,7 +17,7 @@ const SelectInputKunKarigar = ({
 
   console.log('check karigar', kundanKarigarData);
   console.log(typeof kundanKarigarData, 'type ');
-  
+
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
     setShowDropdown(true);
@@ -37,6 +38,7 @@ const SelectInputKunKarigar = ({
       return item;
     });
     setTableData(updatedData);
+    setStateForDocStatus(true);
   };
   const handleShowDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -61,6 +63,7 @@ const SelectInputKunKarigar = ({
       return item;
     });
     setTableData(updatedData);
+    setStateForDocStatus(true);
   };
   console.log(selectedDropdownValue, 'selected value');
   useEffect(() => {

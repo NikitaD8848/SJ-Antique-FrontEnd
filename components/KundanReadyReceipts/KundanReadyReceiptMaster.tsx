@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../styles/readyReceipts.module.css';
-import { Modal, Button } from 'react-bootstrap';
 import KundanListing from './KundanReadyReceiptsListing';
-import ModalMaster from '../ModalMaster/ModalMaster';
 import KundanKarigarReadyReceiptMasterTable from './KundanKarigarReadyReceiptMasterTable';
 import KundanTable from './KundanTable';
 import useReadyReceiptKarigar from '@/hooks/readyReceiptKarigarHooks';
+import { useRouter } from 'next/router';
+import PurchaseReceiptModal from '../ModalMaster/PurchaseReceiptModal';
 
 const ReadyReceiptKundanKarigarMaster = () => {
   const {
@@ -37,8 +37,20 @@ const ReadyReceiptKundanKarigarMaster = () => {
     showModal,
     lastPartOfURL,
     HandleDeleteReceipt,
+    selectedDropdownValue,
+    setSelectedDropdownValue,
+    readyReceiptType,
+    setReadyReceiptType,
+    stateForDocStatus,
+    setStateForDocStatus,
   } = useReadyReceiptKarigar();
 
+  const router = useRouter();
+  console.log('show modal', showModal);
+
+  // useEffect(() => {
+  //   setReadyReceiptType(lastPartOfURL);
+  // }, [router]);
   console.log('table data', tableData);
 
   return (
@@ -113,6 +125,12 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   recieptData={recipitData}
                   karigarData={karigarData}
                   setRecipitData={setRecipitData}
+                  selectedDropdownValue={selectedDropdownValue}
+                  setSelectedDropdownValue={setSelectedDropdownValue}
+                  readyReceiptType={readyReceiptType}
+                  setReadyReceiptType={setReadyReceiptType}
+                  stateForDocStatus={stateForDocStatus}
+                  setStateForDocStatus={setStateForDocStatus}
                 />
               </div>
               <div className="container d-flex justify-content-end p-o">
@@ -132,6 +150,10 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   setTableData={setTableData}
                   kundanKarigarData={kundanKarigarData}
                   handleModal={handleModal}
+                  selectedDropdownValue={selectedDropdownValue}
+                  setSelectedDropdownValue={setSelectedDropdownValue}
+                  stateForDocStatus={stateForDocStatus}
+                  setStateForDocStatus={setStateForDocStatus}
                 />
               </div>
             </div>
@@ -139,7 +161,25 @@ const ReadyReceiptKundanKarigarMaster = () => {
         </div>
       </div>
       <div>
-        {tableData?.length > 0 &&
+        <PurchaseReceiptModal
+          tableData={tableData}
+          showModal={showModal}
+          closeModal={closeModal}
+          handleModalFieldChange={handleModalFieldChange}
+          handleAddRow={handleAddRow}
+          materialWeight={materialWeight}
+          setMaterialWeight={setMaterialWeight}
+          materialListData={materialListData}
+          calculateRowValue={calculateRowValue}
+          handleDeleteChildTableRow={handleDeleteChildTableRow}
+          setRecipitData={setRecipitData}
+          recipitData={recipitData}
+          selectedDropdownValue={selectedDropdownValue}
+          setSelectedDropdownValue={setSelectedDropdownValue}
+          handleSaveModal={handleSaveModal}
+          setStateForDocStatus={setStateForDocStatus}
+        />
+        {/* {tableData?.length > 0 &&
           tableData !== null &&
           tableData.map((item: any, index: any) => (
             <Modal size="xl" show={showModal} onHide={closeModal} key={index}>
@@ -158,6 +198,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
                 handleDeleteChildTableRow={handleDeleteChildTableRow}
                 setRecipitData={setRecipitData}
                 recipitData={recipitData}
+                selectedDropdownValue={selectedDropdownValue}
+                setSelectedDropdownValue={setSelectedDropdownValue}
               />
               <Modal.Footer>
                 <Button variant="secondary" onClick={closeModal}>
@@ -171,7 +213,7 @@ const ReadyReceiptKundanKarigarMaster = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
-          ))}
+          ))} */}
       </div>
     </div>
   );
