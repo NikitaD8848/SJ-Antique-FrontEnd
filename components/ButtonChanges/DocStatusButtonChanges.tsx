@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../../styles/readyReceipts.module.css';
 import UseCustomReceiptHook from '@/hooks/custom-receipt-hook';
 import { get_specific_receipt_data } from '@/store/PurchaseReceipt/getSpecificPurchaseReceipt-slice';
@@ -8,14 +8,25 @@ const DocStatusButtonChanges = ({
   data,
   stateForDocStatus,
   handleUpdateReceipt,
+  readOnlyFields,
+  setReadOnlyFields,
 }: any) => {
   console.log('button changes data', data);
   const { query } = useRouter();
   const router = useRouter();
   console.log('queer', query);
-
-  const { HandleUpdateDocStatus, HandleDeleteReceipt }: any =
-    UseCustomReceiptHook();
+  const specificDataFromStore: any = useSelector(get_specific_receipt_data);
+  console.log('SpecificDataFromStore in bu', specificDataFromStore);
+  useEffect(() => {
+    if (Object?.keys(specificDataFromStore)?.length > 0) {
+      setReadOnlyFields(specificDataFromStore?.docstatus);
+    }
+  }, []);
+  const {
+    HandleUpdateDocStatus,
+    HandleDeleteReceipt,
+    HandleAmendBtnForEdit,
+  }: any = UseCustomReceiptHook();
   return (
     <div className="d-flex align-items-center justify-content-between">
       <div className="">
@@ -53,6 +64,15 @@ const DocStatusButtonChanges = ({
             onClick={() => HandleUpdateDocStatus('2')}
           >
             Cancel
+          </button>
+        )}
+        {data?.docstatus === 2 && stateForDocStatus === false && (
+          <button
+            type="button"
+            className={`${styles.create_button} me-2`}
+            onClick={() => HandleAmendBtnForEdit}
+          >
+            Amend
           </button>
         )}
         {data?.docstatus === 2 && stateForDocStatus === false && (

@@ -89,6 +89,8 @@ const useReadyReceiptKarigar = () => {
     kundanListing,
     stateForDocStatus,
     setStateForDocStatus,
+    readOnlyFields,
+    setReadOnlyFields,
   }: any = UseCustomReceiptHook();
 
   console.log('table data updated', tableData);
@@ -601,6 +603,8 @@ const useReadyReceiptKarigar = () => {
     setStateForDocStatus,
     indexVal,
     handleUpdateReceipt,
+    readOnlyFields,
+    setReadOnlyFields,
   };
 };
 

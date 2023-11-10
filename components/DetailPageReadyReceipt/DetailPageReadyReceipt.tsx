@@ -42,8 +42,11 @@ const DetailPageReadyReceipt = () => {
     stateForDocStatus,
     setStateForDocStatus,
     handleUpdateReceipt,
+    readOnlyFields,
+    setReadOnlyFields,
   } = useReadyReceiptKarigar();
   console.log('default dataa', defaultKarigarData);
+  console.log('readyonly condn', readOnlyFields);
 
   useEffect(() => {
     if (defaultKarigarData?.length > 0 && defaultKarigarData !== null) {
@@ -66,6 +69,8 @@ const DetailPageReadyReceipt = () => {
               data={data}
               stateForDocStatus={stateForDocStatus}
               handleUpdateReceipt={handleUpdateReceipt}
+              readOnlyFields={readOnlyFields}
+              setReadOnlyFields={setReadOnlyFields}
             />
           ))}
 
@@ -80,6 +85,8 @@ const DetailPageReadyReceipt = () => {
             defaultKarigarData={defaultKarigarData}
             setReadyReceiptType={setReadyReceiptType}
             setStateForDocStatus={setStateForDocStatus}
+            readOnlyFields={readOnlyFields}
+            setReadOnlyFields={setReadOnlyFields}
           />
         </div>
         <div className="container d-flex justify-content-end p-o">
@@ -100,6 +107,8 @@ const DetailPageReadyReceipt = () => {
             kundanKarigarData={kundanKarigarData}
             handleModal={handleModal}
             setStateForDocStatus={setStateForDocStatus}
+            readOnlyFields={readOnlyFields}
+            setReadOnlyFields={setReadOnlyFields}
           />
         </div>
         <PurchaseReceiptModal
@@ -119,6 +128,8 @@ const DetailPageReadyReceipt = () => {
           setSelectedDropdownValue={setSelectedDropdownValue}
           handleSaveModal={handleSaveModal}
           setStateForDocStatus={setStateForDocStatus}
+          readOnlyFields={readOnlyFields}
+          setReadOnlyFields={setReadOnlyFields}
         />
       </div>
     </div>

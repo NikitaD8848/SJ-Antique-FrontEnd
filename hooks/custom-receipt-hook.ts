@@ -8,7 +8,7 @@ import {
 } from '@/store/PurchaseReceipt/getSpecificPurchaseReceipt-slice';
 import { get_access_token } from '@/store/slices/auth/login-slice';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -21,10 +21,11 @@ const UseCustomReceiptHook: any = () => {
 
   const loginAcessToken = useSelector(get_access_token);
   const SpecificDataFromStore: any = useSelector(get_specific_receipt_data);
-  console.log('specific data in custom', SpecificDataFromStore);
+  console.log('SpecificDataFromStore', SpecificDataFromStore);
 
   const [kundanListing, setKundanListing] = useState<any>([]);
   const [defaultKarigarData, setDefaultKarigarData] = useState<any>([]);
+  const [readOnlyFields, setReadOnlyFields] = useState<any>(false);
 
   const [stateForDocStatus, setStateForDocStatus] = useState<any>(false);
 
@@ -70,6 +71,10 @@ const UseCustomReceiptHook: any = () => {
     }
   };
   console.log('set default karigar data', defaultKarigarData);
+
+  const HandleAmendBtnForEdit: any = () => {
+    setReadOnlyFields(false);
+  };
   return {
     setKundanListing,
     kundanListing,
@@ -79,6 +84,9 @@ const UseCustomReceiptHook: any = () => {
     HandleUpdateDocStatus,
     defaultKarigarData,
     setDefaultKarigarData,
+    readOnlyFields,
+    setReadOnlyFields,
+    HandleAmendBtnForEdit,
   };
 };
 
