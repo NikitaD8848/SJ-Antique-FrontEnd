@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import MasterMaterialListing from './MasterMaterialListing';
-const MasterMaterial: any = ({
+import useMaterialHook from '@/hooks/master/material-hook';
+import AddMaterial from './AddMaterial';
+import MasterListing from '../MasterListing';
+const MasterMaterialMaster: any = ({value}:any) => {
+  const {
   materialList,
   HandleNameChange,
   HandleSave,
   nameValue,
   error,
-}: any) => {
+  }:any= useMaterialHook()
   const [inputName, setInputName] = useState('');
   const [inputGroup, setInputGroup] = useState('');
   const handleInputChange1 = (event: any) => {
@@ -24,7 +28,9 @@ const MasterMaterial: any = ({
         client.material_abbr.toLowerCase().includes(inputGroup.toLowerCase())
     );
   return (
-    <div>
+    <div className='container-lg'>
+      <MasterListing value={value}/>
+    <div >
       <div
         className="nav nav-pills mb-2 justify-content-center "
         id="pills-tab"
@@ -72,59 +78,15 @@ const MasterMaterial: any = ({
             handleInputChange2={handleInputChange2}
           />
         </div>
-        <div
-          className="tab-pane fade"
-          id="pills-profile"
-          role="tabpanel"
-          aria-labelledby="pills-home-tab"
-        >
-          <div className="container">
-            <div className=" m-1">
-              <label htmlFor="">Material Name</label>
-              <span className="text-danger">*</span>
-            </div>
-            <div className="p-1">
-              <input
-                type="text"
-                className="form-control w-50 border p-1"
-                name="material"
-                value={nameValue.material}
-                onChange={(e) => {
-                  HandleNameChange(e);
-                }}
-                required
-              />
-            </div>
-            <div className=" m-1">
-              <label htmlFor="">Material Abbrivation</label>
-              <span className="text-danger">*</span>
-            </div>
-            <div className="p-1">
-              <input
-                type="text"
-                className="form-control w-50 border p-1"
-                name="material_abbr"
-                value={nameValue.material_abbr}
-                onChange={(e) => {
-                  HandleNameChange(e);
-                }}
-                required
-              />
-            </div>
-            <div> {error && <p className="text-danger">{error}</p>}</div>
-            <div className="d-flex justify-content-start">
-              <button
-                type="submit"
-                className=" btn btn-outline-primary py-1 mt-2 form-submit-button"
-                onClick={HandleSave}
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+        <AddMaterial
+        nameValue={nameValue}
+        HandleNameChange={HandleNameChange}
+        HandleSave={HandleSave}
+        error={error}
+        />
       </div>
+    </div>
     </div>
   );
 };
-export default MasterMaterial;
+export default MasterMaterialMaster;

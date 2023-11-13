@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
 const MasterMaterialListing = ({
@@ -6,6 +7,13 @@ const MasterMaterialListing = ({
   handleInputChange2,
 }: any) => {
   console.log(materialList, 'master ,material');
+  const router = useRouter()
+  const HandleDetails =(name:any, abbr:any)=>{
+    router.push({
+      pathname:'/masterMaterialDetails',
+      query: {name, abbr}
+    })
+  }
   return (
     <div>
       <div className="mx-4 d-flex justify-content- start">
@@ -41,8 +49,15 @@ const MasterMaterialListing = ({
               materialList !== null &&
               materialList.map((item: any, i: any) => (
                 <tr key={i} className="">
-                  <td className="table-body-row">{item.material}</td>
-                  <td className="table-body-row">{item.material_abbr}</td>
+                  <td className="table-body-row" 
+                  onClick={()=>HandleDetails(item.material, item.material_abbr)}>
+                    {item.material}
+                  </td>
+                  <td className="table-body-row"
+                  onClick={()=>HandleDetails(item.karigar_name, item.material_abbr)}
+                  >
+                    {item.material_abbr}
+                  </td>
                 </tr>
               ))}
           </tbody>

@@ -1,8 +1,8 @@
 import React from 'react';
 import MasterKarigar from './MasterKarigar/MasterKarigar';
 import useReadyReceiptKarigar from '@/hooks/readyReceiptKarigarHooks';
-import MasterMaterial from './MasterMaterial/MasterMaterial';
-import useMasterHooks from '@/hooks/masterHooks';
+import MasterMaterial from './MasterMaterial/MasterMaterialMaster';
+import useMasterHooks from '@/hooks/master/masterHooks';
 
 const MasterComponent = () => {
   const {

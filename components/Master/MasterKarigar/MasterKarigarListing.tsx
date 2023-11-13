@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const MasterKarigarListing = ({ karigarData, HandleSearchInput }: any) => {
+const MasterKarigarListing = ({ karigarData, HandleSearchInput,placeholder }: any) => {
+  console.log(karigarData, 'master karigar data')
   const router = useRouter()
   const HandleDetails =(name:any)=>{
     router.push({
-      pathname:'/master/KarigarDetailsPage',
+      pathname:'/master/[karigarId]/KarigarDetailsMaster',
       query: name
     })
   }
@@ -20,7 +20,7 @@ const MasterKarigarListing = ({ karigarData, HandleSearchInput }: any) => {
           aria-describedby="emailHelp"
           className="form-control form-control-color w-25"
           aria-label="Disabled input example"
-          placeholder="Enter Karigar Name"
+          placeholder={placeholder}
           onChange={HandleSearchInput}
         />
       </div>
@@ -37,7 +37,7 @@ const MasterKarigarListing = ({ karigarData, HandleSearchInput }: any) => {
             {karigarData?.length > 0 &&
               karigarData !== null &&
               karigarData.map((item: any, i: any) => (
-                <tr key={i} className="">
+                <tr key={i} >
                   <td className="table-body-row cursor-pointer" onClick={()=>HandleDetails(item.karigar_name)}>
                     {item.karigar_name} 
                   </td>

@@ -30,7 +30,6 @@ const KarigarDetailsMaster = () => {
             <input
               type="text"
               className="form-control py-1 ps-1"
-              // value={inputValue}
               defaultValue={value}
               required
               id="basic-url"
