@@ -8,7 +8,6 @@ const DocStatusButtonChanges = ({
   data,
   stateForDocStatus,
   handleUpdateReceipt,
-  readOnlyFields,
   setReadOnlyFields,
 }: any) => {
   console.log('button changes data', data);
@@ -21,7 +20,7 @@ const DocStatusButtonChanges = ({
     if (Object?.keys(specificDataFromStore)?.length > 0) {
       setReadOnlyFields(specificDataFromStore?.docstatus);
     }
-  }, []);
+  }, [setReadOnlyFields, specificDataFromStore]);
   const {
     HandleUpdateDocStatus,
     HandleDeleteReceipt,

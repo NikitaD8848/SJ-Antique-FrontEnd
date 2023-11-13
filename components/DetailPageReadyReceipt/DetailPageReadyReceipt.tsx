@@ -57,21 +57,23 @@ const DetailPageReadyReceipt = () => {
         setSelectedDropdownValue(data?.custom_karigar);
       });
     }
-  }, [defaultKarigarData]);
+  }, [defaultKarigarData, setReadyReceiptType, setSelectedDropdownValue, setRecipitData, setTableData]);
 
   return (
     <div className="container">
       <div>
         {defaultKarigarData?.length > 0 &&
           defaultKarigarData !== null &&
-          defaultKarigarData.map((data: any) => (
-            <DocStatusButtonChanges
-              data={data}
-              stateForDocStatus={stateForDocStatus}
-              handleUpdateReceipt={handleUpdateReceipt}
-              readOnlyFields={readOnlyFields}
-              setReadOnlyFields={setReadOnlyFields}
-            />
+          defaultKarigarData.map((data: any, index: any) => (
+            <div key={index}>
+              < DocStatusButtonChanges
+                data={data}
+                stateForDocStatus={stateForDocStatus}
+                handleUpdateReceipt={handleUpdateReceipt}
+                readOnlyFields={readOnlyFields}
+                setReadOnlyFields={setReadOnlyFields}
+              />
+            </div>
           ))}
 
         <div className=" table">
@@ -132,7 +134,7 @@ const DetailPageReadyReceipt = () => {
           setReadOnlyFields={setReadOnlyFields}
         />
       </div>
-    </div>
+    </div >
   );
 };
 
