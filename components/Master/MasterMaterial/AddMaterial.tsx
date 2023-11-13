@@ -4,7 +4,8 @@ const AddMaterial = ({
     nameValue,
     HandleNameChange,
     HandleSave,
-    error
+    error1,
+    error2
 }:any) => {
   return (
     <div
@@ -30,6 +31,7 @@ const AddMaterial = ({
                 required
               />
             </div>
+            <div> {error1 && <p className="text-danger">{error1}</p>}</div>
             <div className=" m-1">
               <label htmlFor="">Material Abbrivation</label>
               <span className="text-danger">*</span>
@@ -46,7 +48,7 @@ const AddMaterial = ({
                 required
               />
             </div>
-            <div> {error && <p className="text-danger">{error}</p>}</div>
+            <div> {error2 && <p className="text-danger">{error2}</p>}</div>
             <div className="d-flex justify-content-start">
               <button
                 type="submit"

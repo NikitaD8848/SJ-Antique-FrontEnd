@@ -8,7 +8,8 @@ import postMaterialMasterApi from "@/services/api/post-material-master";
 const useMaterialHook = () =>{
     const loginAcessToken = useSelector(get_access_token);
     const [materialList, setMaterialList] = useState();
-    const [error, setError] = useState('');
+    const [error1, setError1] = useState('');
+    const [error2, setError2] = useState('')
     const [nameValue, setNameValue] = useState({
         material: '',
         material_abbr: '',
@@ -24,6 +25,8 @@ const useMaterialHook = () =>{
       const HandleNameChange = (e: any) => {
         const { name, value } = e.target;
         setNameValue({ ...nameValue, [name]: value });
+        setError1('')
+        setError2('')
       };
       console.log(nameValue, 'namevalue');
       const HandleSave = async () => {
@@ -37,13 +40,18 @@ const useMaterialHook = () =>{
         console.log(values, 'valuesname');
         if (
           nameValue.material === '' ||
-          nameValue.material === undefined ||
+          nameValue.material === undefined  
+        ) {
+          setError1('Input field cannot be empty');
+          console.log(error1);  
+        }
+        else if (
           nameValue.material_abbr === '' ||
           nameValue.material_abbr === undefined
-        ) {
-          setError('Input field cannot be empty');
-          console.log(error);
-        } else {
+        ){
+          setError2('Input field cannot be empty')
+        }  
+        else {
           let apiRes: any = await postMaterialMasterApi(
             loginAcessToken?.token,
             values
@@ -56,16 +64,17 @@ const useMaterialHook = () =>{
           } else {
             toast.error('Material Name already exist');
           }
-          setError('');
+          setError1('');
           setNameValue({
             material: '',
             material_abbr: '',
           });
-        }
+        }   
     }
     return{
         materialList,
-        error,
+        error1,
+        error2,
         nameValue,
         HandleNameChange,
         HandleSave

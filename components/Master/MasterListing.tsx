@@ -13,7 +13,8 @@ const MasterListing :any= ({value}:any) => {
               className={`${styles.button} ${value==='karigar' ? 'activeColor':''}`}
             >
               Karigar
-            </button>
+              <i className='fa-solid fa-arrow-turn-down mx-2 pt-1'></i>
+            </button> 
           </Link>
           <Link
             href="/master/kundanKarigar"
@@ -22,6 +23,7 @@ const MasterListing :any= ({value}:any) => {
               className={`${styles.button} ${value==='kundanKarigar' ? 'activeColor':''}`}
             >
               Kundan Karigar
+              <i className='fa-solid fa-arrow-turn-down mx-2 pt-1'></i>
             </button>
           </Link>
           <Link href="/master/material">
@@ -29,6 +31,7 @@ const MasterListing :any= ({value}:any) => {
               className={`${styles.button} ${value === 'material' ? 'activeColor':''}`}
             >
               Material
+              <i className='fa-solid fa-arrow-turn-down mx-2 pt-1'></i>
             </button>
           </Link>
         </div>

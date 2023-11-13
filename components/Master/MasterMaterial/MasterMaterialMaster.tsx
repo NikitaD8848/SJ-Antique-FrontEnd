@@ -9,7 +9,8 @@ const MasterMaterialMaster: any = ({value}:any) => {
   HandleNameChange,
   HandleSave,
   nameValue,
-  error,
+  error1,
+  error2
   }:any= useMaterialHook()
   const [inputName, setInputName] = useState('');
   const [inputGroup, setInputGroup] = useState('');
@@ -82,7 +83,8 @@ const MasterMaterialMaster: any = ({value}:any) => {
         nameValue={nameValue}
         HandleNameChange={HandleNameChange}
         HandleSave={HandleSave}
-        error={error}
+        error1={error1}
+        error2={error2}
         />
       </div>
     </div>
