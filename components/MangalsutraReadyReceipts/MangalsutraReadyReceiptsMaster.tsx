@@ -85,7 +85,7 @@ const MangalsutraReadyReceiptsMaster = () => {
       setMaterialListData(materialListApi);
     };
     getStateData();
-  }, []);
+  }, [loginAcessToken?.token]);
   console.log(karigarData, 'karigarData');
   const calculateRowValue = (i: any) => {
     console.log(i, 'i');
@@ -310,11 +310,11 @@ const MangalsutraReadyReceiptsMaster = () => {
             ...tableItem,
             amount:
               (parseInt(tableItem.pcs, 10) || 0) *
-                (parseInt(tableItem.piece_, 10) || 0) +
+              (parseInt(tableItem.piece_, 10) || 0) +
               (parseFloat(tableItem.carat) || 0) *
-                (parseFloat(tableItem.carat_) || 0) +
+              (parseFloat(tableItem.carat_) || 0) +
               (parseFloat(tableItem.weight) || 0) *
-                (parseFloat(tableItem.gm_) || 0),
+              (parseFloat(tableItem.gm_) || 0),
           })),
         };
       }
@@ -685,10 +685,10 @@ const MangalsutraReadyReceiptsMaster = () => {
                             value={
                               tableData[i]?.totalModalWeight > 0
                                 ? tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt +
-                                  tableData[i]?.totalModalWeight
+                                tableData[i].custom_few_wt +
+                                tableData[i]?.totalModalWeight
                                 : tableData[i].custom_net_wt +
-                                  tableData[i].custom_few_wt
+                                tableData[i].custom_few_wt
                             }
                           />
                         </td>
@@ -721,7 +721,7 @@ const MangalsutraReadyReceiptsMaster = () => {
                             value={
                               tableData[i]?.totalAmount > 0
                                 ? tableData[i].custom_other +
-                                  tableData[i]?.totalAmount
+                                tableData[i]?.totalAmount
                                 : tableData[i].custom_other
                             }
                           />

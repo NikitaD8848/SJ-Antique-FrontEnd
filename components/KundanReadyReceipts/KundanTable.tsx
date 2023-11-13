@@ -25,7 +25,7 @@ const KundanTable = ({
         lastPartOfURL?.charAt(0)?.toUpperCase() + lastPartOfURL?.slice(1)
       );
     }
-  }, [router]);
+  }, [router, setReadyReceiptType, defaultKarigarData]);
 
   return (
     <>
@@ -79,8 +79,8 @@ const KundanTable = ({
                 value={
                   readyReceiptType ||
                   (defaultKarigarData !== undefined &&
-                  defaultKarigarData?.length > 0 &&
-                  defaultKarigarData !== null
+                    defaultKarigarData?.length > 0 &&
+                    defaultKarigarData !== null
                     ? defaultKarigarData[0]?.custom_ready_receipt_type
                     : '')
                 }
