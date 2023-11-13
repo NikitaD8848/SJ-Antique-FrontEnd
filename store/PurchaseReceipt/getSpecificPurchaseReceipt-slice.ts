@@ -38,15 +38,9 @@ export const GetSpecificReceiptDataScreen = createSlice({
     });
     builder.addCase(getSpecificReceipt.fulfilled, (state, action) => {
       console.log('first', action?.payload?.message?.data?.data);
-      if (action?.payload?.message?.status === 'success') {
-        if (action?.payload?.message?.hasOwnProperty('data')) {
-          if (action?.payload?.message?.data?.data?.length > 0) {
-            state.data = action?.payload?.message?.data?.data;
-            state.docStatus =
-              action?.payload?.message?.data?.data[0]?.docstatus;
-            state.isLoading = 'succeeded';
-          }
-        }
+      if (action?.payload?.data?.message?.status === 'success') {
+        state.data = action?.payload?.data?.message?.data;
+        state.docStatus = action?.payload?.data?.message?.data[0]?.docstatus;
       } else {
         state.data = '';
         state.docStatus = '';

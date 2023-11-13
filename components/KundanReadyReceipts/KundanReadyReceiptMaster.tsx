@@ -43,6 +43,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
     setReadyReceiptType,
     stateForDocStatus,
     setStateForDocStatus,
+    readOnlyFields,
+    setReadOnlyFields,
   } = useReadyReceiptKarigar();
 
   const router = useRouter();
@@ -131,6 +133,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   setReadyReceiptType={setReadyReceiptType}
                   stateForDocStatus={stateForDocStatus}
                   setStateForDocStatus={setStateForDocStatus}
+                  readOnlyFields={readOnlyFields}
+                  setReadOnlyFields={setReadOnlyFields}
                 />
               </div>
               <div className="container d-flex justify-content-end p-o">
@@ -154,6 +158,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
                   setSelectedDropdownValue={setSelectedDropdownValue}
                   stateForDocStatus={stateForDocStatus}
                   setStateForDocStatus={setStateForDocStatus}
+                  readOnlyFields={readOnlyFields}
+                  setReadOnlyFields={setReadOnlyFields}
                 />
               </div>
             </div>
@@ -178,6 +184,8 @@ const ReadyReceiptKundanKarigarMaster = () => {
           setSelectedDropdownValue={setSelectedDropdownValue}
           handleSaveModal={handleSaveModal}
           setStateForDocStatus={setStateForDocStatus}
+          readOnlyFields={readOnlyFields}
+          setReadOnlyFields={setReadOnlyFields}
         />
         {/* {tableData?.length > 0 &&
           tableData !== null &&

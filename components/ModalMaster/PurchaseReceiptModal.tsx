@@ -18,6 +18,8 @@ const PurchaseReceiptModal = ({
   selectedDropdownValue,
   setSelectedDropdownValue,
   handleSaveModal,
+  readOnlyFields,
+  setReadOnlyFields,
 }: any) => {
   return (
     <div>
@@ -42,6 +44,8 @@ const PurchaseReceiptModal = ({
               recipitData={recipitData}
               selectedDropdownValue={selectedDropdownValue}
               setSelectedDropdownValue={setSelectedDropdownValue}
+              readOnlyFields={readOnlyFields}
+              setReadOnlyFields={setReadOnlyFields}
             />
             <Modal.Footer>
               <Button variant="secondary" onClick={closeModal}>
