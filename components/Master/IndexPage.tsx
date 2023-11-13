@@ -20,7 +20,6 @@ const IndexPage = () => {
       const pathcontent = router?.asPath?.split('/')
       console.log(pathcontent, 'pathcontent index')
       const key = pathcontent[pathcontent?.length - 1]
-      console.log('check 1')
       return (
         <>
         {key === 'karigar' &&(
