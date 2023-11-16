@@ -84,9 +84,9 @@ const LoginMaster = () => {
                           placeholder="Password"
                           required
                         />
-                        <div onClick={HandleShowPassword}>
-                        <i className={`fa fa-eye p-0 pt-2 fs-6 pswd-eye-icon ${showPassword ? 'text-primary':''} `} ></i>
-                        </div>
+                        <i className={`fa fa-eye p-0 pt-2 fs-6 pswd-eye-icon ${showPassword ? 'text-primary':''} `}
+                        onClick={HandleShowPassword}
+                        ></i>
                       </div>
                     </div>
                     <button

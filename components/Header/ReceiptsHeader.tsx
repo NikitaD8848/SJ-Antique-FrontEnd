@@ -39,7 +39,7 @@ const ReceiptsHeader = () => {
   };
 
   return (
-    <div className='bg-light'>
+    <div >
       <div className={styles.button_container}>
         <Link className="text-decoration-none btn-margin" href="/master">
           <button

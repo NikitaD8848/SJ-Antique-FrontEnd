@@ -21,7 +21,7 @@ const IndexPage = () => {
       console.log(pathcontent, 'pathcontent index')
       const key = pathcontent[pathcontent?.length - 1]
       return (
-        <div className='bg-light'>
+        <div >
         {key === 'karigar' &&(
           <MasterKarigar
           karigarData={karigarList}
