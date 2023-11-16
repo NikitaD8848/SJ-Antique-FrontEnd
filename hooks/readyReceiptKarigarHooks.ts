@@ -1,6 +1,6 @@
 import getPurchasreceiptListApi from '@/services/api/get-purchase-recipts-list-api';
 import React, { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { get_access_token } from '@/store/slices/auth/login-slice';
 import getKarigarApi from '@/services/api/get-karigar-list-api';
@@ -13,9 +13,11 @@ import { toast } from 'react-toastify';
 
 import UseCustomReceiptHook from './custom-receipt-hook';
 import UpdatePurchaseReceiptApi from '@/services/api/PurchaseReceipt/update-purchase-receipt-api';
+import { getSpecificReceipt } from '@/store/PurchaseReceipt/getSpecificPurchaseReceipt-slice';
 
 const useReadyReceiptKarigar = () => {
   const { query } = useRouter();
+  const dispatch = useDispatch();
   const router: any = useRouter();
   const pathParts: any = router?.asPath?.split('/');
   const lastPartOfURL: any = pathParts[pathParts?.length - 1];
@@ -52,9 +54,10 @@ const useReadyReceiptKarigar = () => {
   let disabledValue: any;
   const [materialWeight, setMaterialWeight] = useState<any>();
   const [selectedDropdownValue, setSelectedDropdownValue] = useState<any>('');
+  // const [stateForDocStatus, setStateForDocStatus] = useState<any>(false);
   const [tableData, setTableData] = useState<any>([
     {
-      id: 1,
+      idx: 1,
       product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
@@ -68,7 +71,7 @@ const useReadyReceiptKarigar = () => {
       totalAmount: 0,
       table: [
         {
-          id: materialWeight?.length + 1,
+          idx: materialWeight?.length + 1,
           material_abbr: '',
           material: '',
           pcs: '',
@@ -87,6 +90,8 @@ const useReadyReceiptKarigar = () => {
     HandleDeleteReceipt,
     setKundanListing,
     kundanListing,
+    setShowSaveButtonForAmendFlow,
+    showSaveButtonForAmendFlow,
     stateForDocStatus,
     setStateForDocStatus,
     readOnlyFields,
@@ -194,7 +199,7 @@ const useReadyReceiptKarigar = () => {
   };
   const handleAddRow = (value: any) => {
     const newRow = {
-      id: tableData?.length + 1,
+      idx: tableData?.length + 1,
       product_code: '',
       custom_kun_karigar: '',
       custom_net_wt: '',
@@ -206,7 +211,7 @@ const useReadyReceiptKarigar = () => {
       custom_add_photo: '',
       table: [
         {
-          id: materialWeight?.length + 1,
+          idx: materialWeight?.length + 1,
           material_abbr: '',
           material: '',
           pcs: '',
@@ -512,7 +517,7 @@ const useReadyReceiptKarigar = () => {
   };
 
   const handleUpdateReceipt: any = async () => {
-    console.log('update receipt');
+    console.log('update receipt', tableData);
     const updatedtableData =
       tableData?.length > 0 &&
       tableData !== null &&
@@ -538,15 +543,18 @@ const useReadyReceiptKarigar = () => {
         }
         return row;
       });
+    console.log("update table data", updatedtableData)
+    // const modalValue = updatedtableData?.map(
+    //   ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
+    //     ...rest,
+    //   })
+    // );
 
-    const modalValue = updatedtableData?.map(
-      ({ id, totalModalWeight, totalAmount, ...rest }: any) => ({
-        ...rest,
-      })
-    );
+    // console.log("update table data modalvalue", modalValue)
+
     const values = {
       ...recipitData,
-      items: modalValue,
+      items: updatedtableData,
     };
 
     let updateReceiptApi: any = await UpdatePurchaseReceiptApi(
@@ -555,6 +563,13 @@ const useReadyReceiptKarigar = () => {
       query?.receiptId
     );
     console.log('updated purchase receipt api res', updateReceiptApi);
+    if (updateReceiptApi?.data?.message?.status === 'success') {
+      const params: any = {
+        token: loginAcessToken?.token,
+        name: query?.receiptId,
+      };
+      dispatch(getSpecificReceipt(params));
+    }
   };
 
   const handleDeleteChildTableRow = (id: any) => {
@@ -606,6 +621,8 @@ const useReadyReceiptKarigar = () => {
     handleUpdateReceipt,
     readOnlyFields,
     setReadOnlyFields,
+    setShowSaveButtonForAmendFlow,
+    showSaveButtonForAmendFlow
   };
 };
 

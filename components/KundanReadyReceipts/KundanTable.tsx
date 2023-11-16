@@ -14,6 +14,7 @@ const KundanTable = ({
   setReadyReceiptType,
   defaultKarigarData,
   setStateForDocStatus,
+  readOnlyFields
 }: any) => {
   const router = useRouter();
   const pathParts = router?.asPath?.split('/');
@@ -69,6 +70,7 @@ const KundanTable = ({
                 name="remarks"
                 value={recieptData?.remarks}
                 onChange={handleRecipietChange}
+                readOnly={readOnlyFields}
               />
             </td>
             <td className="table_row">

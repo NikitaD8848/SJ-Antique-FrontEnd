@@ -13,6 +13,7 @@ const ModalMaster = ({
   materialListData,
   calculateRowValue,
   handleDeleteChildTableRow,
+  readOnlyFields,
   selectedDropdownValue,
   setSelectedDropdownValue,
 }: any) => {
@@ -119,6 +120,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+                        readOnly={readOnlyFields}
                       />
                     </td>
                     <td className="table_row">
@@ -134,6 +136,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+                        readOnly={readOnlyFields}
                       />
                     </td>
                     <td className="table_row">
@@ -149,6 +152,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+                        readOnly={readOnlyFields}
                       />
                     </td>
                     <td className="table_row">
@@ -164,6 +168,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+                        readOnly={readOnlyFields}
                       />
                     </td>
                     <td className="table_row">
@@ -179,6 +184,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+                        readOnly={readOnlyFields}
                       />
                     </td>
                     <td className="table_row">
@@ -194,6 +200,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+                        readOnly={readOnlyFields}
                       />
                     </td>
                     <td className="table_row">
@@ -210,6 +217,7 @@ const ModalMaster = ({
                             +e.target.value
                           )
                         }
+
                         value={calculateRowValue(i)}
                       />
                     </td>
@@ -217,7 +225,7 @@ const ModalMaster = ({
                       <button
                         className="d-flex align-items-center delete-link p-1 border-0"
                         onClick={() => handleDeleteChildTableRow(i)}
-                        // onKeyDown={(e) => handleTabPress(e, element.id)}
+                      // onKeyDown={(e) => handleTabPress(e, element.id)}
                       >
                         <FontAwesomeIcon
                           icon={faTrash}

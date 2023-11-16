@@ -20,14 +20,24 @@ const UseCustomReceiptHook: any = () => {
   const lastPartOfURL = pathParts[pathParts.length - 1];
 
   const loginAcessToken = useSelector(get_access_token);
-  const SpecificDataFromStore: any = useSelector(get_specific_receipt_data);
-  console.log('SpecificDataFromStore', SpecificDataFromStore);
+  const specificDataFromStore: any = useSelector(get_specific_receipt_data);
+  console.log('SpecificDataFromStore', specificDataFromStore);
 
   const [kundanListing, setKundanListing] = useState<any>([]);
   const [defaultKarigarData, setDefaultKarigarData] = useState<any>([]);
-  const [readOnlyFields, setReadOnlyFields] = useState<any>(false);
+  // const [readOnlyFields, setReadOnlyFields] = useState<any>(false);
 
   const [stateForDocStatus, setStateForDocStatus] = useState<any>(false);
+
+  const [showSaveButtonForAmendFlow, setShowSaveButtonForAmendFlow] =
+    useState<any>(false);
+  // useEffect(() => {
+  //   if (specificDataFromStore?.docStatus > 0) {
+  //     setReadOnlyFields(true);
+  //   } else {
+  //     setReadOnlyFields(false);
+  //   }
+  // }, [specificDataFromStore]);
 
   const HandleDeleteReceipt: any = async (name: any) => {
     let deletePurchaseReceiptApi: any = await DeletePurchaseReceiptApi(
@@ -68,13 +78,16 @@ const UseCustomReceiptHook: any = () => {
         name: query?.receiptId,
       };
       dispatch(getSpecificReceipt(params));
+      // setStateForDocStatus(false)
     }
   };
   console.log('set default karigar data', defaultKarigarData);
 
-  const HandleAmendBtnForEdit: any = () => {
-    setReadOnlyFields(false);
-  };
+  // const HandleAmendBtnForEdit: any = () => {
+  //   setReadOnlyFields(false);
+  // };
+
+  // console.log("readyonly in hook", readOnlyFields)
   return {
     setKundanListing,
     kundanListing,
@@ -84,9 +97,11 @@ const UseCustomReceiptHook: any = () => {
     HandleUpdateDocStatus,
     defaultKarigarData,
     setDefaultKarigarData,
-    readOnlyFields,
-    setReadOnlyFields,
-    HandleAmendBtnForEdit,
+    // readOnlyFields,
+    // setReadOnlyFields,
+    // HandleAmendBtnForEdit,
+    setShowSaveButtonForAmendFlow,
+    showSaveButtonForAmendFlow
   };
 };
 

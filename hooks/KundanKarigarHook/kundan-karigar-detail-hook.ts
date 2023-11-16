@@ -18,22 +18,26 @@ const UseKundanKarigarDetailHook = () => {
   const { tableData, recipitData, indexVal } = useReadyReceiptKarigar();
   const { defaultKarigarData, setDefaultKarigarData }: any =
     UseCustomReceiptHook();
+  const [readOnlyFields, setReadOnlyFields] = useState<any>(false);
+
   console.log('default karigar data initially', defaultKarigarData);
   const SpecificDataFromStore: any = useSelector(get_specific_receipt_data);
   console.log('specific data', SpecificDataFromStore);
 
-  console.log('tabledata', tableData);
+  console.log('query', query);
 
 
   useEffect(() => {
     console.log("kundan carigar detail hook")
     console.log("kundan carigar detail hook1", query)
-    const params: any = {
-      token: loginAcessToken?.token,
-      name: query?.receiptId,
-    };
-    dispatch(getSpecificReceipt(params));
-  }, []);
+    if (Object?.keys(query)?.length > 0) {
+      const params: any = {
+        token: loginAcessToken?.token,
+        name: query?.receiptId,
+      };
+      dispatch(getSpecificReceipt(params));
+    }
+  }, [query]);
 
   useEffect(() => {
     if (SpecificDataFromStore?.data?.length > 0) {
@@ -43,26 +47,18 @@ const UseKundanKarigarDetailHook = () => {
     }
   }, [SpecificDataFromStore]);
 
-  // const DetailPageDataApi = async () => {
-  //   if (Object?.keys(query)?.length > 0) {
-  //     const params: any = {
-  //       token: loginAcessToken?.token,
-  //       name: query?.receiptId,
-  //     };
-  //     let detailPageApi: any = await getSpecificReceipt(params);
-  //     console.log('detailpageapi', detailPageApi);
-  //     if (
-  //       detailPageApi?.status === 200 &&
-  //       detailPageApi?.data?.message?.status === 'success'
-  //     ) {
-  //       setDefaultKarigarData([...detailPageApi?.data?.message?.data]);
-  //     }
-  //   }
-  // };
+  useEffect(() => {
+    if (SpecificDataFromStore?.docStatus > 0) {
+      setReadOnlyFields(true);
+    } else {
+      setReadOnlyFields(false);
+    }
+  }, [SpecificDataFromStore]);
 
-  console.log('default karigar data', defaultKarigarData);
 
-  return { defaultKarigarData };
+  console.log('default karigar data readonly', readOnlyFields);
+
+  return { defaultKarigarData, readOnlyFields, setReadOnlyFields };
 };
 
 export default UseKundanKarigarDetailHook;
