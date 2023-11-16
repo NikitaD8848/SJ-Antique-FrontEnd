@@ -249,3 +249,17 @@ hr {
   line-height: 17px !important;
   padding: 4px !important;
 }
+.pswd-container{
+  position:relative ;
+}
+.login-input-field{
+  width: calc(100% - 30px);
+  padding-right: 30px;
+}
+.pswd-eye-icon{
+  position: absolute;
+  cursor: pointer;
+}
+.cursor{
+  cursor: pointer;
+}

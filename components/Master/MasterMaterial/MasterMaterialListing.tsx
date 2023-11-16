@@ -6,9 +6,9 @@ const MasterMaterialListing = ({
   handleInputChange1,
   handleInputChange2,
 }: any) => {
-  console.log(materialList, 'master ,material');
   const router = useRouter()
   const HandleDetails =(name:any, abbr:any)=>{
+    console.log(name,abbr,'name abbr1')
     router.push({
       pathname:'/masterMaterialDetails',
       query: {name, abbr}
@@ -49,12 +49,12 @@ const MasterMaterialListing = ({
               materialList !== null &&
               materialList.map((item: any, i: any) => (
                 <tr key={i} className="">
-                  <td className="table-body-row" 
+                  <td className="table-body-row cursor" 
                   onClick={()=>HandleDetails(item.material, item.material_abbr)}>
                     {item.material}
                   </td>
-                  <td className="table-body-row"
-                  onClick={()=>HandleDetails(item.karigar_name, item.material_abbr)}
+                  <td className="table-body-row cursor"
+                  onClick={()=>HandleDetails(item.material, item.material_abbr)}
                   >
                     {item.material_abbr}
                   </td>

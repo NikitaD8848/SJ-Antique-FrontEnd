@@ -4,7 +4,7 @@ const MasterListing :any= ({value}:any) => {
 
   return (
     <>
-      <div className="container-lg ">
+      <div className="container-lg bg-light ">
       
         <div className={`${styles.button_container}`}>
           <Link href="/master/karigar"

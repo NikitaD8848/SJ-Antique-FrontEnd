@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   getAccessToken,
   get_access_token,
 } from '@/store/slices/auth/login-slice';
-import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const LoginMaster = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const LoginMaster = () => {
     username: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState<any>(false);
 
   const HandleInputChange: any = (e: any) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -42,6 +43,10 @@ const LoginMaster = () => {
       HandleFormSubmit();
     }
   };
+  const HandleShowPassword: any = () => {
+    console.log("eye click")
+    setShowPassword(!showPassword)
+  };
 
   return (
     <>
@@ -53,7 +58,7 @@ const LoginMaster = () => {
                 <p className="text-uppercase fs-3 text-center">login </p>
                 <div className="card-body p-0">
                   <form className="login-form p-2 mx-auto text-center">
-                    <div className="mb-3">
+                    <div className="mb-3 ">
                       <input
                         type="text"
                         id="username"
@@ -66,9 +71,9 @@ const LoginMaster = () => {
                       />
                     </div>
                     <div className="my-4">
-                      <div className="d-flex justify-content-center">
+                      <div className="d-flex justify-content-center pswd-container">
                         <input
-                          type="password"
+                          type={`${showPassword ? 'text':'password'}`}
                           id="password"
                           name="password"
                           onChange={HandleInputChange}
@@ -79,6 +84,9 @@ const LoginMaster = () => {
                           placeholder="Password"
                           required
                         />
+                        <div onClick={HandleShowPassword}>
+                        <i className={`fa fa-eye p-0 pt-2 fs-6 pswd-eye-icon ${showPassword ? 'text-primary':''} `} ></i>
+                        </div>
                       </div>
                     </div>
                     <button
