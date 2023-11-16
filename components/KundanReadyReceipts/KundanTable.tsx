@@ -26,7 +26,7 @@ const KundanTable = ({
         lastPartOfURL?.charAt(0)?.toUpperCase() + lastPartOfURL?.slice(1)
       );
     }
-  }, [router, setReadyReceiptType, defaultKarigarData]);
+  }, [router, setReadyReceiptType, defaultKarigarData, lastPartOfURL]);
 
   return (
     <>
