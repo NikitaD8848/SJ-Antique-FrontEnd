@@ -3,7 +3,7 @@ import styles from '../../styles/header.module.css';
 const MasterListing :any= ({value}:any) => {
 
   return (
-    <>
+    <div >
       <div className="container-lg ">
       
         <div className={`${styles.button_container}`}>
@@ -36,7 +36,7 @@ const MasterListing :any= ({value}:any) => {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -21,7 +21,7 @@ const IndexPage = () => {
       console.log(pathcontent, 'pathcontent index')
       const key = pathcontent[pathcontent?.length - 1]
       return (
-        <>
+        <div >
         {key === 'karigar' &&(
           <MasterKarigar
           karigarData={karigarList}
@@ -47,11 +47,10 @@ const IndexPage = () => {
           />
         )}
         {key === 'material' &&(
-          // <MasterKarigar/>
           <MasterMaterialMaster
           value={key}/>
         )}
-        </>
+        </div>
       )
 }
 

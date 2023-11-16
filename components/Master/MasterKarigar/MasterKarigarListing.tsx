@@ -38,7 +38,7 @@ const MasterKarigarListing = ({ karigarData, HandleSearchInput,placeholder }: an
               karigarData !== null &&
               karigarData.map((item: any, i: any) => (
                 <tr key={i} >
-                  <td className="table-body-row cursor-pointer" onClick={()=>HandleDetails(item.karigar_name)}>
+                  <td className="table-body-row cursor" onClick={()=>HandleDetails(item.karigar_name)}>
                     {item.karigar_name} 
                   </td>
                 </tr>

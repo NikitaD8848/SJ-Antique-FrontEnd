@@ -40,7 +40,7 @@
   --card-border-rgb: 131, 134, 135;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
@@ -71,7 +71,7 @@
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
-}
+} */
 
 * {
   box-sizing: border-box;
@@ -86,26 +86,21 @@ body {
 }
 
 body {
-  font-family: serif;
+  font-family: serif !important;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background:white !important;
 }
 
 a {
   color: inherit;
   text-decoration: none;
 }
-
+/* 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
 
 .nav-pills .nav-link.active{
   background-color: #2f308c !important;
@@ -229,6 +224,15 @@ hr {
       width: 15rem !important;
   }
 }
+.pswd-container{
+  position:relative ;
+}
+.pswd-eye-icon{
+  position: absolute;
+  cursor: pointer;
+  right: 8px;
+  top: 3px;
+}
 .logout-button{
   padding: 5px 14px;
   border: none;
@@ -248,4 +252,7 @@ hr {
 .table-body-row {
   line-height: 17px !important;
   padding: 4px !important;
+}
+.cursor{
+  cursor: pointer;
 }
