@@ -1,4 +1,4 @@
-import UseKundanKarigarDetailHook from '@/hooks/KundanKarigarHook/kundan-karigar-hook';
+import UseKundanKarigarDetailHook from '@/hooks/KundanKarigarHook/kundan-karigar-detail-hook';
 import React, { useEffect } from 'react';
 import KundanTable from '../KundanReadyReceipts/KundanTable';
 import KundanKarigarReadyReceiptMasterTable from '../KundanReadyReceipts/KundanKarigarReadyReceiptMasterTable';
@@ -66,7 +66,7 @@ const DetailPageReadyReceipt = () => {
           defaultKarigarData !== null &&
           defaultKarigarData.map((data: any, index: any) => (
             <div key={index}>
-              < DocStatusButtonChanges
+              <DocStatusButtonChanges
                 data={data}
                 stateForDocStatus={stateForDocStatus}
                 handleUpdateReceipt={handleUpdateReceipt}

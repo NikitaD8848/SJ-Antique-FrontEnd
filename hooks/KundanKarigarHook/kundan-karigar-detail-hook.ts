@@ -23,17 +23,17 @@ const UseKundanKarigarDetailHook = () => {
   console.log('specific data', SpecificDataFromStore);
 
   console.log('tabledata', tableData);
-  // useEffect(() => {
-  //   DetailPageDataApi();
-  // }, [query]);
+
 
   useEffect(() => {
+    console.log("kundan carigar detail hook")
+    console.log("kundan carigar detail hook1", query)
     const params: any = {
       token: loginAcessToken?.token,
       name: query?.receiptId,
     };
     dispatch(getSpecificReceipt(params));
-  }, [query]);
+  }, []);
 
   useEffect(() => {
     if (SpecificDataFromStore?.data?.length > 0) {

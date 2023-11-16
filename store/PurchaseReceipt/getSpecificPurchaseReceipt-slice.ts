@@ -27,7 +27,7 @@ const initialState: RepoSpecificReceiptState = {
 };
 
 export const GetSpecificReceiptDataScreen = createSlice({
-  name: 'specificChallan',
+  name: 'specificReceipt',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

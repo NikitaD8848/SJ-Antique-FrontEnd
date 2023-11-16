@@ -5,13 +5,20 @@ const UpdatePurchaseReceiptApi = async (token: any, val: any, name: any) => {
   console.log(val, 'vals');
 
   let response: any;
-  const getHeaders = headerGenerator(token);
+
+  const params = `/api/method/sj_antique.api.put_purchase_receipt_api.put_purchase_receipt`;
+
+  const config = {
+    headers: {
+      Authorization: token,
+    },
+  };
 
   await axios
     .put(
-      `${CONSTANTS.API_BASE_URL}/api/resource/Purchase Receipt/${name}`,
+      `${CONSTANTS.API_BASE_URL}${params}`,
       val,
-      getHeaders
+      config
     )
     .then((res: any) => {
       console.log('post purchase receipt', res);

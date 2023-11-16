@@ -354,11 +354,11 @@ const useReadyReceiptKarigar = () => {
             ...tableItem,
             amount:
               (parseInt(tableItem.pcs, 10) || 0) *
-                (parseInt(tableItem.piece_, 10) || 0) +
+              (parseInt(tableItem.piece_, 10) || 0) +
               (parseFloat(tableItem.carat) || 0) *
-                (parseFloat(tableItem.carat_) || 0) +
+              (parseFloat(tableItem.carat_) || 0) +
               (parseFloat(tableItem.weight) || 0) *
-                (parseFloat(tableItem.gm_) || 0),
+              (parseFloat(tableItem.gm_) || 0),
           })),
         };
       }
@@ -465,7 +465,8 @@ const useReadyReceiptKarigar = () => {
         values
       );
       console.log(purchaseReceipt, 'purchase');
-      if (purchaseReceipt.status === 200) {
+      if (purchaseReceipt.status === 200 && purchaseReceipt?.data?.hasOwnProperty("message")) {
+        router.push(`${readyReceiptType}/${purchaseReceipt?.data?.message?.message}`)
         // setRecipitData({
         //   custom_karigar: ' ',
         //   remarks: '',
