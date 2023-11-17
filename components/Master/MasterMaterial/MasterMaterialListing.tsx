@@ -11,7 +11,7 @@ const MasterMaterialListing = ({
 
   const HandleTableViewRows: any = (data: any) => {
     setTableViewData(data);
-  };
+  }; 
   const router = useRouter()
   const HandleDetails =(name:any, abbr:any)=>{
     console.log(name,abbr,'name abbr1')

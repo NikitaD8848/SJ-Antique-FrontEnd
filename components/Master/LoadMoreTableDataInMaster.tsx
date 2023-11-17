@@ -6,7 +6,7 @@ const LoadMoreTableDataInMaster = ({ HandleTableViewRows }: any) => {
         aria-label="Second group"
       >
         <button
-          type="button"
+          type="button" 
           className="btn btn-primary  py-0 load-more-table-data-btn"
           onClick={() => HandleTableViewRows(20)}
         >

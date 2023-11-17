@@ -48,7 +48,7 @@ const MasterKarigarListing = ({ karigarData, HandleSearchInput,placeholder }: an
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody> 
             {karigarData?.length > 0 &&
               karigarData !== null &&
               karigarData
