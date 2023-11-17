@@ -31,7 +31,7 @@ const MasterKarigar: any = ({
       value={value}/>
     <div >
       <div
-        className="nav nav-pills mb-2 justify-content-center "
+        className="nav nav-pills mb-1 justify-content-center "
         id="pills-tab"
         role="tablist"
       >
