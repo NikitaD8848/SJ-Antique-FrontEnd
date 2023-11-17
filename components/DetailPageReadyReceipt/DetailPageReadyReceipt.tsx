@@ -1,13 +1,14 @@
-import UseKundanKarigarDetailHook from '@/hooks/KundanKarigarHook/kundan-karigar-hook';
+import UseKundanKarigarDetailHook from '@/hooks/KundanKarigarHook/kundan-karigar-detail-hook';
 import React, { useEffect } from 'react';
 import KundanTable from '../KundanReadyReceipts/KundanTable';
 import KundanKarigarReadyReceiptMasterTable from '../KundanReadyReceipts/KundanKarigarReadyReceiptMasterTable';
 import useReadyReceiptKarigar from '@/hooks/readyReceiptKarigarHooks';
 import DocStatusButtonChanges from '../ButtonChanges/DocStatusButtonChanges';
 import PurchaseReceiptModal from '../ModalMaster/PurchaseReceiptModal';
+import '../../styles/detailPage.module.css'
 
 const DetailPageReadyReceipt = () => {
-  const { defaultKarigarData } = UseKundanKarigarDetailHook();
+  const { defaultKarigarData, readOnlyFields, setReadOnlyFields } = UseKundanKarigarDetailHook();
   const {
     setClick,
     kundanListing,
@@ -42,8 +43,8 @@ const DetailPageReadyReceipt = () => {
     stateForDocStatus,
     setStateForDocStatus,
     handleUpdateReceipt,
-    readOnlyFields,
-    setReadOnlyFields,
+    setShowSaveButtonForAmendFlow,
+    showSaveButtonForAmendFlow
   } = useReadyReceiptKarigar();
   console.log('default dataa', defaultKarigarData);
   console.log('readyonly condn', readOnlyFields);
@@ -66,12 +67,15 @@ const DetailPageReadyReceipt = () => {
           defaultKarigarData !== null &&
           defaultKarigarData.map((data: any, index: any) => (
             <div key={index}>
-              < DocStatusButtonChanges
+              <DocStatusButtonChanges
                 data={data}
                 stateForDocStatus={stateForDocStatus}
+                setStateForDocStatus={setStateForDocStatus}
                 handleUpdateReceipt={handleUpdateReceipt}
                 readOnlyFields={readOnlyFields}
                 setReadOnlyFields={setReadOnlyFields}
+                setShowSaveButtonForAmendFlow={setShowSaveButtonForAmendFlow}
+                showSaveButtonForAmendFlow={showSaveButtonForAmendFlow}
               />
             </div>
           ))}

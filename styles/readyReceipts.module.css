@@ -1,7 +1,8 @@
-.button_field{
+.button_field {
     text-align: end;
 }
-.create_button{
+
+.create_button {
     margin-bottom: 7px;
     padding: 3px 8px;
     background: #FFF;
@@ -9,19 +10,36 @@
     border: 1px solid #0d6efd;
     border-radius: 5px;
 }
-.create_button:hover{
+
+.create_button:hover {
     background-color: #0d6efd;
     color: #FFF;
 }
-.input_field{
+
+.input_field {
     margin-top: 2px;
     justify-content: center;
     max-width: 100px;
     text-align: center;
 }
-.table_select{
+
+.table_select {
     margin-top: 2px;
     width: 150px;
-    line-height:20px;
+    line-height: 20px;
     text-align: center;
-}   
+}
+
+
+.docstatus_button {
+    background-color: #f2dcdc !important;
+    padding: 0 13px !important;
+    color: #f36161 !important;
+    font-size: 0.5rem;
+    margin-left: 10px;
+}
+
+.docstatus_button_text {
+    font-size: 0.9rem;
+
+}

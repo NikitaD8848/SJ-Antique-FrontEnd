@@ -7,6 +7,7 @@ const SelectInputKunKarigar = ({
   setTableData,
   id,
   setStateForDocStatus,
+  readOnlyFields
 }: any) => {
   const inputRef = useRef<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -20,7 +21,11 @@ const SelectInputKunKarigar = ({
 
   const HandleSelectInputField = (e: any) => {
     console.log('input field', e.target.value);
-    setShowDropdown(true);
+    if (readOnlyFields !== true) {
+      setShowDropdown(true);
+
+    }
+
     setSelectedDropdownValue(e.target.value);
     const query = e.target.value;
 
@@ -41,7 +46,10 @@ const SelectInputKunKarigar = ({
     setStateForDocStatus(true);
   };
   const handleShowDropdown = () => {
-    setShowDropdown(!showDropdown);
+    if (readOnlyFields !== true) {
+      setShowDropdown(!showDropdown);
+    }
+
   };
   const handleKeyDown = (e: any) => {
     if (e.key === 'Escape') {
@@ -97,22 +105,23 @@ const SelectInputKunKarigar = ({
         onKeyDown={handleKeyDown}
         autoComplete="off"
         ref={inputRef}
+        readOnly={readOnlyFields}
       />
       {showDropdown && (
         <ul className=" dropdown-ul-list border">
           {noRecords === false && filterDropdownList?.length === 0 ? (
             <>
               {kundanKarigarData?.length > 0 &&
-              kundanKarigarData !== null &&
-              kundanKarigarData.map((name: any, i: any) => (
-                <li
-                  key={i}
-                  onClick={() => handleSelectedOption(name.karigar_name)}
-                  className="dropdown-list"
-                >
-                  {name.karigar_name}
-                </li>
-              ))}
+                kundanKarigarData !== null &&
+                kundanKarigarData.map((name: any, i: any) => (
+                  <li
+                    key={i}
+                    onClick={() => handleSelectedOption(name.karigar_name)}
+                    className="dropdown-list"
+                  >
+                    {name.karigar_name}
+                  </li>
+                ))}
             </>
           ) : (
             <>
